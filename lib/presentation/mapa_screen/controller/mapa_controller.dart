@@ -1,9 +1,7 @@
 import '../../../core/app_export.dart';
-import '../../../routes/navigation_args.dart';
 import '../models/mapa_model.dart';
 import 'package:get/get.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:latlong2/latlong.dart';
 import 'dart:async';
 

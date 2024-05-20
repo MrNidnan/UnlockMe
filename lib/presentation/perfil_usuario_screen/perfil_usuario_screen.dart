@@ -3,8 +3,6 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../core/app_export.dart';
 import '../../core/utils/file_upload_helper.dart';
 import '../../core/utils/permission_manager.dart';
-import '../../widgets/custom_floating_button.dart';
-import '../../widgets/custom_icon_button.dart';
 import 'controller/perfil_usuario_controller.dart'; // ignore_for_file: must_be_immutable
 
 class PerfilUsuarioScreen extends GetWidget<PerfilUsuarioController> {

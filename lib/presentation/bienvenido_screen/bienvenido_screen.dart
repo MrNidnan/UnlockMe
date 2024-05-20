@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:get/get.dart';
 import '../../core/app_export.dart';
 import '../../domain/googleauth/google_auth_helper.dart';
 import '../../routes/navigation_args.dart';

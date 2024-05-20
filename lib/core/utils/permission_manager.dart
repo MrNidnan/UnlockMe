@@ -1,5 +1,4 @@
 import 'package:permission_handler/permission_handler.dart';
-import '../app_export.dart';
 
 class PermissionManager {
   /// Returns a [Future] that completes with a [bool] value indicating whether
