@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         translations: AppLocalization(),
         locale: Get.deviceLocale,
         fallbackLocale: Locale('en', 'US'),
-        title: 'angelunlock',
+        title: 'UnlockMe',
         initialRoute: AppRoutes.initialRoute,
         getPages: AppRoutes.pages,
       );

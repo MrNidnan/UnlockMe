@@ -1,4 +1,4 @@
-package com.angelunlock.app
+package com.unlockme.app
 
 import io.flutter.embedding.android.FlutterActivity
 

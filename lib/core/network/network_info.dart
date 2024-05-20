@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:angelunlock/main.dart';
+import 'package:UnlockMe/main.dart';
 
 // For checking internet connectivity
 abstract class NetworkInfoI {
@@ -39,13 +39,19 @@ class NetworkInfo implements NetworkInfoI {
   // to check type of internet connectivity
   @override
   Future<ConnectivityResult> get connectivityResult async {
-    return connectivity.checkConnectivity();
+      final result = await connectivity.checkConnectivity();
+      if (result != ConnectivityResult.none) {
+        return result.first;
+      } else {
+        throw NoInternetException();
+      }
   }
 
   //check the type on internet connection on changed of internet connection
   @override
   Stream<ConnectivityResult> get onConnectivityChanged =>
-      connectivity.onConnectivityChanged;
+    connectivity.onConnectivityChanged
+        .map((List<ConnectivityResult> results) => results.isNotEmpty ? results.first : ConnectivityResult.none);
 }
 
 abstract class Failure {}
