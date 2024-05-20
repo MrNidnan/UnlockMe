@@ -227,7 +227,7 @@ class PerfilUsuarioScreen extends GetWidget<PerfilUsuarioController> {
                             child: Row(
                               children: [
                                 CustomImageView(
-                                  imagePath: ImageConstant.imgProfile,
+                                  imagePath: ImageConstant.imgQuestion,
                                   height: 18.adaptSize,
                                   width: 18.adaptSize,
                                 ),
@@ -249,111 +249,6 @@ class PerfilUsuarioScreen extends GetWidget<PerfilUsuarioController> {
               )
             ],
           ),
-        ),
-        bottomNavigationBar: _buildBottomappbarlin(),
-        floatingActionButton: CustomFloatingButton(
-          height: 35,
-          width: 35,
-          child: CustomImageView(
-            imagePath: ImageConstant.imgSearch,
-            height: 17.5.v,
-            width: 17.5.h,
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      ),
-    );
-  }
-
-  /// Section Widget
-  Widget _buildBottomappbarlin() {
-    return SizedBox(
-      child: SizedBox(
-        height: 95.v,
-        width: double.maxFinite,
-        child: Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                width: double.maxFinite,
-                margin: EdgeInsets.only(top: 21.v),
-                padding: EdgeInsets.symmetric(
-                  horizontal: 42.h,
-                  vertical: 6.v,
-                ),
-                decoration: AppDecoration.fillGray30066.copyWith(
-                  borderRadius: BorderRadiusStyle.customBorderTL20,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 28.h,
-                        top: 4.v,
-                        bottom: 5.v,
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CustomIconButton(
-                            height: 35.adaptSize,
-                            width: 35.adaptSize,
-                            padding: EdgeInsets.all(6.h),
-                            child: CustomImageView(
-                              imagePath:
-                                  ImageConstant.imgLinkedinErrorcontainer,
-                            ),
-                          ),
-                          SizedBox(height: 3.v),
-                          Text(
-                            "lbl_mapa".tr,
-                            style: theme.textTheme.labelLarge,
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(bottom: 5.v),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CustomFloatingButton(
-                            height: 35,
-                            width: 35,
-                            child: CustomImageView(
-                              imagePath: ImageConstant.imgSearch,
-                              height: 17.5.v,
-                              width: 17.5.h,
-                            ),
-                          ),
-                          SizedBox(height: 7.v),
-                          Text(
-                            "lbl_configuraci_n".tr,
-                            style: theme.textTheme.labelLarge,
-                          )
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            CustomFloatingButton(
-              height: 58,
-              width: 58,
-              backgroundColor: appTheme.blueGray100,
-              alignment: Alignment.topCenter,
-              child: CustomImageView(
-                imagePath: ImageConstant.imgPrinter,
-                height: 29.0.v,
-                width: 29.0.h,
-              ),
-            )
-          ],
         ),
       ),
     );

@@ -7,10 +7,8 @@ import '../../widgets/custom_checkbox_button.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_outlined_button.dart';
 import '../../widgets/custom_text_form_field.dart';
-import 'controller/login_controller.dart'; // ignore_for_file: must_be_immutable
-// ignore_for_file: must_be_immutable
+import 'controller/login_controller.dart';
 
-// ignore_for_file: must_be_immutable
 class LoginScreen extends GetWidget<LoginController> {
   LoginScreen({Key? key})
       : super(
@@ -21,6 +19,11 @@ class LoginScreen extends GetWidget<LoginController> {
 
   @override
   Widget build(BuildContext context) {
+    SizeUtils.setScreenSize(MediaQuery.of(context), MediaQuery.of(context).orientation);
+    final screenHeight = SizeUtils.height;
+    final screenWidth = SizeUtils.width;
+
+
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -31,47 +34,46 @@ class LoginScreen extends GetWidget<LoginController> {
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
             child: SizedBox(
-              height: SizeUtils.height,
+              height: screenHeight,
               child: Form(
                 key: _formKey,
                 child: Container(
-                  width: double.maxFinite,
+                  width: double.infinity,
                   padding: EdgeInsets.symmetric(
-                    horizontal: 30.h,
-                    vertical: 83.v,
+                    horizontal: screenWidth * 0.08,
+                    vertical: screenHeight * 0.10,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 4.v),
+                      SizedBox(height: screenHeight * 0.005),
                       CustomImageView(
                         imagePath: ImageConstant.imgImage3TracedGreen900,
-                        height: 50.v,
-                        width: 244.h,
+                        height: screenHeight * 0.06,
+                        width: screenWidth * 0.65,
                         alignment: Alignment.centerRight,
-                        margin: EdgeInsets.only(right: 26.h),
+                        margin: EdgeInsets.only(right: screenWidth * 0.07),
                       ),
                       Spacer(),
-                      _buildEmail(),
-                      SizedBox(height: 11.v),
-                      _buildEye(),
-                      SizedBox(height: 9.v),
-                      _buildRecordarMisDato(),
-                      SizedBox(height: 11.v),
-                      _buildReply(),
-                      SizedBox(height: 38.v),
-                      _buildEntrar(),
-                      SizedBox(height: 13.v),
-                      _buildRegistrarse(),
-                      SizedBox(height: 23.v),
+                      _buildEmail(context),
+                      SizedBox(height: screenHeight * 0.01),
+                      _buildEye(context),
+                      SizedBox(height: screenHeight * 0.01),
+                      _buildRecordarMisDato(context),
+                      SizedBox(height: screenHeight * 0.01),
+                      _buildReply(context),
+                      SizedBox(height: screenHeight * 0.05),
+                      _buildEntrar(context),
+                      SizedBox(height: screenHeight * 0.02),
+                      _buildRegistrarse(context),
+                      SizedBox(height: screenHeight * 0.03),
                       GestureDetector(
                         onTap: () {
                           navigateToRecoverPwd();
                         },
                         child: Text(
                           "msg_has_olvidado_tu".tr,
-                          style: CustomTextStyles.bodySmallPrimaryContainer
-                              .copyWith(
+                          style: CustomTextStyles.bodySmallPrimaryContainer.copyWith(
                             decoration: TextDecoration.underline,
                           ),
                         ),
@@ -87,8 +89,7 @@ class LoginScreen extends GetWidget<LoginController> {
     );
   }
 
-  /// Section Widget
-  Widget _buildEmail() {
+  Widget _buildEmail(BuildContext context) {
     return CustomTextFormField(
       controller: controller.emailController,
       hintText: "lbl_email".tr,
@@ -103,8 +104,7 @@ class LoginScreen extends GetWidget<LoginController> {
     );
   }
 
-  /// Section Widget
-  Widget _buildEye() {
+  Widget _buildEye(BuildContext context) {
     return Obx(
       () => CustomTextFormField(
         controller: controller.eyeController,
@@ -116,16 +116,21 @@ class LoginScreen extends GetWidget<LoginController> {
             controller.isShowPassword.value = !controller.isShowPassword.value;
           },
           child: Container(
-            margin: EdgeInsets.fromLTRB(30.h, 15.v, 10.h, 15.v),
+            margin: EdgeInsets.fromLTRB(
+              SizeUtils.marginMedium(),
+              SizeUtils.marginSmall(),
+              SizeUtils.marginMedium(),
+              SizeUtils.marginSmall(),
+            ),
             child: CustomImageView(
               imagePath: ImageConstant.imgEye,
-              height: 14.v,
-              width: 22.h,
+              height: SizeUtils.textBoxHeight() * 0.3,
+              width: SizeUtils.textBoxHeight() * 0.45,
             ),
           ),
         ),
         suffixConstraints: BoxConstraints(
-          maxHeight: 45.v,
+          maxHeight: SizeUtils.textBoxHeight() * 1.1,
         ),
         validator: (value) {
           if (value == null || (!isValidPassword(value, isRequired: true))) {
@@ -135,27 +140,26 @@ class LoginScreen extends GetWidget<LoginController> {
         },
         obscureText: controller.isShowPassword.value,
         contentPadding: EdgeInsets.only(
-          left: 17.h,
-          top: 14.v,
-          bottom: 14.v,
+          left: SizeUtils.paddingMedium(),
+          top: SizeUtils.paddingSmall(),
+          bottom: SizeUtils.paddingSmall(),
         ),
         borderDecoration: TextFormFieldStyleHelper.outlineBlueGray,
       ),
     );
   }
 
-  /// Section Widget
-  Widget _buildRecordarMisDato() {
+  Widget _buildRecordarMisDato(BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: EdgeInsets.only(left: 18.h),
+        padding: EdgeInsets.only(left: SizeUtils.marginMedium()),
         child: Obx(
           () => CustomCheckboxButton(
             alignment: Alignment.centerLeft,
             text: "msg_recordar_mis_datos".tr,
             value: controller.recordarMisDato.value,
-            padding: EdgeInsets.symmetric(vertical: 3.v),
+            padding: EdgeInsets.symmetric(vertical: SizeUtils.paddingSmall()),
             onChange: (value) {
               controller.recordarMisDato.value = value;
             },
@@ -165,18 +169,17 @@ class LoginScreen extends GetWidget<LoginController> {
     );
   }
 
-  /// Section Widget
-  Widget _buildReply() {
+  Widget _buildReply(BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: EdgeInsets.only(left: 18.h),
+        padding: EdgeInsets.only(left: SizeUtils.marginMedium()),
         child: Obx(
           () => CustomCheckboxButton(
             alignment: Alignment.centerLeft,
             text: "msg_acepto_la_pol_tica".tr,
             value: controller.reply.value,
-            padding: EdgeInsets.symmetric(vertical: 3.v),
+            padding: EdgeInsets.symmetric(vertical: SizeUtils.paddingSmall()),
             textStyle: CustomTextStyles.bodySmallRubik,
             onChange: (value) {
               controller.reply.value = value;
@@ -187,21 +190,20 @@ class LoginScreen extends GetWidget<LoginController> {
     );
   }
 
-  /// Section Widget
-  Widget _buildEntrar() {
+  Widget _buildEntrar(BuildContext context) {
     return CustomElevatedButton(
-      width: 150.h,
+      width: SizeUtils.width * 0.4,
       text: "lbl_entrar".tr,
       onPressed: () {
         callAuth();
+        Get.toNamed(AppRoutes.bienvenidoOneScreen);
       },
     );
   }
 
-  /// Section Widget
-  Widget _buildRegistrarse() {
+  Widget _buildRegistrarse(BuildContext context) {
     return CustomOutlinedButton(
-      width: 150.h,
+      width: SizeUtils.width * 0.4,
       text: "lbl_registrarse".tr,
       onPressed: () {
         navigateToRegister();
@@ -209,13 +211,6 @@ class LoginScreen extends GetWidget<LoginController> {
     );
   }
 
-  /// calls the [https://nodedemo.dhiwise.co/device/auth/login] API
-  ///
-  /// It has [PostLoginDeviceAuthReq] as a parameter which will be passed as a API request body
-  /// If the call is successful, the function calls the `_onCallAuthSuccess()` function.
-  /// If the call fails, the function calls the `_onCallAuthError()` function.
-  ///
-  /// Throws a `NoInternetException` if there is no internet connection.
   Future<void> callAuth() async {
     PostLoginDeviceAuthReq postLoginDeviceAuthReq = PostLoginDeviceAuthReq();
     try {
@@ -230,33 +225,26 @@ class LoginScreen extends GetWidget<LoginController> {
     } catch (e) {}
   }
 
-  /// Navigates to the mapaScreen when the action is triggered.
   void _onCallAuthSuccess() {
     Get.toNamed(
       AppRoutes.mapaScreen,
     );
   }
 
-  /// Displays an alert dialog when the action is triggered.
-  /// This function is typically called in response to a API call. It retrieves
-  /// the `message` data from the `PostLoginDeviceAuthResp`
-  /// object in the `controller` using the `message` field.
   void _onCallAuthError() {
     Get.defaultDialog(
-        onConfirm: () => Get.back(),
-        title: 'Authentication Error',
-        middleText:
-            controller.postLoginDeviceAuthResp.message.toString() ?? '');
+      onConfirm: () => Get.back(),
+      title: 'Authentication Error',
+      middleText: controller.postLoginDeviceAuthResp.message.toString() ?? '',
+    );
   }
 
-  /// Navigates to the registerScreen when the action is triggered.
   navigateToRegister() {
     Get.toNamed(
       AppRoutes.registerScreen,
     );
   }
 
-  /// Navigates to the recuperarPwdScreen when the action is triggered.
   navigateToRecoverPwd() {
     Get.toNamed(
       AppRoutes.recuperarPwdScreen,

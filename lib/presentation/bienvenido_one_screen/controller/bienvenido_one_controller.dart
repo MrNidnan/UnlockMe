@@ -8,12 +8,12 @@ import '../models/bienvenido_one_model.dart';
 class BienvenidoOneController extends GetxController {
   Rx<BienvenidoOneModel> bienvenidoOneModelObj = BienvenidoOneModel().obs;
 
-  @override
-  void onReady() {
-    Future.delayed(const Duration(milliseconds: 3000), () {
-      Get.offNamed(
-        AppRoutes.bienvenidoScreen,
-      );
-    });
-  }
+  // @override
+  // void onReady() {
+  //   Future.delayed(const Duration(milliseconds: 3000), () {
+  //     Get.offNamed(
+  //       AppRoutes.bienvenidoScreen,
+  //     );
+  //   });
+  // }
 }

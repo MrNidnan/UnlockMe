@@ -17,7 +17,7 @@ class ImageConstant {
 
   static String imgCardPayment = '$imagePath/img_card_payment.png';
 
-  static String imgProfile = '$imagePath/img_profile.svg';
+  static String imgQuestion = '$imagePath/img_question.svg';
 
 // Editar perfil One images
   static String imgCamera = '$imagePath/img_camera.svg';
@@ -41,7 +41,7 @@ class ImageConstant {
 
   static String imgLinkedin = '$imagePath/img_linkedin.svg';
 
-  static String imgClose = '$imagePath/img_close.svg';
+  static String imgProfile = '$imagePath/img_profile.svg';
 
 // Pantalla reserva images
   static String imgCheckmark = '$imagePath/img_checkmark.svg';
@@ -62,7 +62,7 @@ class ImageConstant {
 
   static String imgSearch = '$imagePath/img_search.svg';
 
-  static String imgPrinter = '$imagePath/img_printer.svg';
+  static String imgQrIcon = '$imagePath/img_qr_icon.svg';
 
   static String imgChevronLeft = '$imagePath/img_chevron_left.svg';
 

@@ -47,7 +47,7 @@ class Sizer extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       return OrientationBuilder(builder: (context, orientation) {
-        SizeUtils.setScreenSize(constraints, orientation);
+        SizeUtils.setScreenSize(MediaQuery.of(context), MediaQuery.of(context).orientation);
         return builder(context, orientation, SizeUtils.deviceType);
       });
     });
@@ -75,10 +75,13 @@ class SizeUtils {
   static late double width;
 
   static void setScreenSize(
-    BoxConstraints constraints,
+    MediaQueryData mediaQueryData,
     Orientation currentOrientation,
   ) {
-    boxConstraints = constraints;
+    boxConstraints = new BoxConstraints(
+      maxHeight: mediaQueryData.size.height,
+      maxWidth: mediaQueryData.size.width,
+    );
     orientation = currentOrientation;
     if (orientation == Orientation.portrait) {
       width =
@@ -91,4 +94,15 @@ class SizeUtils {
     }
     deviceType = DeviceType.mobile;
   }
+
+  static double paddingSmall() => height * 0.01;
+  static double paddingMedium() => height * 0.02;
+  static double paddingLarge() => height * 0.03;
+  
+  static double marginSmall() => height * 0.01;
+  static double marginMedium() => height * 0.02;
+  static double marginLarge() => height * 0.03;
+  
+  static double textBoxHeight() => height * 0.06;
+  static double buttonHeight() => height * 0.07;
 }

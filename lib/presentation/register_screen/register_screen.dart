@@ -5,20 +5,17 @@ import '../../widgets/custom_checkbox_button.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_outlined_button.dart';
 import '../../widgets/custom_text_form_field.dart';
-import 'controller/register_controller.dart'; // ignore_for_file: must_be_immutable
-// ignore_for_file: must_be_immutable
+import 'controller/register_controller.dart';
 
-// ignore_for_file: must_be_immutable
 class RegisterScreen extends GetWidget<RegisterController> {
-  RegisterScreen({Key? key})
-      : super(
-          key: key,
-        );
+  RegisterScreen({Key? key}) : super(key: key);
 
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    SizeUtils.setScreenSize(MediaQuery.of(context), MediaQuery.of(context).orientation);
+
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -32,43 +29,42 @@ class RegisterScreen extends GetWidget<RegisterController> {
             child: Form(
               key: _formKey,
               child: Container(
-                width: double.maxFinite,
+                width: double.infinity,
                 padding: EdgeInsets.symmetric(
-                  horizontal: 30.h,
-                  vertical: 38.v,
+                  horizontal: SizeUtils.width * 0.08,
+                  vertical: SizeUtils.height * 0.05,
                 ),
                 child: Column(
                   children: [
                     CustomImageView(
                       imagePath: ImageConstant.imgImage3TracedGreen900,
-                      height: 50.v,
-                      width: 244.h,
+                      height: SizeUtils.height * 0.06,
+                      width: SizeUtils.width * 0.65,
                       alignment: Alignment.centerRight,
-                      margin: EdgeInsets.only(right: 14.h),
+                      margin: EdgeInsets.only(right: SizeUtils.width * 0.04),
                     ),
                     Spacer(),
                     _buildNameOne(),
-                    SizedBox(height: 10.v),
+                    SizedBox(height: SizeUtils.height * 0.01),
                     _buildEmail(),
-                    SizedBox(height: 10.v),
+                    SizedBox(height: SizeUtils.height * 0.01),
                     _buildPasswordOne(),
-                    SizedBox(height: 10.v),
+                    SizedBox(height: SizeUtils.height * 0.01),
                     _buildConfirmPassword(),
-                    SizedBox(height: 11.v),
+                    SizedBox(height: SizeUtils.height * 0.01),
                     _buildRecordarMisDatos(),
-                    SizedBox(height: 29.v),
+                    SizedBox(height: SizeUtils.height * 0.03),
                     _buildEntrar(),
-                    SizedBox(height: 13.v),
+                    SizedBox(height: SizeUtils.height * 0.02),
                     _buildRegistrarse(),
-                    SizedBox(height: 23.v),
+                    SizedBox(height: SizeUtils.height * 0.03),
                     Text(
                       "msg_has_olvidado_tu".tr,
-                      style:
-                          CustomTextStyles.bodySmallPrimaryContainer.copyWith(
+                      style: CustomTextStyles.bodySmallPrimaryContainer.copyWith(
                         decoration: TextDecoration.underline,
                       ),
                     ),
-                    SizedBox(height: 31.v)
+                    SizedBox(height: SizeUtils.height * 0.04),
                   ],
                 ),
               ),
@@ -79,7 +75,6 @@ class RegisterScreen extends GetWidget<RegisterController> {
     );
   }
 
-  /// Section Widget
   Widget _buildNameOne() {
     return CustomTextFormField(
       controller: controller.nameOneController,
@@ -88,7 +83,6 @@ class RegisterScreen extends GetWidget<RegisterController> {
     );
   }
 
-  /// Section Widget
   Widget _buildEmail() {
     return CustomTextFormField(
       controller: controller.emailController,
@@ -104,7 +98,6 @@ class RegisterScreen extends GetWidget<RegisterController> {
     );
   }
 
-  /// Section Widget
   Widget _buildPasswordOne() {
     return Obx(
       () => CustomTextFormField(
@@ -116,16 +109,21 @@ class RegisterScreen extends GetWidget<RegisterController> {
             controller.isShowPassword.value = !controller.isShowPassword.value;
           },
           child: Container(
-            margin: EdgeInsets.fromLTRB(30.h, 14.v, 10.h, 14.v),
+            margin: EdgeInsets.fromLTRB(
+              SizeUtils.width * 0.08,
+              SizeUtils.height * 0.02,
+              SizeUtils.width * 0.03,
+              SizeUtils.height * 0.02,
+            ),
             child: CustomImageView(
               imagePath: ImageConstant.imgEyeBlueGray100,
-              height: 14.v,
-              width: 22.h,
+              height: SizeUtils.height * 0.02,
+              width: SizeUtils.width * 0.05,
             ),
           ),
         ),
         suffixConstraints: BoxConstraints(
-          maxHeight: 45.v,
+          maxHeight: SizeUtils.height * 0.07,
         ),
         validator: (value) {
           if (value == null || (!isValidPassword(value, isRequired: true))) {
@@ -135,16 +133,15 @@ class RegisterScreen extends GetWidget<RegisterController> {
         },
         obscureText: controller.isShowPassword.value,
         contentPadding: EdgeInsets.only(
-          left: 17.h,
-          top: 14.v,
-          bottom: 14.v,
+          left: SizeUtils.width * 0.05,
+          top: SizeUtils.height * 0.02,
+          bottom: SizeUtils.height * 0.02,
         ),
         borderDecoration: TextFormFieldStyleHelper.outlineBlueGrayTL5,
       ),
     );
   }
 
-  /// Section Widget
   Widget _buildConfirmPassword() {
     return Obx(
       () => CustomTextFormField(
@@ -154,20 +151,24 @@ class RegisterScreen extends GetWidget<RegisterController> {
         textInputType: TextInputType.visiblePassword,
         suffix: InkWell(
           onTap: () {
-            controller.isShowPassword1.value =
-                !controller.isShowPassword1.value;
+            controller.isShowPassword1.value = !controller.isShowPassword1.value;
           },
           child: Container(
-            margin: EdgeInsets.fromLTRB(30.h, 14.v, 10.h, 14.v),
+            margin: EdgeInsets.fromLTRB(
+              SizeUtils.width * 0.08,
+              SizeUtils.height * 0.02,
+              SizeUtils.width * 0.03,
+              SizeUtils.height * 0.02,
+            ),
             child: CustomImageView(
               imagePath: ImageConstant.imgEyeBlueGray100,
-              height: 14.v,
-              width: 22.h,
+              height: SizeUtils.height * 0.02,
+              width: SizeUtils.width * 0.05,
             ),
           ),
         ),
         suffixConstraints: BoxConstraints(
-          maxHeight: 45.v,
+          maxHeight: SizeUtils.height * 0.07,
         ),
         validator: (value) {
           if (value == null || (!isValidPassword(value, isRequired: true))) {
@@ -177,27 +178,26 @@ class RegisterScreen extends GetWidget<RegisterController> {
         },
         obscureText: controller.isShowPassword1.value,
         contentPadding: EdgeInsets.only(
-          left: 17.h,
-          top: 14.v,
-          bottom: 14.v,
+          left: SizeUtils.width * 0.05,
+          top: SizeUtils.height * 0.02,
+          bottom: SizeUtils.height * 0.02,
         ),
         borderDecoration: TextFormFieldStyleHelper.outlineBlueGrayTL5,
       ),
     );
   }
 
-  /// Section Widget
   Widget _buildRecordarMisDatos() {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: EdgeInsets.only(left: 18.h),
+        padding: EdgeInsets.only(left: SizeUtils.width * 0.05),
         child: Obx(
           () => CustomCheckboxButton(
             alignment: Alignment.centerLeft,
             text: "msg_recordar_mis_datos".tr,
             value: controller.recordarMisDatos.value,
-            padding: EdgeInsets.symmetric(vertical: 3.v),
+            padding: EdgeInsets.symmetric(vertical: SizeUtils.height * 0.01),
             onChange: (value) {
               controller.recordarMisDatos.value = value;
             },
@@ -207,19 +207,23 @@ class RegisterScreen extends GetWidget<RegisterController> {
     );
   }
 
-  /// Section Widget
   Widget _buildEntrar() {
     return CustomElevatedButton(
-      width: 150.h,
+      width: SizeUtils.width * 0.4,
       text: "lbl_entrar".tr,
+      onPressed: () {
+        Get.toNamed(AppRoutes.mapaScreen);
+      },
     );
   }
 
-  /// Section Widget
   Widget _buildRegistrarse() {
     return CustomOutlinedButton(
-      width: 150.h,
+      width: SizeUtils.width * 0.4,
       text: "lbl_registrarse".tr,
+      onPressed: () {
+        Get.toNamed(AppRoutes.bienvenidoOneScreen);
+      },
     );
   }
 }

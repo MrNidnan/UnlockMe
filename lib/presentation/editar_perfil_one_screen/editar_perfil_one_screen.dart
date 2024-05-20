@@ -328,7 +328,7 @@ class EditarPerfilOneScreen extends GetWidget<EditarPerfilOneController> {
               backgroundColor: appTheme.blueGray100,
               alignment: Alignment.topCenter,
               child: CustomImageView(
-                imagePath: ImageConstant.imgPrinter,
+                imagePath: ImageConstant.imgProfile,
                 height: 29.0.v,
                 width: 29.0.h,
               ),
