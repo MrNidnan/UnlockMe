@@ -6,8 +6,6 @@ ThemeData get theme => ThemeHelper().themeData();
 
 /// Helper class for managing themes and colors.
 // ignore_for_file: must_be_immutable
-
-// ignore_for_file: must_be_immutable
 class ThemeHelper {
   // The current app theme
   var _appTheme = PrefUtils().getThemeData();

@@ -9,6 +9,7 @@ import '../../widgets/custom_outlined_button.dart';
 import '../../widgets/custom_text_form_field.dart';
 import 'controller/login_controller.dart';
 
+// ignore_for_file: must_be_immutable
 class LoginScreen extends GetWidget<LoginController> {
   LoginScreen({Key? key})
       : super(
@@ -22,7 +23,6 @@ class LoginScreen extends GetWidget<LoginController> {
     SizeUtils.setScreenSize(MediaQuery.of(context), MediaQuery.of(context).orientation);
     final screenHeight = SizeUtils.height;
     final screenWidth = SizeUtils.width;
-
 
     return SafeArea(
       child: Scaffold(
@@ -195,8 +195,12 @@ class LoginScreen extends GetWidget<LoginController> {
       width: SizeUtils.width * 0.4,
       text: "lbl_entrar".tr,
       onPressed: () {
-        callAuth();
-        Get.toNamed(AppRoutes.bienvenidoOneScreen);
+        if (_formKey.currentState?.validate() ?? false) {
+          // callAuth();
+          Get.toNamed(AppRoutes.bienvenidoOneScreen);
+        } else {
+          Get.rawSnackbar(message: "Please fill in all required fields correctly.");
+        }
       },
     );
   }

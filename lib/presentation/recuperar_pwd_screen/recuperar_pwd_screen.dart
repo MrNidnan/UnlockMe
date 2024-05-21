@@ -5,10 +5,9 @@ import '../../widgets/app_bar/appbar_leading_image.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_text_form_field.dart';
-import 'controller/recuperar_pwd_controller.dart'; // ignore_for_file: must_be_immutable
+import 'controller/recuperar_pwd_controller.dart'; 
 // ignore_for_file: must_be_immutable
 
-// ignore_for_file: must_be_immutable
 class RecuperarPwdScreen extends GetWidget<RecuperarPwdController> {
   RecuperarPwdScreen({Key? key})
       : super(

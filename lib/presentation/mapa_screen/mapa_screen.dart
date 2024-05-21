@@ -43,6 +43,7 @@ class MapaScreen extends GetWidget<MapaController> {
                     imagePath: ImageConstant.imgQrIcon,
                     height: 29.0,
                     width: 29.0,
+                    color: Colors.black,
                   ),
                 ),
               ),

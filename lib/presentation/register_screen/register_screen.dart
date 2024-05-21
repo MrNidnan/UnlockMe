@@ -7,6 +7,7 @@ import '../../widgets/custom_outlined_button.dart';
 import '../../widgets/custom_text_form_field.dart';
 import 'controller/register_controller.dart';
 
+// ignore_for_file: must_be_immutable
 class RegisterScreen extends GetWidget<RegisterController> {
   RegisterScreen({Key? key}) : super(key: key);
 
@@ -212,7 +213,12 @@ class RegisterScreen extends GetWidget<RegisterController> {
       width: SizeUtils.width * 0.4,
       text: "lbl_entrar".tr,
       onPressed: () {
-        Get.toNamed(AppRoutes.mapaScreen);
+        if (_formKey.currentState?.validate() ?? false) {
+          // callRegister();
+          Get.toNamed(AppRoutes.bienvenidoOneScreen);
+        } else {
+          Get.rawSnackbar(message: "Please fill in all required fields correctly.");
+        }
       },
     );
   }

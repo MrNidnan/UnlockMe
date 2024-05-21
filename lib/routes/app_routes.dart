@@ -30,7 +30,7 @@ import '../presentation/pop_up_insert_qr_code_screen/pop_up_insert_qr_code_scree
 import '../presentation/recuperar_pwd_screen/binding/recuperar_pwd_binding.dart';
 import '../presentation/recuperar_pwd_screen/recuperar_pwd_screen.dart';
 import '../presentation/register_screen/binding/register_binding.dart';
-import '../presentation/register_screen/register_screen.dart'; // ignore_for_file: must_be_immutable
+import '../presentation/register_screen/register_screen.dart';
 
 // ignore_for_file: must_be_immutable
 class AppRoutes {
