@@ -228,7 +228,7 @@ class RegisterScreen extends GetWidget<RegisterController> {
       width: SizeUtils.width * 0.4,
       text: "lbl_registrarse".tr,
       onPressed: () {
-        Get.toNamed(AppRoutes.bienvenidoOneScreen);
+        Get.toNamed(AppRoutes.mapaScreen);
       },
     );
   }

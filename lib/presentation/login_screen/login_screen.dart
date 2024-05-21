@@ -195,12 +195,12 @@ class LoginScreen extends GetWidget<LoginController> {
       width: SizeUtils.width * 0.4,
       text: "lbl_entrar".tr,
       onPressed: () {
-        if (_formKey.currentState?.validate() ?? false) {
-          // callAuth();
-          Get.toNamed(AppRoutes.bienvenidoOneScreen);
-        } else {
-          Get.rawSnackbar(message: "Please fill in all required fields correctly.");
-        }
+        //if (_formKey.currentState?.validate() ?? false) {
+          callAuth();
+          //Get.toNamed(AppRoutes.bienvenidoOneScreen);
+        //} else {
+        //  Get.rawSnackbar(message: "Please fill in all required fields correctly.");
+        //}
       },
     );
   }
