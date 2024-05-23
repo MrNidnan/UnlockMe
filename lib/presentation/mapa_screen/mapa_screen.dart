@@ -92,6 +92,7 @@ class MapaScreen extends GetWidget<MapaController> {
                 ),
               ],
             ),
+          Obx(() => MarkerLayer(markers: controller.bikeMarkers)),
         ], 
       ),
     );

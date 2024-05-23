@@ -1,3 +1,7 @@
+import 'package:UnlockMe/core/storage/database_helper.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+
 import '../../../core/app_export.dart';
 import '../models/mapa_model.dart';
 import 'package:get/get.dart';
@@ -12,11 +16,33 @@ class MapaController extends GetxController {
   //var userMail = Get.arguments[NavigationArgs.userMail];
   Rx<MapaModel> mapaModelObj = MapaModel().obs;
   var currentPosition = Rx<LatLng?>(null);
+  var bikeMarkers = <Marker>[].obs;
 
   @override
   void onInit() {
     super.onInit();
     _requestLocationPermission();
+    fetchBikeCoordinates();
+
+  }
+
+  Future<void> fetchBikeCoordinates() async {
+    final dbHelper = DatabaseHelper();
+    List<Map<String, dynamic>> bikes = await dbHelper.getBikes();
+    for (var bike in bikes) {
+      bikeMarkers.add(
+        Marker(
+          width: 80.0,
+          height: 80.0,
+          point: LatLng(bike['latitude'], bike['longitude']),
+          child: Icon(
+            Icons.pedal_bike,
+            color: Colors.blue,
+            size: 40.0,
+          ),
+        ),
+      );
+    }
   }
 
   Future<void> _requestLocationPermission() async {
