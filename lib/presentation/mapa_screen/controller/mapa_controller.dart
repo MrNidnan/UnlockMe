@@ -35,12 +35,19 @@ class MapaController extends GetxController {
           width: 80.0,
           height: 80.0,
           point: LatLng(bike['latitude'], bike['longitude']),
-          child: Icon(
+          
+          child: 
+          GestureDetector(
+            onTap: () {
+              navigateToBikeDetails(bike);
+            },
+            child: Icon(
             Icons.pedal_bike,
             color: Colors.blue,
             size: 40.0,
           ),
         ),
+        )
       );
     }
   }
@@ -72,6 +79,19 @@ class MapaController extends GetxController {
 
   void updateMapLocation(Position position) {
     currentPosition.value = LatLng(position.latitude, position.longitude);
+  }
+
+  void navigateToBikeDetails(Map<String, dynamic> bike) {
+  print(bike);
+  Get.toNamed(
+    AppRoutes.pantallaReserva,
+    arguments: {
+      'bikeId': bike['id'],
+      'latitude': bike['latitude'],
+      'longitude': bike['longitude'],
+      'batteryLife': bike['battery_life'],
+    },
+  );
   }
 }
 

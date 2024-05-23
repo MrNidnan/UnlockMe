@@ -19,8 +19,8 @@ import '../presentation/login_screen/binding/login_binding.dart';
 import '../presentation/login_screen/login_screen.dart';
 import '../presentation/mapa_screen/binding/mapa_binding.dart';
 import '../presentation/mapa_screen/mapa_screen.dart';
-import '../presentation/pantalla_reserva_screen/binding/pantalla_reserva_binding.dart';
-import '../presentation/pantalla_reserva_screen/pantalla_reserva_screen.dart';
+import '../presentation/pantalla_reserva/binding/pantalla_reserva_binding.dart';
+import '../presentation/pantalla_reserva/pantalla_reserva.dart';
 import '../presentation/perfil_usuario_screen/binding/perfil_usuario_binding.dart';
 import '../presentation/perfil_usuario_screen/perfil_usuario_screen.dart';
 import '../presentation/pop_up_bluetooth_out_of_range_screen/binding/pop_up_bluetooth_out_of_range_binding.dart';
@@ -50,7 +50,7 @@ class AppRoutes {
 
   static const String mapaScreen = '/mapa_screen';
 
-  static const String pantallaReservaScreen = '/pantalla_reserva_screen';
+  static const String pantallaReserva = '/pantalla_reserva';
 
   static const String popUpInsertQrCodeScreen = '/pop_up_insert_qr_code_screen';
 
