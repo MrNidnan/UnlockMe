@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'core/app_export.dart';
 import 'core/storage/database_helper.dart';
 
@@ -9,6 +10,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final dbHelper = DatabaseHelper();
+  await Hive.initFlutter();
 
   // Insert a fake user
   await dbHelper.insertUser({

@@ -1,11 +1,9 @@
+import 'package:UnlockMe/core/services/location_service.dart';
 import 'package:UnlockMe/core/storage/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-
 import '../../../core/app_export.dart';
 import '../models/mapa_model.dart';
-import 'package:get/get.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'dart:async';
 
@@ -17,13 +15,24 @@ class MapaController extends GetxController {
   Rx<MapaModel> mapaModelObj = MapaModel().obs;
   var currentPosition = Rx<LatLng?>(null);
   var bikeMarkers = <Marker>[].obs;
+  final defaultPostion = LatLng(41.3851, 2.1734);
+  final LocationService locationService;
+
+  MapaController() : locationService = LocationService();
 
   @override
   void onInit() {
     super.onInit();
     _requestLocationPermission();
     fetchBikeCoordinates();
+  }
 
+  void updateMapLocation(double? latitude, double? longitude) {
+    if ((latitude == null || longitude == null) && currentPosition.value == null) {
+      currentPosition.value = defaultPostion;
+      return;
+    }
+    currentPosition.value = LatLng(latitude!, longitude!);
   }
 
   Future<void> fetchBikeCoordinates() async {
@@ -41,7 +50,7 @@ class MapaController extends GetxController {
             onTap: () {
               navigateToBikeDetails(bike);
             },
-            child: Icon(
+            child: const Icon(
             Icons.pedal_bike,
             color: Colors.blue,
             size: 40.0,
@@ -53,32 +62,9 @@ class MapaController extends GetxController {
   }
 
   Future<void> _requestLocationPermission() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied.');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    currentPosition.value = LatLng(position.latitude, position.longitude);
-  }
-
-  void updateMapLocation(Position position) {
-    currentPosition.value = LatLng(position.latitude, position.longitude);
+    await locationService.requestLocationPermission((double? latitude, double? longitude) {
+      updateMapLocation(latitude, longitude);
+    });
   }
 
   void navigateToBikeDetails(Map<String, dynamic> bike) {

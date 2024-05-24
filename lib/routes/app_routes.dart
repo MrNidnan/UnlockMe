@@ -111,8 +111,8 @@ class AppRoutes {
       bindings: [MapaBinding()],
     ),
     GetPage(
-      name: pantallaReservaScreen,
-      page: () => PantallaReservaScreen(),
+      name: pantallaReserva,
+      page: () => PantallaReserva(),
       bindings: [PantallaReservaBinding()],
     ),
     GetPage(

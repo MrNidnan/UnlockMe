@@ -10,4 +10,5 @@ export 'package:UnlockMe/theme/app_decoration.dart';
 export 'package:UnlockMe/theme/custom_text_style.dart';
 export 'package:UnlockMe/theme/theme_helper.dart';
 export 'package:UnlockMe/widgets/custom_image_view.dart';
+export 'package:UnlockMe/core/storage/contracts/enums_constants.dart';
 export 'package:get/get.dart';

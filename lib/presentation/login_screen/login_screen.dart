@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import '../../core/app_export.dart';
 import '../../core/utils/validation_functions.dart';
-import '../../data/models/loginDeviceAuth/post_login_device_auth_req.dart';
-import '../../data/models/loginDeviceAuth/post_login_device_auth_resp.dart';
 import '../../widgets/custom_checkbox_button.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_outlined_button.dart';
 import '../../widgets/custom_text_form_field.dart';
 import 'controller/login_controller.dart';
+import 'package:UnlockMe/core/storage/database_helper.dart';
 
 // ignore_for_file: must_be_immutable
 class LoginScreen extends GetWidget<LoginController> {
@@ -196,7 +196,7 @@ class LoginScreen extends GetWidget<LoginController> {
       text: "lbl_entrar".tr,
       onPressed: () {
         //if (_formKey.currentState?.validate() ?? false) {
-          callAuth();
+          callAuthMock();
           //Get.toNamed(AppRoutes.bienvenidoOneScreen);
         //} else {
         //  Get.rawSnackbar(message: "Please fill in all required fields correctly.");
@@ -215,21 +215,32 @@ class LoginScreen extends GetWidget<LoginController> {
     );
   }
 
-  Future<void> callAuth() async {
-    PostLoginDeviceAuthReq postLoginDeviceAuthReq = PostLoginDeviceAuthReq();
-    try {
-      await controller.callLoginDeviceAuth(
-        postLoginDeviceAuthReq.toJson(),
-      );
-      _onCallAuthSuccess();
-    } on PostLoginDeviceAuthResp {
-      _onCallAuthError();
-    } on NoInternetException catch (e) {
-      Get.rawSnackbar(message: e.toString());
-    } catch (e) {}
+  // Future<void> callAuth() async {
+  //   PostLoginDeviceAuthReq postLoginDeviceAuthReq = PostLoginDeviceAuthReq();
+  //   try {
+  //     _onCallAuthSuccess();
+  //   } on PostLoginDeviceAuthResp {
+  //     _onCallAuthError();
+  //   } on NoInternetException catch (e) {
+  //     Get.rawSnackbar(message: e.toString());
+  //   } catch (e) {}
+  // }
+
+    Future<void> callAuthMock() async {
+    
+      final dbHelper = DatabaseHelper();
+      final user = await dbHelper.getUser(controller.emailController.text);
+      
+      if (user != null && controller.eyeController.text == user.password) {
+        _onCallAuthSuccess(user);
+      } else {
+        _onCallAuthError();
+      }
   }
 
-  void _onCallAuthSuccess() {
+  void _onCallAuthSuccess(user) async {
+    var box = await Hive.openBox('userBox');
+    box.put('user', user);
     Get.toNamed(
       AppRoutes.mapaScreen,
     );

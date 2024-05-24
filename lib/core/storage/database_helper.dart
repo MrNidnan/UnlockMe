@@ -1,3 +1,4 @@
+import 'package:UnlockMe/core/storage/contracts/user.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -53,6 +54,7 @@ class DatabaseHelper {
         bikeId INTEGER,
         createdAt TEXT,
         endsAt TEXT,
+        status TEXT,
         FOREIGN KEY(userId) REFERENCES users(id),
         FOREIGN KEY(bikeId) REFERENCES bikes(id)
       )
@@ -79,6 +81,16 @@ class DatabaseHelper {
   Future<List<Map<String, dynamic>>> getUsers() async {
     final db = await database;
     return await db.query('users');
+  }
+
+   Future<User?> getUser(String email) async {
+    final db = await database;
+    final user = await db.query('users', where: 'email = ?', whereArgs: [email]);
+    
+    if (user.isEmpty){
+       return null;
+    }
+    return User.fromMap(user.first);
   }
 
   Future<int> updateUser(int id, Map<String, dynamic> user) async {
@@ -110,5 +122,21 @@ class DatabaseHelper {
   Future<int> deleteBike(int id) async {
     final db = await database;
     return await db.delete('bikes', where: 'id = ?', whereArgs: [id]);
+  }
+
+  // CRUD operations for Reservations
+  Future<int> insertReserve(Map<String, dynamic> reservation) async {
+    final db = await database;
+    return await db.insert('reserves', reservation);
+  }
+
+  Future<List<Map<String, dynamic>>> getReserve(int reserveId) async {
+    final db = await database;
+    return await db.query('reserves', where: 'reserveId = ?', whereArgs: [reserveId]);
+  }
+
+  Future<int> updateReserve(int reserveId, Map<String, dynamic> reservation) async {
+    final db = await database;
+    return await db.update('reserves', reservation, where: 'reserveId = ?', whereArgs: [reserveId]);
   }
 }

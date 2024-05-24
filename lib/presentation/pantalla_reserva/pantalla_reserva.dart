@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
-import 'controller/pantalla_reserva_controller.dart'; // ignore_for_file: must_be_immutable
+import 'controller/pantalla_reserva_controller.dart';
 
-class PantallaReservaScreen extends GetWidget<PantallaReservaController> {
-  const PantallaReservaScreen({Key? key})
-      : super(
-          key: key,
-        );
+class PantallaReserva extends GetWidget<PantallaReservaController> {
+  const PantallaReserva({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final bike = controller.pantallaReservaModelObj;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: theme.colorScheme.onSecondaryContainer,
@@ -33,7 +32,7 @@ class PantallaReservaScreen extends GetWidget<PantallaReservaController> {
               Padding(
                 padding: EdgeInsets.only(left: 74.h),
                 child: Text(
-                  "lbl_a001".tr,
+                  "Bike ID: ${bike.bikeId}",
                   style: theme.textTheme.titleMedium,
                 ),
               ),
@@ -41,60 +40,48 @@ class PantallaReservaScreen extends GetWidget<PantallaReservaController> {
               Align(
                 alignment: Alignment.center,
                 child: Text(
-                  "msg_pl_jes_s_carrasco".tr,
+                  "Location: (${bike.latitude}, ${bike.longitude})",
                   style: theme.textTheme.titleMedium,
                 ),
               ),
               SizedBox(height: 21.v),
               Padding(
                 padding: EdgeInsets.only(left: 74.h),
-                child: Row(
-                  children: [
-                    CustomImageView(
-                      imagePath: ImageConstant.imgArrowLeftYellow300,
-                      height: 22.v,
-                      width: 23.h,
-                      onTap: () {
-                        onTapImgArrowleftone();
-                      },
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: 8.h,
-                        top: 4.v,
-                        bottom: 3.v,
-                      ),
-                      child: Text(
-                        "lbl_59_km".tr,
-                        style: CustomTextStyles.labelLargeBluegray100_1,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(height: 14.v),
-              Padding(
-                padding: EdgeInsets.only(left: 105.h),
                 child: Text(
-                  "lbl_disponible".tr,
+                  "Battery Life: ${bike.batteryLife}%",
                   style: CustomTextStyles.bodySmallBluegray100,
                 ),
               ),
               SizedBox(height: 55.v),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "msg_autonomia_aprox".tr,
-                  style: CustomTextStyles.titleLargeOrange800,
-                ),
-              ),
-              SizedBox(height: 47.v),
-              CustomElevatedButton(
-                width: 150.h,
-                text: "lbl_reservar".tr,
-                margin: EdgeInsets.only(left: 74.h),
-              ),
-              SizedBox(height: 10.v)
+              Obx(() {
+                if (bike.isReserved) {
+                  return Column(
+                    children: [
+                      Text(
+                        "Remaining Time: ${controller.remainingTime.value} seconds",
+                        style: theme.textTheme.headlineSmall,
+                      ),
+                      SizedBox(height: 20.v),
+                      CustomElevatedButton(
+                        width: 150.h,
+                        text: "Cancel Reservation".tr,
+                        onPressed: () {
+                          controller.cancelReservation();
+                        },
+                      ),
+                    ],
+                  );
+                } else {
+                  return CustomElevatedButton(
+                    width: 150.h,
+                    text: "Reserve".tr,
+                    onPressed: () {
+                      controller.createReservation();
+                    },
+                  );
+                }
+              }),
+              SizedBox(height: 10.v),
             ],
           ),
         ),
@@ -102,7 +89,6 @@ class PantallaReservaScreen extends GetWidget<PantallaReservaController> {
     );
   }
 
-  /// Navigates to the previous screen.
   onTapImgArrowleftone() {
     Get.back();
   }

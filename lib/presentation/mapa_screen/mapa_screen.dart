@@ -1,9 +1,6 @@
-import 'package:UnlockMe/core/utils/file_upload_helper.dart';
-import 'package:UnlockMe/core/utils/permission_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'controller/mapa_controller.dart';
 import '../../core/app_export.dart';
@@ -62,7 +59,7 @@ class MapaScreen extends GetWidget<MapaController> {
       width: SizeUtils.width,
       child: FlutterMap(
         options: MapOptions(
-          initialCenter: controller.currentPosition.value ?? LatLng(41.3874, 2.1686),
+          initialCenter: controller.currentPosition.value ?? controller.defaultPostion,
           initialZoom: 14.4746,
         ),
         children: [
@@ -149,11 +146,6 @@ class MapaScreen extends GetWidget<MapaController> {
   }
 
   void requestCameraGalleryPermission() async {
-    await PermissionManager.askForPermission(Permission.camera);
-    await PermissionManager.askForPermission(Permission.storage);
-    List<String?>? imageList = [];
-    await FileManager().showModelSheetForImage(getImages: (value) async {
-      imageList = value;
-    });
+    
   }
 }
