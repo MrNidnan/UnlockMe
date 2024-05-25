@@ -12,8 +12,9 @@ class MapaScreen extends GetWidget<MapaController> {
 
   @override
   Widget build(BuildContext context) {
-    SizeUtils.setScreenSize(MediaQuery.of(context), MediaQuery.of(context).orientation);
-    
+    SizeUtils.setScreenSize(
+        MediaQuery.of(context), MediaQuery.of(context).orientation);
+
     return SafeArea(
       child: Scaffold(
         body: SizedBox(
@@ -28,7 +29,8 @@ class MapaScreen extends GetWidget<MapaController> {
                 child: _buildBottomAppBar(),
               ),
               Positioned(
-                bottom: MediaQuery.of(context).size.height * 0.10, // Adjust based on your layout needs
+                bottom: MediaQuery.of(context).size.height *
+                    0.10, // Adjust based on your layout needs
                 child: CustomFloatingButton(
                   heroTag: 'qr-scan-1',
                   height: 58,
@@ -60,7 +62,8 @@ class MapaScreen extends GetWidget<MapaController> {
       width: SizeUtils.width,
       child: FlutterMap(
         options: MapOptions(
-          initialCenter: controller.currentPosition.value ?? controller.defaultPostion,
+          initialCenter:
+              controller.currentPosition.value ?? controller.defaultPostion,
           initialZoom: 14.4746,
         ),
         children: [
@@ -71,14 +74,15 @@ class MapaScreen extends GetWidget<MapaController> {
             attributions: [
               TextSourceAttribution(
                 'OpenStreetMap contributors',
-                onTap: () => launchUrl(Uri.parse('https://openstreetmap.org/copyright')),
+                onTap: () =>
+                    launchUrl(Uri.parse('https://openstreetmap.org/copyright')),
               ),
             ],
           ),
           if (controller.currentPosition.value != null)
             MarkerLayer(
               markers: [
-               Marker(
+                Marker(
                   width: 80.0,
                   height: 80.0,
                   point: controller.currentPosition.value!,
@@ -91,7 +95,7 @@ class MapaScreen extends GetWidget<MapaController> {
               ],
             ),
           MarkerLayer(markers: controller.bikeMarkers),
-        ], 
+        ],
       ),
     );
   }
@@ -126,7 +130,7 @@ class MapaScreen extends GetWidget<MapaController> {
           ),
           Spacer(),
           CustomFloatingButton(
-            heroTag: 'settings-1',
+            heroTag: 'settings-a1',
             height: 35,
             width: 35,
             onTap: () {
@@ -147,7 +151,5 @@ class MapaScreen extends GetWidget<MapaController> {
     Get.toNamed(AppRoutes.perfilUsuarioScreen);
   }
 
-  void requestCameraGalleryPermission() async {
-    
-  }
+  void requestCameraGalleryPermission() async {}
 }

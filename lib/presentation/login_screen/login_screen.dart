@@ -1,3 +1,4 @@
+import 'package:UnlockMe/core/storage/contracts/user.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import '../../core/app_export.dart';
@@ -20,7 +21,8 @@ class LoginScreen extends GetWidget<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    SizeUtils.setScreenSize(MediaQuery.of(context), MediaQuery.of(context).orientation);
+    SizeUtils.setScreenSize(
+        MediaQuery.of(context), MediaQuery.of(context).orientation);
     final screenHeight = SizeUtils.height;
     final screenWidth = SizeUtils.width;
 
@@ -73,7 +75,8 @@ class LoginScreen extends GetWidget<LoginController> {
                         },
                         child: Text(
                           "msg_has_olvidado_tu".tr,
-                          style: CustomTextStyles.bodySmallPrimaryContainer.copyWith(
+                          style: CustomTextStyles.bodySmallPrimaryContainer
+                              .copyWith(
                             decoration: TextDecoration.underline,
                           ),
                         ),
@@ -196,8 +199,8 @@ class LoginScreen extends GetWidget<LoginController> {
       text: "lbl_entrar".tr,
       onPressed: () {
         //if (_formKey.currentState?.validate() ?? false) {
-          callAuthMock();
-          //Get.toNamed(AppRoutes.bienvenidoOneScreen);
+        callAuthMock();
+        //Get.toNamed(AppRoutes.bienvenidoOneScreen);
         //} else {
         //  Get.rawSnackbar(message: "Please fill in all required fields correctly.");
         //}
@@ -226,28 +229,30 @@ class LoginScreen extends GetWidget<LoginController> {
   //   } catch (e) {}
   // }
 
-    Future<void> callAuthMock() async {
-    
-      final dbHelper = DatabaseHelper();
-      final user = await dbHelper.getUser(controller.emailController.text);
-      
-      if (user != null && controller.eyeController.text == user.password) {
-        _onCallAuthSuccess(user);
-      } else {
-        _onCallAuthError(user);
-      }
+  Future<void> callAuthMock() async {
+    final dbHelper = DatabaseHelper();
+    final user = await dbHelper.getUser(controller.emailController.text);
+
+    if (user != null && controller.eyeController.text == user.password) {
+      _onCallAuthSuccess(user);
+    } else {
+      _onCallAuthError(user);
+    }
   }
 
-  void _onCallAuthSuccess(user) async {
+  void _onCallAuthSuccess(User user) async {
     var box = await Hive.openBox('userBox');
-    box.put('user', user);
+    box.put('userId', user.id);
+    box.put('userHotelId', user.hotelId);
     Get.toNamed(
       AppRoutes.mapaScreen,
     );
   }
 
   void _onCallAuthError(user) {
-    user == null ? Get.rawSnackbar(message: "User not found") : Get.rawSnackbar(message: "Invalid password");
+    user == null
+        ? Get.rawSnackbar(message: "User not found")
+        : Get.rawSnackbar(message: "Invalid password");
 
     // Get.defaultDialog(
     //   onConfirm: () => Get.back(),

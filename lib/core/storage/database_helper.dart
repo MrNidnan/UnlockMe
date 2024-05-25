@@ -75,34 +75,47 @@ class DatabaseHelper {
     ''');
   }
 
-  void PopulateWithFakeData() async {
-    User user = User(
-      name: 'Angel',
-      lastname: 'Test',
-      email: 'angel@test.com',
-      password: '123',
-      hotelId: 1,
-    );
-    await this.insertUser(user);
+  void populateWithFakeData() async {
+    final users = await getUsers();
+    if (users.isEmpty) {
+      User user = User(
+        name: 'Angel',
+        lastname: 'Test',
+        email: 'angel@test.com',
+        password: '123',
+        hotelId: 1,
+      );
+      await this.insertUser(user);
+    }
 
-    // Insert a couple of bikes with coordinates from Barcelona
-    Bike bike1 = Bike(
-      latitude: 41.3851,
-      longitude: 2.1734,
-      batteryLife: 85,
-      hotelId: 1,
-      status: 'free',
-    );
-    await this.insertBike(bike1);
+    final bikes = await getBikes();
+    if (bikes.isEmpty) {
+      // Insert a couple of bikes with coordinates from Barcelona
+      Bike bike1 = Bike(
+        latitude: 41.3851,
+        longitude: 2.1734,
+        batteryLife: 85,
+        hotelId: 1,
+        status: 'available',
+      );
+      await this.insertBike(bike1);
 
-    Bike bike2 = Bike(
-      latitude: 41.3879,
-      longitude: 2.1699,
-      batteryLife: 90,
-      hotelId: 2,
-      status: 'free',
-    );
-    await this.insertBike(bike2);
+      Bike bike2 = Bike(
+        latitude: 41.3879,
+        longitude: 2.1699,
+        batteryLife: 90,
+        hotelId: 2,
+        status: 'available',
+      );
+      await this.insertBike(bike2);
+    }
+  }
+
+  Future<void> clearDatabase() async {
+    final db = await database;
+    await db.delete('users');
+    await db.delete('bikes');
+    await db.delete('reserves');
   }
 
   // CRUD operations for Users

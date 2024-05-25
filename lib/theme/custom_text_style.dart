@@ -121,6 +121,9 @@ class CustomTextStyles {
   static get titleLargeOrange800 => theme.textTheme.titleLarge!.copyWith(
         color: appTheme.orange800,
       );
+  static get titleMediuemOrange800 => theme.textTheme.titleMedium!.copyWith(
+        color: appTheme.orange800,
+      );
   static get titleLargeSemiBold => theme.textTheme.titleLarge!.copyWith(
         fontWeight: FontWeight.w600,
       );

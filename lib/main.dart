@@ -10,7 +10,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final dbHelper = DatabaseHelper();
-  dbHelper.PopulateWithFakeData();
+  dbHelper.clearDatabase();
+  dbHelper.populateWithFakeData();
   await Hive.initFlutter();
 
   // Fetch all users

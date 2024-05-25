@@ -9,88 +9,126 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
 
   @override
   Widget build(BuildContext context) {
-    final modelReserva = controller.pantallaReservaModelObj;
+    // Set the screen size using SizeUtils
+    SizeUtils.setScreenSize(
+        MediaQuery.of(context), MediaQuery.of(context).orientation);
+    final screenHeight = SizeUtils.height;
+    final screenWidth = SizeUtils.width;
+    //var modelReserva = controller.pantallaReservaModelObj.value; //observable variable
 
     return SafeArea(
       child: Scaffold(
         backgroundColor: theme.colorScheme.onSecondaryContainer,
-        body: Container(
-          width: double.maxFinite,
-          padding: EdgeInsets.symmetric(
-            horizontal: 19.h,
-            vertical: 36.v,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomImageView(
-                imagePath: ImageConstant.imgCheckmark,
-                height: 24.adaptSize,
-                width: 24.adaptSize,
-                alignment: Alignment.centerRight,
-              ),
-              SizedBox(height: 15.v),
-              Padding(
-                padding: EdgeInsets.only(left: 74.h),
-                child: Text(
-                  "Bike ID: ${modelReserva.bike.id}",
-                  style: theme.textTheme.titleMedium,
+        body: SingleChildScrollView(
+          child: Container(
+            width: double.maxFinite,
+            padding: EdgeInsets.symmetric(
+              horizontal: screenWidth * 0.05,
+              vertical: screenHeight * 0.05,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomImageView(
+                  imagePath: ImageConstant.imgChevronLeft,
+                  height: screenHeight * 0.05,
+                  width: screenWidth * 0.15,
+                  alignment: Alignment.centerLeft,
+                  margin: EdgeInsets.only(left: screenWidth * 0.01),
+                  onTap: () {
+                    onTapImgArrowleftone();
+                  },
                 ),
-              ),
-              SizedBox(height: 8.v),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "Location: (${modelReserva.bike.latitude}, ${modelReserva.bike.longitude})",
-                  style: theme.textTheme.titleMedium,
+
+                SizedBox(height: screenHeight * 0.02), // Responsive spacing
+                Padding(
+                  padding: EdgeInsets.only(left: screenWidth * 0.2),
+                  child: Obx(() {
+                    final modelReserva =
+                        controller.pantallaReservaModelObj.value;
+                    return Text(
+                      "Bike ID: ${modelReserva.bike.id}",
+                      style: theme.textTheme.titleMedium,
+                    );
+                  }),
                 ),
-              ),
-              SizedBox(height: 21.v),
-              Padding(
-                padding: EdgeInsets.only(left: 74.h),
-                child: Text(
-                  "Battery Life: ${modelReserva.bike.batteryLife}%",
-                  style: CustomTextStyles.bodySmallBluegray100,
+                SizedBox(height: screenHeight * 0.01),
+                Padding(
+                  padding: EdgeInsets.only(left: screenWidth * 0.2),
+                  child: Obx(() {
+                    final modelReserva =
+                        controller.pantallaReservaModelObj.value;
+
+                    return Text(
+                      "Location: (${modelReserva.bike.latitude}, ${modelReserva.bike.longitude})",
+                      style: theme.textTheme.titleMedium,
+                    );
+                  }),
                 ),
-              ),
-              SizedBox(height: 55.v),
-              Obx(() {
-                if (modelReserva.isReserved) {
-                  return Column(
-                    children: [
-                      Text(
-                        "Remaining Time: ${controller.remainingTime.value} seconds",
-                        style: theme.textTheme.headlineSmall,
-                      ),
-                      SizedBox(height: 20.v),
-                      CustomElevatedButton(
-                        width: 150.h,
-                        text: "Cancel Reservation".tr,
+                SizedBox(height: screenHeight * 0.03),
+                Padding(
+                  padding: EdgeInsets.only(left: screenWidth * 0.2),
+                  child: Obx(() {
+                    final modelReserva =
+                        controller.pantallaReservaModelObj.value;
+
+                    return Text(
+                      "Battery Life: ${modelReserva.bike.batteryLife}%",
+                      style: CustomTextStyles.titleMediuemOrange800,
+                    );
+                  }),
+                ),
+                SizedBox(height: screenHeight * 0.07),
+                Obx(() {
+                  final modelReserva = controller.pantallaReservaModelObj.value;
+
+                  if (modelReserva.isReserved) {
+                    return Column(
+                      children: [
+                        Obx(() {
+                          return Text(
+                            "Remaining Time: ${controller.remainingTime.value} seconds",
+                            style: theme.textTheme.headlineSmall,
+                          );
+                        }),
+                        SizedBox(height: screenHeight * 0.03),
+                        CustomElevatedButton(
+                          width: screenWidth * 0.4,
+                          text: "Cancel Reservation".tr,
+                          onPressed: () {
+                            controller.cancelReservation();
+                          },
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Padding(
+                      padding: EdgeInsets.only(left: screenWidth * 0.2),
+                      child: CustomElevatedButton(
+                        width: screenWidth * 0.4,
+                        text: "Reserve".tr,
                         onPressed: () {
-                          controller.cancelReservation();
+                          onTapReserve();
+                          //controller.createReservation();
                         },
                       ),
-                    ],
-                  );
-                } else {
-                  return CustomElevatedButton(
-                    width: 150.h,
-                    text: "Reserve".tr,
-                    onPressed: () {
-                      controller.createReservation();
-                    },
-                  );
-                }
-              }),
-              SizedBox(height: 10.v),
-            ],
+                    );
+                  }
+                }),
+                SizedBox(height: screenHeight * 0.02),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  onTapImgArrowleftone() {
+  void onTapImgArrowleftone() {
     Get.back();
+  }
+
+  void onTapReserve() {
+    Get.toNamed(AppRoutes.contadorreservaScreen);
   }
 }

@@ -52,7 +52,7 @@ class MapaController extends GetxController {
             Icons.pedal_bike,
             color: bike.status == BikeStatus.available.toString()
                 ? Colors.blue
-                : Colors.red,
+                : Color.fromARGB(255, 233, 128, 9),
             size: 40.0,
           ),
         ),

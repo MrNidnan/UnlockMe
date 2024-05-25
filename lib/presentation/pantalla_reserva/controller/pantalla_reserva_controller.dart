@@ -12,7 +12,8 @@ import 'dart:async';
 /// This class manages the state of the PantallaReservaScreen, including the
 /// current pantallaReservaModelObj
 class PantallaReservaController extends GetxController {
-  late PantallaReservaModel pantallaReservaModelObj;
+  //late defines a variable that is not initialized when it is declared
+  late Rx<PantallaReservaModel> pantallaReservaModelObj;
   Timer? _timer;
   var remainingTime = 0.obs;
 
@@ -22,27 +23,33 @@ class PantallaReservaController extends GetxController {
     final args = Get.arguments;
     pantallaReservaModelObj = PantallaReservaModel(
       bike: args['bike'] as Bike,
-    );
+    ).obs;
   }
 
   Future<void> createReservation() async {
     // Read user ID from Hive
     var userBox = await Hive.openBox('userBox');
-    int userId = userBox.get('user').userId;
+    final int userId = userBox.get('userId');
+    final int userHotelId = userBox.get('userHotelId');
+    print('User=$userId:$userHotelId');
     var reserveBox = await Hive.openBox('reserveBox');
 
     // Save reservation to SQLite
     final dbHelper = DatabaseHelper();
     final reserveId = await dbHelper.insertReserve(Reserve(
         userId: userId,
-        bikeId: pantallaReservaModelObj.bike.id!,
+        bikeId: pantallaReservaModelObj.value.bike.id!,
         createdAt: DateTime.now().toIso8601String(),
-        endsAt: DateTime.now().add(Duration(minutes: 15)).toIso8601String(),
+        endsAt: DateTime.now().add(Duration(seconds: 30)).toIso8601String(),
         status: ReserveStatus.active.toString()));
 
     reserveBox.put('reserveId', reserveId);
-    pantallaReservaModelObj.isReserved = true;
-    pantallaReservaModelObj.endsAt = DateTime.now().add(Duration(minutes: 15));
+
+    pantallaReservaModelObj.update((model) {
+      model?.isReserved = true;
+      model?.endsAt = DateTime.now().add(Duration(seconds: 30));
+    });
+
     startTimer();
 
     // Provide feedback to the user
@@ -50,8 +57,8 @@ class PantallaReservaController extends GetxController {
   }
 
   void startTimer() {
-    if (pantallaReservaModelObj.endsAt == null) return;
-    final endTime = pantallaReservaModelObj.endsAt!;
+    if (pantallaReservaModelObj.value.endsAt == null) return;
+    final endTime = pantallaReservaModelObj.value.endsAt!;
     remainingTime.value = endTime.difference(DateTime.now()).inSeconds;
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       final now = DateTime.now();
@@ -76,8 +83,10 @@ class PantallaReservaController extends GetxController {
     });
 
     reserveBox.delete('reserveId');
-    pantallaReservaModelObj.isReserved = false;
-    pantallaReservaModelObj.endsAt = null;
+    pantallaReservaModelObj.update((model) {
+      model?.isReserved = false;
+      model?.endsAt = null;
+    });
     remainingTime.value = 0;
 
     // Provide feedback to the user
