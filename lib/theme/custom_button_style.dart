@@ -25,6 +25,14 @@ class CustomButtonStyles {
         shadowColor: theme.colorScheme.primary,
         elevation: 2,
       );
+  static ButtonStyle get outlineDark => ElevatedButton.styleFrom(
+        backgroundColor: theme.colorScheme.onSecondaryContainer,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.h),
+        ),
+        shadowColor: theme.colorScheme.tertiary,
+        elevation: 2,
+      );
   static ButtonStyle get outlinePrimaryTL20 => ElevatedButton.styleFrom(
         backgroundColor: appTheme.yellow300,
         shape: RoundedRectangleBorder(

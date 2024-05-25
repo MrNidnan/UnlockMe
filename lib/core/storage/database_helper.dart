@@ -246,7 +246,7 @@ class DatabaseHelper {
   Future<int> updateReserve(int id, Map<String, dynamic> reserve) async {
     final db = await database;
     return await db
-        .update('reserves', reserve, where: 'id = ?', whereArgs: [id]);
+        .update('reserves', reserve, where: 'reserveId = ?', whereArgs: [id]);
   }
 
   Future<int> deleteReserve(int reserveId) async {

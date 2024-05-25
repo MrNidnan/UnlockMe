@@ -1,3 +1,4 @@
+import 'package:UnlockMe/theme/custom_button_style.dart';
 import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
@@ -29,6 +30,7 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: screenHeight * 0.05),
                 CustomImageView(
                   imagePath: ImageConstant.imgChevronLeft,
                   height: screenHeight * 0.05,
@@ -93,23 +95,29 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                         }),
                         SizedBox(height: screenHeight * 0.03),
                         CustomElevatedButton(
+                          text: "lbl_cancelar".tr,
                           width: screenWidth * 0.4,
-                          text: "Cancel Reservation".tr,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.3),
+                          buttonStyle: CustomButtonStyles.outlineDark,
+                          buttonTextStyle:
+                              CustomTextStyles.titleMediumPrimaryBold,
                           onPressed: () {
-                            controller.cancelReservation();
+                            controller.onTapCancelReservation();
                           },
                         ),
                       ],
                     );
                   } else {
                     return Padding(
-                      padding: EdgeInsets.only(left: screenWidth * 0.2),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: screenWidth * 0.3),
                       child: CustomElevatedButton(
                         width: screenWidth * 0.4,
                         text: "Reserve".tr,
                         onPressed: () {
-                          onTapReserve();
-                          //controller.createReservation();
+                          //onTapReserve();
+                          controller.createReservation();
                         },
                       ),
                     );

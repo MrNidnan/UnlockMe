@@ -1,6 +1,7 @@
 import 'package:UnlockMe/core/storage/contracts/bike.dart';
 import 'package:UnlockMe/core/storage/contracts/reserve.dart';
 import 'package:UnlockMe/core/storage/database_helper.dart';
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/app_export.dart';
 import '../models/pantalla_reserva_model.dart';
@@ -29,10 +30,9 @@ class PantallaReservaController extends GetxController {
   Future<void> createReservation() async {
     // Read user ID from Hive
     var userBox = await Hive.openBox('userBox');
-    final int userId = userBox.get('userId');
-    final int userHotelId = userBox.get('userHotelId');
+    final int userId = userBox.get('userId') ?? 1;
+    final int userHotelId = userBox.get('userHotelId') ?? 0;
     print('User=$userId:$userHotelId');
-    var reserveBox = await Hive.openBox('reserveBox');
 
     // Save reservation to SQLite
     final dbHelper = DatabaseHelper();
@@ -43,6 +43,7 @@ class PantallaReservaController extends GetxController {
         endsAt: DateTime.now().add(Duration(seconds: 30)).toIso8601String(),
         status: ReserveStatus.active.toString()));
 
+    var reserveBox = await Hive.openBox('reserveBox');
     reserveBox.put('reserveId', reserveId);
 
     pantallaReservaModelObj.update((model) {
@@ -63,23 +64,38 @@ class PantallaReservaController extends GetxController {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       final now = DateTime.now();
       if (now.isAfter(endTime)) {
-        timer.cancel();
-        remainingTime.value = 0;
+        onReserveExpiration();
       } else {
         remainingTime.value = endTime.difference(now).inSeconds;
       }
     });
   }
 
+  void onReserveExpiration() {
+    cancelReservation();
+    Get.snackbar('Reservation', 'Reservation expired!');
+  }
+
+  void onTapCancelReservation() async {
+    final isConfirmed = await _showConfirmationDialog();
+    if (isConfirmed) {
+      cancelReservation();
+      // Provide feedback to the user
+      Get.snackbar('Reservation', 'Reservation cancelled successfully!');
+    }
+  }
+
   void cancelReservation() async {
     _timer?.cancel();
+    remainingTime.value = 0;
+
     var reserveBox = await Hive.openBox('reserveBox');
     final reserveId = reserveBox.get('reserveId');
 
     // Update reservation to SQLite
     final dbHelper = DatabaseHelper();
     await dbHelper.updateReserve(reserveId, {
-      'status': ReserveStatus.cancelled,
+      'status': ReserveStatus.cancelled.toString(),
     });
 
     reserveBox.delete('reserveId');
@@ -88,8 +104,33 @@ class PantallaReservaController extends GetxController {
       model?.endsAt = null;
     });
     remainingTime.value = 0;
+  }
 
-    // Provide feedback to the user
-    Get.snackbar('Reservation', 'Reservation cancelled successfully!');
+  Future<bool> _showConfirmationDialog() async {
+    return await Get.dialog(
+          AlertDialog(
+            title: Text('Cancel Reservation'),
+            content: Text('Are you sure you want to cancel the reservation?'),
+            actions: [
+              TextButton(
+                onPressed: () =>
+                    Get.back(result: false), // Close dialog and return false
+                child: Text(
+                  'No',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+              TextButton(
+                onPressed: () =>
+                    Get.back(result: true), // Close dialog and return true
+                child: Text(
+                  'Yes',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ],
+          ),
+        ) ??
+        false;
   }
 }
