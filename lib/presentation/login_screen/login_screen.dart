@@ -234,7 +234,7 @@ class LoginScreen extends GetWidget<LoginController> {
       if (user != null && controller.eyeController.text == user.password) {
         _onCallAuthSuccess(user);
       } else {
-        _onCallAuthError();
+        _onCallAuthError(user);
       }
   }
 
@@ -246,12 +246,14 @@ class LoginScreen extends GetWidget<LoginController> {
     );
   }
 
-  void _onCallAuthError() {
-    Get.defaultDialog(
-      onConfirm: () => Get.back(),
-      title: 'Authentication Error',
-      middleText: controller.postLoginDeviceAuthResp.message.toString() ?? '',
-    );
+  void _onCallAuthError(user) {
+    user == null ? Get.rawSnackbar(message: "User not found") : Get.rawSnackbar(message: "Invalid password");
+
+    // Get.defaultDialog(
+    //   onConfirm: () => Get.back(),
+    //   title: 'Authentication Error',
+    //   middleText: controller.postLoginDeviceAuthResp.message.toString() ?? '',
+    // );
   }
 
   navigateToRegister() {

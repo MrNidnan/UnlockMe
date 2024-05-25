@@ -1,4 +1,5 @@
 import 'package:UnlockMe/core/services/location_service.dart';
+import 'package:UnlockMe/core/storage/contracts/bike.dart';
 import 'package:UnlockMe/core/storage/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -8,7 +9,6 @@ import 'package:latlong2/latlong.dart';
 import 'dart:async';
 
 class MapaController extends GetxController {
-
   //var userPhoto = Get.arguments[NavigationArgs.userPhoto];
 
   //var userMail = Get.arguments[NavigationArgs.userMail];
@@ -28,7 +28,8 @@ class MapaController extends GetxController {
   }
 
   void updateMapLocation(double? latitude, double? longitude) {
-    if ((latitude == null || longitude == null) && currentPosition.value == null) {
+    if ((latitude == null || longitude == null) &&
+        currentPosition.value == null) {
       currentPosition.value = defaultPostion;
       return;
     }
@@ -37,48 +38,42 @@ class MapaController extends GetxController {
 
   Future<void> fetchBikeCoordinates() async {
     final dbHelper = DatabaseHelper();
-    List<Map<String, dynamic>> bikes = await dbHelper.getBikes();
+    List<Bike> bikes = await dbHelper.getUserBikes();
     for (var bike in bikes) {
-      bikeMarkers.add(
-        Marker(
-          width: 80.0,
-          height: 80.0,
-          point: LatLng(bike['latitude'], bike['longitude']),
-          
-          child: 
-          GestureDetector(
-            onTap: () {
-              navigateToBikeDetails(bike);
-            },
-            child: const Icon(
+      bikeMarkers.add(Marker(
+        width: 80.0,
+        height: 80.0,
+        point: LatLng(bike.latitude, bike.longitude),
+        child: GestureDetector(
+          onTap: () {
+            navigateToBikeDetails(bike);
+          },
+          child: Icon(
             Icons.pedal_bike,
-            color: Colors.blue,
+            color: bike.status == BikeStatus.available.toString()
+                ? Colors.blue
+                : Colors.red,
             size: 40.0,
           ),
         ),
-        )
-      );
+      ));
     }
   }
 
   Future<void> _requestLocationPermission() async {
-    await locationService.requestLocationPermission((double? latitude, double? longitude) {
+    await locationService
+        .requestLocationPermission((double? latitude, double? longitude) {
       updateMapLocation(latitude, longitude);
     });
   }
 
-  void navigateToBikeDetails(Map<String, dynamic> bike) {
-  print(bike);
-  Get.toNamed(
-    AppRoutes.pantallaReserva,
-    arguments: {
-      'bikeId': bike['id'],
-      'latitude': bike['latitude'],
-      'longitude': bike['longitude'],
-      'batteryLife': bike['battery_life'],
-    },
-  );
+  void navigateToBikeDetails(Bike bike) {
+    print(bike);
+    Get.toNamed(
+      AppRoutes.pantallaReserva,
+      arguments: {
+        'bike': bike,
+      },
+    );
   }
 }
-
-

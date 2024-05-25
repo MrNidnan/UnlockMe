@@ -3,12 +3,13 @@ import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
 import 'controller/pantalla_reserva_controller.dart';
 
+// ignore_for_file: must_be_immutable
 class PantallaReserva extends GetWidget<PantallaReservaController> {
   const PantallaReserva({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final bike = controller.pantallaReservaModelObj;
+    final modelReserva = controller.pantallaReservaModelObj;
 
     return SafeArea(
       child: Scaffold(
@@ -32,7 +33,7 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
               Padding(
                 padding: EdgeInsets.only(left: 74.h),
                 child: Text(
-                  "Bike ID: ${bike.bikeId}",
+                  "Bike ID: ${modelReserva.bike.id}",
                   style: theme.textTheme.titleMedium,
                 ),
               ),
@@ -40,7 +41,7 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
               Align(
                 alignment: Alignment.center,
                 child: Text(
-                  "Location: (${bike.latitude}, ${bike.longitude})",
+                  "Location: (${modelReserva.bike.latitude}, ${modelReserva.bike.longitude})",
                   style: theme.textTheme.titleMedium,
                 ),
               ),
@@ -48,13 +49,13 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
               Padding(
                 padding: EdgeInsets.only(left: 74.h),
                 child: Text(
-                  "Battery Life: ${bike.batteryLife}%",
+                  "Battery Life: ${modelReserva.bike.batteryLife}%",
                   style: CustomTextStyles.bodySmallBluegray100,
                 ),
               ),
               SizedBox(height: 55.v),
               Obx(() {
-                if (bike.isReserved) {
+                if (modelReserva.isReserved) {
                   return Column(
                     children: [
                       Text(

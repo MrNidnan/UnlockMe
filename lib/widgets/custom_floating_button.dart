@@ -4,6 +4,7 @@ import '../core/app_export.dart';
 class CustomFloatingButton extends StatelessWidget {
   CustomFloatingButton(
       {Key? key,
+      this.heroTag,
       this.alignment,
       this.backgroundColor,
       this.onTap,
@@ -14,19 +15,13 @@ class CustomFloatingButton extends StatelessWidget {
       : super(
           key: key,
         );
-
+  final String? heroTag;
   final Alignment? alignment;
-
   final Color? backgroundColor;
-
   final VoidCallback? onTap;
-
   final double? width;
-
   final double? height;
-
   final BoxDecoration? decoration;
-
   final Widget? child;
 
   @override
@@ -37,6 +32,7 @@ class CustomFloatingButton extends StatelessWidget {
   }
 
   Widget get fabWidget => FloatingActionButton(
+        heroTag: heroTag,
         backgroundColor: backgroundColor,
         onPressed: onTap,
         child: Container(

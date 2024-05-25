@@ -100,6 +100,7 @@ class EditarPerfilOneScreen extends GetWidget<EditarPerfilOneController> {
         ),
         bottomNavigationBar: _buildBottomAppBar(),
         floatingActionButton: CustomFloatingButton(
+          heroTag: 'search-1',
           height: 35,
           width: 35,
           child: CustomImageView(
@@ -302,6 +303,7 @@ class EditarPerfilOneScreen extends GetWidget<EditarPerfilOneController> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           CustomFloatingButton(
+                            heroTag: 'config-1',
                             height: 35,
                             width: 35,
                             child: CustomImageView(
@@ -323,6 +325,7 @@ class EditarPerfilOneScreen extends GetWidget<EditarPerfilOneController> {
               ),
             ),
             CustomFloatingButton(
+              heroTag: 'profile-1',
               height: 58,
               width: 58,
               backgroundColor: appTheme.blueGray100,

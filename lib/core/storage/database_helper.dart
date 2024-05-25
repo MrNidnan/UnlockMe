@@ -2,6 +2,9 @@ import 'package:UnlockMe/core/storage/contracts/user.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
+import 'contracts/bike.dart';
+import 'contracts/reserve.dart';
+
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
   factory DatabaseHelper() => _instance;
@@ -72,25 +75,45 @@ class DatabaseHelper {
     ''');
   }
 
-  // CRUD operations for Users
-  Future<int> insertUser(Map<String, dynamic> user) async {
-    final db = await database;
-    return await db.insert('users', user);
+  void PopulateWithFakeData() async {
+    User user = User(
+      name: 'Angel',
+      lastname: 'Test',
+      email: 'angel@test.com',
+      password: '123',
+      hotelId: 1,
+    );
+    await this.insertUser(user);
+
+    // Insert a couple of bikes with coordinates from Barcelona
+    Bike bike1 = Bike(
+      latitude: 41.3851,
+      longitude: 2.1734,
+      batteryLife: 85,
+      hotelId: 1,
+      status: 'free',
+    );
+    await this.insertBike(bike1);
+
+    Bike bike2 = Bike(
+      latitude: 41.3879,
+      longitude: 2.1699,
+      batteryLife: 90,
+      hotelId: 2,
+      status: 'free',
+    );
+    await this.insertBike(bike2);
   }
+
+  // CRUD operations for Users
+  // Future<int> insertUser(Map<String, dynamic> user) async {
+  //   final db = await database;
+  //   return await db.insert('users', user);
+  // }
 
   Future<List<Map<String, dynamic>>> getUsers() async {
     final db = await database;
     return await db.query('users');
-  }
-
-   Future<User?> getUser(String email) async {
-    final db = await database;
-    final user = await db.query('users', where: 'email = ?', whereArgs: [email]);
-    
-    if (user.isEmpty){
-       return null;
-    }
-    return User.fromMap(user.first);
   }
 
   Future<int> updateUser(int id, Map<String, dynamic> user) async {
@@ -98,21 +121,76 @@ class DatabaseHelper {
     return await db.update('users', user, where: 'id = ?', whereArgs: [id]);
   }
 
+  Future<int> insertUser(User user) async {
+    final db = await database;
+    return await db.insert(
+      'users',
+      user.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.fail,
+    );
+  }
+
+  Future<User?> getUser(String email) async {
+    final db = await database;
+    final user =
+        await db.query('users', where: 'email = ?', whereArgs: [email]);
+
+    if (user.isEmpty) {
+      return null;
+    }
+    return User.fromMap(user.first);
+  }
+
+  // Future<int> updateUser(User user) async {
+  //   final db = await database;
+  //   return await db.update(
+  //     'users',
+  //     user.toMap(),
+  //     where: 'id = ?',
+  //     whereArgs: [user.id],
+  //   );
+  // }
+
   Future<int> deleteUser(int id) async {
     final db = await database;
     return await db.delete('users', where: 'id = ?', whereArgs: [id]);
   }
 
   // CRUD operations for Bikes
-  Future<int> insertBike(Map<String, dynamic> bike) async {
+  Future<int> insertBike(Bike bike) async {
     final db = await database;
-    return await db.insert('bikes', bike);
+    return await db.insert(
+      'bikes',
+      bike.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.fail,
+    );
   }
 
-  Future<List<Map<String, dynamic>>> getBikes() async {
+  Future<List<Bike>> getUserBikes() async {
     final db = await database;
-    return await db.query('bikes');
+    final List<Map<String, dynamic>> maps = await db.query('bikes');
+    return List.generate(maps.length, (i) {
+      return Bike.fromMap(maps[i]);
+    });
   }
+
+  Future<List<Bike>> getBikes() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('bikes');
+    return List.generate(maps.length, (i) {
+      return Bike.fromMap(maps[i]);
+    });
+  }
+
+  // Future<int> updateBike(Bike bike) async {
+  //   final db = await database;
+  //   return await db.update(
+  //     'bikes',
+  //     bike.toMap(),
+  //     where: 'id = ?',
+  //     whereArgs: [bike.id],
+  //   );
+  // }
 
   Future<int> updateBike(int id, Map<String, dynamic> bike) async {
     final db = await database;
@@ -125,18 +203,45 @@ class DatabaseHelper {
   }
 
   // CRUD operations for Reservations
-  Future<int> insertReserve(Map<String, dynamic> reservation) async {
+  Future<int> insertReserve(Reserve reserve) async {
     final db = await database;
-    return await db.insert('reserves', reservation);
+    return await db.insert(
+      'reserves',
+      reserve.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.fail,
+    );
   }
 
-  Future<List<Map<String, dynamic>>> getReserve(int reserveId) async {
+  Future<List<Reserve>> getReserves() async {
     final db = await database;
-    return await db.query('reserves', where: 'reserveId = ?', whereArgs: [reserveId]);
+    final List<Map<String, dynamic>> maps = await db.query('reserves');
+    return List.generate(maps.length, (i) {
+      return Reserve.fromMap(maps[i]);
+    });
   }
 
-  Future<int> updateReserve(int reserveId, Map<String, dynamic> reservation) async {
+  // Future<int> updateReserve(Reserve reserve) async {
+  //   final db = await database;
+  //   return await db.update(
+  //     'reserves',
+  //     reserve.toMap(),
+  //     where: 'reserveId = ?',
+  //     whereArgs: [reserve.reserveId],
+  //   );
+  // }
+
+  Future<int> updateReserve(int id, Map<String, dynamic> reserve) async {
     final db = await database;
-    return await db.update('reserves', reservation, where: 'reserveId = ?', whereArgs: [reserveId]);
+    return await db
+        .update('reserves', reserve, where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<int> deleteReserve(int reserveId) async {
+    final db = await database;
+    return await db.delete(
+      'reserves',
+      where: 'reserveId = ?',
+      whereArgs: [reserveId],
+    );
   }
 }

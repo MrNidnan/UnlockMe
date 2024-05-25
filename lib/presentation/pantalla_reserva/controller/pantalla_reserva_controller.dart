@@ -1,9 +1,12 @@
+import 'package:UnlockMe/core/storage/contracts/bike.dart';
+import 'package:UnlockMe/core/storage/contracts/reserve.dart';
 import 'package:UnlockMe/core/storage/database_helper.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/app_export.dart';
 import '../models/pantalla_reserva_model.dart';
 import 'package:hive/hive.dart';
 import 'dart:async';
+
 /// A controller class for the PantallaReservaScreen.
 ///
 /// This class manages the state of the PantallaReservaScreen, including the
@@ -18,10 +21,7 @@ class PantallaReservaController extends GetxController {
     super.onInit();
     final args = Get.arguments;
     pantallaReservaModelObj = PantallaReservaModel(
-      bikeId: args['bikeId'],
-      latitude: args['latitude'],
-      longitude: args['longitude'],
-      batteryLife: args['batteryLife'],
+      bike: args['bike'] as Bike,
     );
   }
 
@@ -33,13 +33,12 @@ class PantallaReservaController extends GetxController {
 
     // Save reservation to SQLite
     final dbHelper = DatabaseHelper();
-    final reserveId = await dbHelper.insertReserve({
-      'userId': userId,
-      'bikeId': pantallaReservaModelObj.bikeId,
-      'createdAt': DateTime.now().millisecondsSinceEpoch,
-      'endsAt': DateTime.now().add(Duration(minutes: 15)).millisecondsSinceEpoch,
-      'status' : BikeStatus.reserved.toString(),
-    });
+    final reserveId = await dbHelper.insertReserve(Reserve(
+        userId: userId,
+        bikeId: pantallaReservaModelObj.bike.id!,
+        createdAt: DateTime.now().toIso8601String(),
+        endsAt: DateTime.now().add(Duration(minutes: 15)).toIso8601String(),
+        status: ReserveStatus.active.toString()));
 
     reserveBox.put('reserveId', reserveId);
     pantallaReservaModelObj.isReserved = true;

@@ -1,5 +1,5 @@
 class User {
-  int id;
+  int? id;
   String name;
   String lastname;
   String email;
@@ -7,7 +7,7 @@ class User {
   int? hotelId;
 
   User({
-    required this.id,
+    this.id,
     required this.name,
     required this.lastname,
     required this.email,
@@ -35,6 +35,5 @@ class User {
       password: map['password'],
       hotelId: map['hotelId'],
     );
-  }  
-
+  }
 }
