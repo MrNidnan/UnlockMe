@@ -5,7 +5,6 @@ import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
 import 'controller/pantalla_reserva_controller.dart';
 
-// ignore_for_file: must_be_immutable
 class PantallaReserva extends GetWidget<PantallaReservaController> {
   const PantallaReserva({Key? key}) : super(key: key);
 
@@ -44,28 +43,32 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                 ),
 
                 SizedBox(height: screenHeight * 0.02), // Responsive spacing
-                Padding(
-                  padding: EdgeInsets.only(left: screenWidth * 0.2),
+                Align(
+                  alignment: Alignment.center,
                   child: Obx(() {
                     final modelReserva =
                         controller.pantallaReservaModelObj.value;
                     return Text(
-                      "Bike ID: ${modelReserva.bike.id}",
+                      "Bike # ${modelReserva.bike.id}",
                       style: theme.textTheme.titleMedium,
                     );
                   }),
                 ),
                 SizedBox(height: screenHeight * 0.01),
                 Padding(
-                  padding: EdgeInsets.only(left: screenWidth * 0.2),
-                  child: Text(
-                    "Address: ${controller.address}",
-                    style: theme.textTheme.titleMedium,
-                  ),
+                  padding: EdgeInsets.only(left: screenWidth * 0.15),
+                  child: Obx(() {
+                    final address = controller.address.value;
+                    //final testVar = controller.testVar.value;
+                    return Text(
+                      "\n${address} ",
+                      style: theme.textTheme.titleMedium,
+                    );
+                  }),
                 ),
                 SizedBox(height: screenHeight * 0.01),
                 Padding(
-                  padding: EdgeInsets.only(left: screenWidth * 0.2),
+                  padding: EdgeInsets.only(left: screenWidth * 0.15),
                   child: Obx(() {
                     final modelReserva =
                         controller.pantallaReservaModelObj.value;
@@ -78,7 +81,7 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                 ),
                 SizedBox(height: screenHeight * 0.03),
                 Padding(
-                  padding: EdgeInsets.only(left: screenWidth * 0.2),
+                  padding: EdgeInsets.only(left: screenWidth * 0.15),
                   child: Obx(() {
                     final modelReserva =
                         controller.pantallaReservaModelObj.value;
@@ -91,7 +94,7 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                 ),
                 SizedBox(height: screenHeight * 0.03),
                 Padding(
-                  padding: EdgeInsets.only(left: screenWidth * 0.2),
+                  padding: EdgeInsets.only(left: screenWidth * 0.15),
                   child: Obx(() {
                     final modelReserva =
                         controller.pantallaReservaModelObj.value;
@@ -116,24 +119,24 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                           );
                         }),
                         SizedBox(height: screenHeight * 0.03),
-                        CustomElevatedButton(
-                          text: "lbl_cancelar".tr,
-                          width: screenWidth * 0.4,
-                          margin: EdgeInsets.symmetric(
-                              horizontal: screenWidth * 0.3),
-                          buttonStyle: CustomButtonStyles.outlineDark,
-                          buttonTextStyle:
-                              CustomTextStyles.titleMediumPrimaryBold,
-                          onPressed: () {
-                            controller.onTapCancelReservation();
-                          },
+                        Align(
+                          alignment: Alignment.center,
+                          child: CustomElevatedButton(
+                            text: "lbl_cancelar".tr,
+                            width: screenWidth * 0.4,
+                            buttonStyle: CustomButtonStyles.outlineDark,
+                            buttonTextStyle:
+                                CustomTextStyles.titleMediumPrimaryBold,
+                            onPressed: () {
+                              controller.onTapCancelReservation();
+                            },
+                          ),
                         ),
                       ],
                     );
                   } else {
-                    return Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: screenWidth * 0.3),
+                    return Align(
+                      alignment: Alignment.center,
                       child: CustomElevatedButton(
                         width: screenWidth * 0.4,
                         text: "Reserve".tr,
@@ -158,6 +161,7 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
     Get.back();
   }
 
+  //debug
   void onTapReserve() {
     Get.toNamed(AppRoutes.contadorreservaScreen);
   }

@@ -129,8 +129,7 @@ class MapaScreen extends GetWidget<MapaController> {
             ),
           ),
           Spacer(),
-          CustomFloatingButton(
-            heroTag: 'settings-a1',
+          CustomIconButton(
             height: 35,
             width: 35,
             onTap: () {

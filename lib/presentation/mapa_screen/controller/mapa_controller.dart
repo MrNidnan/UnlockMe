@@ -17,6 +17,7 @@ class MapaController extends GetxController {
   var bikeMarkers = <Marker>[].obs;
   final defaultPostion = LatLng(41.3851, 2.1734);
   final LocationService locationService;
+  final dbHelper = DatabaseHelper();
 
   MapaController() : locationService = LocationService();
 
@@ -37,9 +38,9 @@ class MapaController extends GetxController {
   }
 
   Future<void> fetchBikeCoordinates() async {
-    final dbHelper = DatabaseHelper();
     List<Bike> bikes = await dbHelper.getUserBikes();
     for (var bike in bikes) {
+      print('BikeStatus:${bike.status}');
       bikeMarkers.add(Marker(
         width: 80.0,
         height: 80.0,

@@ -17,20 +17,48 @@ class PantallaReservaController extends GetxController {
   //late defines a variable that is not initialized when it is declared
   late Rx<PantallaReservaModel> pantallaReservaModelObj;
   Timer? _timer;
-  String? address;
+  Rx<String> address = 'Address Unknown'.obs;
+  RxInt testVar = 0.obs;
   var remainingTime = 0.obs;
+  final dbHelper = DatabaseHelper();
 
   @override
   void onInit() async {
     super.onInit();
     final args = Get.arguments;
+    Bike bike = args['bike'] as Bike;
+
+    // Initialize the model with the bike's status
     pantallaReservaModelObj = PantallaReservaModel(
-      bike: args['bike'] as Bike,
+      bike: bike,
+      isReserved: bike.status == BikeStatus.reserved.toString(),
     ).obs;
+
+    var reserveBox = await Hive.openBox('reserveBox');
+    final reserveId = reserveBox.get('reserveId');
+    final reserveEndsAt = reserveBox.get('reserveEndsAt');
+    print(reserveEndsAt);
+    print(reserveId);
+    print('IsReserved:${pantallaReservaModelObj.value.isReserved}');
+    if (pantallaReservaModelObj.value.isReserved) {
+      // Load the reservation details and set the timer
+
+      if (reserveId != null) {
+        //final reserve = await dbHelper.getReserve(reserveId);
+        pantallaReservaModelObj.update((model) {
+          model?.endsAt = DateTime.parse(reserveEndsAt);
+        });
+        startTimer();
+      }
+    }
+
     try {
-      address = await getAddressFromCoordinates(
-          pantallaReservaModelObj.value.bike.latitude,
-          pantallaReservaModelObj.value.bike.longitude);
+      var retrievedAddress =
+          await getAddressFromCoordinates(bike.latitude, bike.longitude);
+      //address = retrievedAddress?.obs ?? 'Unknown'.obs;
+      address.value = retrievedAddress ?? ' Address Unknown';
+
+      //testVar.value = 23;
       print('Address: $address');
     } catch (e) {
       Logger.log('Error: $e');
@@ -46,15 +74,25 @@ class PantallaReservaController extends GetxController {
 
     // Save reservation to SQLite
     final dbHelper = DatabaseHelper();
+    final reserveAt = DateTime.now();
     final reserveId = await dbHelper.insertReserve(Reserve(
         userId: userId,
         bikeId: pantallaReservaModelObj.value.bike.id!,
-        createdAt: DateTime.now().toIso8601String(),
-        endsAt: DateTime.now().add(Duration(seconds: 30)).toIso8601String(),
+        createdAt: reserveAt.toIso8601String(),
+        endsAt: reserveAt.add(Duration(seconds: 30)).toIso8601String(),
         status: ReserveStatus.active.toString()));
 
     var reserveBox = await Hive.openBox('reserveBox');
     reserveBox.put('reserveId', reserveId);
+    reserveBox.put('reserveEndsAt',
+        reserveAt.add(Duration(seconds: 30)).toIso8601String());
+
+    //debug purpose
+    // final rId = reserveBox.get('reserveId');
+    // final reserveEndsAt = reserveBox.get('reserveEndsAt');
+    // print(reserveEndsAt);
+    // print(rId);
+    //debug
 
     pantallaReservaModelObj.update((model) {
       model?.isReserved = true;
@@ -62,7 +100,7 @@ class PantallaReservaController extends GetxController {
     });
 
     startTimer();
-
+    await updateBikeStatus();
     // Provide feedback to the user
     Get.snackbar('Reservation', 'Bike reserved successfully!');
   }
@@ -103,17 +141,31 @@ class PantallaReservaController extends GetxController {
     final reserveId = reserveBox.get('reserveId');
 
     // Update reservation to SQLite
-    final dbHelper = DatabaseHelper();
+
     await dbHelper.updateReserve(reserveId, {
       'status': ReserveStatus.cancelled.toString(),
     });
 
     reserveBox.delete('reserveId');
+    reserveBox.delete('reserveEndsAt');
     pantallaReservaModelObj.update((model) {
       model?.isReserved = false;
       model?.endsAt = null;
     });
     remainingTime.value = 0;
+
+    await updateBikeStatus();
+
+    // Update the shared state to notify other screens
+    //Get.find<MapaController>().updateBikeStatus(pantallaReservaModelObj.value.bike.id!, ReserveStatus.cancelled);
+  }
+
+  Future<void> updateBikeStatus() async {
+    await dbHelper.updateBikeStatus(
+        pantallaReservaModelObj.value.bike.id!,
+        pantallaReservaModelObj.value.isReserved
+            ? BikeStatus.reserved.toString()
+            : BikeStatus.available.toString());
   }
 
   Future<bool> _showConfirmationDialog() async {

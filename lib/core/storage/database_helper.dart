@@ -195,6 +195,18 @@ class DatabaseHelper {
     });
   }
 
+  Future<void> updateBikeStatus(int bikeId, String status) async {
+    print('Updating bike status');
+
+    final db = await database;
+    await db.update(
+      'bikes',
+      {'status': status},
+      where: 'id = ?',
+      whereArgs: [bikeId],
+    );
+  }
+
   // Future<int> updateBike(Bike bike) async {
   //   final db = await database;
   //   return await db.update(

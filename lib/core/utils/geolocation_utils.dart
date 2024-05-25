@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 Future<String?> getAddressFromCoordinates(
     double latitude, double longitude) async {
   final url = Uri.parse(
-      'https://nominatim.openstreetmap.org/reverse?format=json&lat=$latitude&lon=$longitude&zoom=18&addressdetails=1');
+      'https://nominatim.openstreetmap.org/reverse?format=json&lat=$latitude&lon=$longitude&zoom=18&addressdetails=0');
 
   final response = await http.get(url);
 
