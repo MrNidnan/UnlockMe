@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'controller/mapa_controller.dart';
 import '../../core/app_export.dart';
@@ -35,9 +34,9 @@ class MapaScreen extends GetWidget<MapaController> {
                   heroTag: 'qr-scan-1',
                   height: 58,
                   width: 58,
-                  backgroundColor: appTheme.blueGray100,
+                  backgroundColor: Colors.white,
                   onTap: () {
-                    requestCameraGalleryPermission();
+                    navigateToQrScan();
                   },
                   child: CustomImageView(
                     imagePath: ImageConstant.imgQrIcon,
@@ -118,11 +117,7 @@ class MapaScreen extends GetWidget<MapaController> {
             padding: EdgeInsets.all(SizeUtils.width * 0.02),
             decoration: IconButtonStyleHelper.fillGray,
             onTap: () {
-              if (controller.currentPosition.value != null) {
-                Get.toNamed(AppRoutes.mapaScreen);
-              } else {
-                Get.snackbar('Error', 'Map is not enabled.');
-              }
+              updateMap();
             },
             child: CustomImageView(
               imagePath: ImageConstant.imgLinkedin,
@@ -146,9 +141,15 @@ class MapaScreen extends GetWidget<MapaController> {
     );
   }
 
+  void updateMap() {
+    controller.updateMap();
+  }
+
   void navigateToSettings() {
     Get.toNamed(AppRoutes.perfilUsuarioScreen);
   }
 
-  void requestCameraGalleryPermission() async {}
+  void navigateToQrScan() {
+    Get.toNamed(AppRoutes.escanearQrScreen);
+  }
 }

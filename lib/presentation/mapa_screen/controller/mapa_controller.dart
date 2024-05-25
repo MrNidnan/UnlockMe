@@ -28,6 +28,11 @@ class MapaController extends GetxController {
     fetchBikeCoordinates();
   }
 
+  void updateMap() async {
+    await _requestLocationPermission();
+    update(); //refresh the UI
+  }
+
   void updateMapLocation(double? latitude, double? longitude) {
     if ((latitude == null || longitude == null) &&
         currentPosition.value == null) {
