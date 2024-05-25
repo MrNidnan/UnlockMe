@@ -34,7 +34,6 @@ class MapaScreen extends GetWidget<MapaController> {
                   heroTag: 'qr-scan-1',
                   height: 58,
                   width: 58,
-                  backgroundColor: Colors.white,
                   onTap: () {
                     navigateToQrScan();
                   },
@@ -132,8 +131,6 @@ class MapaScreen extends GetWidget<MapaController> {
             },
             child: CustomImageView(
               imagePath: ImageConstant.imgSettings,
-              height: SizeUtils.height * 0.02,
-              width: SizeUtils.width * 0.05,
             ),
           ),
         ],

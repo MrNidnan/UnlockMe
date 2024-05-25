@@ -37,7 +37,7 @@ final Map<String, String> enUs = {
 
   // escanear QR Screen
   "lbl2": "ó\n\n\n\n",
-  "lbl3": "ó\n",
+  "lbl3": "ó",
   "msg_escanea_c_digo_qr": "Escanea código QR",
   "msg_introduce_el_n_mero": "Introduce el número",
 

@@ -328,7 +328,7 @@ class EditarPerfilOneScreen extends GetWidget<EditarPerfilOneController> {
               heroTag: 'profile-1',
               height: 58,
               width: 58,
-              backgroundColor: appTheme.blueGray100,
+              backgroundColor: appTheme.gray100,
               alignment: Alignment.topCenter,
               child: CustomImageView(
                 imagePath: ImageConstant.imgProfile,

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../../../core/app_export.dart';
 import '../models/pop_up_insert_qr_code_model.dart';
 
@@ -8,4 +10,5 @@ import '../models/pop_up_insert_qr_code_model.dart';
 class PopUpInsertQrCodeController extends GetxController {
   Rx<PopUpInsertQrCodeModel> popUpInsertQrCodeModelObj =
       PopUpInsertQrCodeModel().obs;
+  TextEditingController inputTextController = TextEditingController();
 }

@@ -1,3 +1,4 @@
+import 'package:UnlockMe/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 import '../../theme/custom_button_style.dart';
@@ -16,14 +17,26 @@ class PopUpInsertQrCodeScreen extends GetWidget<PopUpInsertQrCodeController> {
       child: Scaffold(
         backgroundColor: appTheme.gray100,
         body: Container(
-          width: 429.h,
-          padding: EdgeInsets.symmetric(
-            horizontal: 65.h,
-            vertical: 46.v,
-          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: SizeUtils.width * 0.035,
+                    vertical: SizeUtils.height * 0.02,
+                  ),
+                  child: CustomImageView(
+                    imagePath: ImageConstant.imgChevronLeft,
+                    height: SizeUtils.height * 0.05,
+                    width: SizeUtils.width * 0.15,
+                    onTap: () {
+                      onTapImgArrowleftone();
+                    },
+                  ),
+                ),
+              ),
               Align(
                 alignment: Alignment.center,
                 child: Text(
@@ -32,23 +45,22 @@ class PopUpInsertQrCodeScreen extends GetWidget<PopUpInsertQrCodeController> {
                 ),
               ),
               SizedBox(height: 41.v),
-              Divider(
-                color: appTheme.blueGray100,
-                endIndent: 54.h,
+              Align(
+                alignment: Alignment.center,
+                child: CustomTextFormField(
+                  controller: controller.inputTextController,
+                  textInputType: TextInputType.text,
+                  borderDecoration: TextFormFieldStyleHelper.outlineBlueGray,
+                  width: SizeUtils.width * 0.75,
+                ),
               ),
-              SizedBox(height: 42.v),
-              Padding(
-                padding: EdgeInsets.only(right: 24.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    CustomElevatedButton(
-                      height: 43.v,
-                      text: "lbl_ok".tr,
-                      margin: EdgeInsets.only(left: 27.h),
-                      buttonStyle: CustomButtonStyles.outlinePrimaryTL20,
-                    )
-                  ],
+              Align(
+                alignment: Alignment.center,
+                child: CustomElevatedButton(
+                  height: 43.v,
+                  text: "lbl_ok".tr,
+                  margin: EdgeInsets.all(40.h),
+                  buttonStyle: CustomButtonStyles.outlinePrimaryTL20,
                 ),
               ),
               SizedBox(height: 5.v)
@@ -57,5 +69,9 @@ class PopUpInsertQrCodeScreen extends GetWidget<PopUpInsertQrCodeController> {
         ),
       ),
     );
+  }
+
+  void onTapImgArrowleftone() {
+    Get.back();
   }
 }

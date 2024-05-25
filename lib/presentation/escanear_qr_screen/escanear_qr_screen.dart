@@ -28,46 +28,24 @@ class EscanearQrScreen extends GetWidget<EscanearQrController> {
                   alignment: Alignment.center,
                   children: [
                     Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: SizeUtils.width * 0.05,
-                          vertical: SizeUtils.height * 0.04,
-                        ),
-                        decoration: AppDecoration.fillGray300.copyWith(
-                          borderRadius: BorderRadiusStyle.customBorderBL50,
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            SizedBox(height: SizeUtils.height * 0.01),
-                            DottedBorder(
-                              color: theme.colorScheme.primaryContainer,
-                              padding: EdgeInsets.all(SizeUtils.width * 0.01),
-                              strokeWidth: SizeUtils.width * 0.005,
-                              radius: Radius.circular(50),
-                              borderType: BorderType.RRect,
-                              dashPattern: [210, 270],
-                              child: Container(
-                                height: SizeUtils.height * 0.45,
-                                width: SizeUtils.width * 0.8,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                child: QRView(
-                                  key: GlobalKey(debugLabel: 'QR'),
-                                  onQRViewCreated: _onQRViewCreated,
-                                  overlay: QrScannerOverlayShape(
-                                    borderColor: theme.colorScheme.primary,
-                                    borderRadius: 10,
-                                    borderLength: 30,
-                                    borderWidth: 10,
-                                    cutOutSize: SizeUtils.width * 0.8,
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
+                      alignment: Alignment.center,
+                      child: DottedBorder(
+                        color: theme.colorScheme.primaryContainer,
+                        padding: EdgeInsets.all(SizeUtils.width * 0.01),
+                        strokeWidth: SizeUtils.width * 0.005,
+                        radius: Radius.circular(50),
+                        borderType: BorderType.Rect,
+                        dashPattern: [250, 50],
+                        child: Container(
+                          height: SizeUtils.width * 0.8,
+                          width: SizeUtils.width * 0.8,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.zero,
+                          ),
+                          child: QRView(
+                            key: GlobalKey(debugLabel: 'QR'),
+                            onQRViewCreated: controller.onQRViewCreated,
+                          ),
                         ),
                       ),
                     ),
@@ -78,14 +56,10 @@ class EscanearQrScreen extends GetWidget<EscanearQrController> {
                           horizontal: SizeUtils.width * 0.035,
                           vertical: SizeUtils.height * 0.02,
                         ),
-                        decoration:
-                            AppDecoration.fillOnSecondaryContainer.copyWith(
-                          borderRadius: BorderRadiusStyle.customBorderBL50,
-                        ),
                         child: CustomImageView(
-                          imagePath: ImageConstant.imgArrowLeftTeal900,
-                          height: SizeUtils.height * 0.03,
-                          width: SizeUtils.height * 0.03,
+                          imagePath: ImageConstant.imgChevronLeft,
+                          height: SizeUtils.height * 0.05,
+                          width: SizeUtils.width * 0.15,
                           onTap: () {
                             onTapImgArrowleftone();
                           },
@@ -95,17 +69,16 @@ class EscanearQrScreen extends GetWidget<EscanearQrController> {
                   ],
                 ),
               ),
-              SizedBox(height: SizeUtils.height * 0.04),
               CustomElevatedButton(
                 width: SizeUtils.width * 0.5,
                 text: "msg_escanea_c_digo_qr".tr,
                 buttonStyle: CustomButtonStyles.outlinePrimaryTL20,
                 buttonTextStyle: CustomTextStyles.titleMediumOnPrimary,
                 onPressed: () {
-                  onTapEscaneacdigo();
+                  controller.onQrScan();
                 },
               ),
-              SizedBox(height: SizeUtils.height * 0.01),
+              SizedBox(height: SizeUtils.height * 0.025),
               SizedBox(
                 width: SizeUtils.width * 0.8,
                 child: RichText(
@@ -114,27 +87,21 @@ class EscanearQrScreen extends GetWidget<EscanearQrController> {
                       TextSpan(
                         text: "lbl3".tr,
                         style: CustomTextStyles.titleLargeSemiBold,
-                      ),
-                      TextSpan(
-                        text: "\n".tr,
-                        style: CustomTextStyles.headlineMediumArchivo,
-                      ),
+                      )
                     ],
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(height: SizeUtils.height * 0.01),
-              GestureDetector(
-                onTap: () {
-                  onTapTxtIntroduceeln();
+              CustomElevatedButton(
+                text: "msg_introduce_el_n_mero".tr,
+                width: SizeUtils.width * 0.5,
+                buttonStyle: CustomButtonStyles.outlineDark,
+                buttonTextStyle: CustomTextStyles.titleMediumOnPrimary,
+                onPressed: () {
+                  controller.navigateToManualQr();
                 },
-                child: Text(
-                  "msg_introduce_el_n_mero".tr,
-                  style: CustomTextStyles.titleMediumBold,
-                ),
               ),
-              SizedBox(height: SizeUtils.height * 0.01),
             ],
           ),
         ),
@@ -142,22 +109,7 @@ class EscanearQrScreen extends GetWidget<EscanearQrController> {
     );
   }
 
-  void _onQRViewCreated(QRViewController controller) {
-    //controller.scannedDataStream.listen((scanData) {
-    // Handle the scanned data
-    //  controller.pauseCamera();
-    //});
-  }
-
   void onTapImgArrowleftone() {
     Get.back();
-  }
-
-  void onTapEscaneacdigo() {
-    // Handle QR scan button tap
-  }
-
-  void onTapTxtIntroduceeln() {
-    Get.toNamed(AppRoutes.popUpInsertQrCodeScreen);
   }
 }
