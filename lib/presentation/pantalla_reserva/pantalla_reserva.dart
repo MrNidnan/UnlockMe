@@ -1,3 +1,4 @@
+import 'package:UnlockMe/core/utils/bike_helper.dart';
 import 'package:UnlockMe/theme/custom_button_style.dart';
 import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
@@ -57,13 +58,21 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                 SizedBox(height: screenHeight * 0.01),
                 Padding(
                   padding: EdgeInsets.only(left: screenWidth * 0.2),
+                  child: Text(
+                    "Address: ${controller.address}",
+                    style: theme.textTheme.titleMedium,
+                  ),
+                ),
+                SizedBox(height: screenHeight * 0.01),
+                Padding(
+                  padding: EdgeInsets.only(left: screenWidth * 0.2),
                   child: Obx(() {
                     final modelReserva =
                         controller.pantallaReservaModelObj.value;
 
                     return Text(
                       "Location: (${modelReserva.bike.latitude}, ${modelReserva.bike.longitude})",
-                      style: theme.textTheme.titleMedium,
+                      style: theme.textTheme.titleSmall,
                     );
                   }),
                 ),
@@ -76,6 +85,19 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
 
                     return Text(
                       "Battery Life: ${modelReserva.bike.batteryLife}%",
+                      style: CustomTextStyles.titleMediuemOrange800,
+                    );
+                  }),
+                ),
+                SizedBox(height: screenHeight * 0.03),
+                Padding(
+                  padding: EdgeInsets.only(left: screenWidth * 0.2),
+                  child: Obx(() {
+                    final modelReserva =
+                        controller.pantallaReservaModelObj.value;
+
+                    return Text(
+                      "Autonomy: ${BikeHelper.calculateAutonomy(modelReserva.bike.batteryLife)} Km aprox.",
                       style: CustomTextStyles.titleMediuemOrange800,
                     );
                   }),

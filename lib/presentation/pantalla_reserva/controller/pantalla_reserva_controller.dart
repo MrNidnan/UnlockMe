@@ -1,6 +1,7 @@
 import 'package:UnlockMe/core/storage/contracts/bike.dart';
 import 'package:UnlockMe/core/storage/contracts/reserve.dart';
 import 'package:UnlockMe/core/storage/database_helper.dart';
+import 'package:UnlockMe/core/utils/geolocation_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../core/app_export.dart';
@@ -16,15 +17,24 @@ class PantallaReservaController extends GetxController {
   //late defines a variable that is not initialized when it is declared
   late Rx<PantallaReservaModel> pantallaReservaModelObj;
   Timer? _timer;
+  String? address;
   var remainingTime = 0.obs;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     final args = Get.arguments;
     pantallaReservaModelObj = PantallaReservaModel(
       bike: args['bike'] as Bike,
     ).obs;
+    try {
+      address = await getAddressFromCoordinates(
+          pantallaReservaModelObj.value.bike.latitude,
+          pantallaReservaModelObj.value.bike.longitude);
+      print('Address: $address');
+    } catch (e) {
+      Logger.log('Error: $e');
+    }
   }
 
   Future<void> createReservation() async {
