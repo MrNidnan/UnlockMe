@@ -28,16 +28,19 @@ class PantallaReservaController extends GetxController {
     final args = Get.arguments;
     Bike bike = args['bike'] as Bike;
 
+    //debug
+    print('BikeStatus: ${bike.status}');
+
     // Initialize the model with the bike's status
     pantallaReservaModelObj = PantallaReservaModel(
       bike: bike,
-      isReserved: bike.status == BikeStatus.reserved.toString(),
+      isReserved: bike.status == BikeStatus.reserved,
     ).obs;
 
     var reserveBox = await Hive.openBox('reserveBox');
     final reserveId = reserveBox.get('reserveId');
     final reserveEndsAt = reserveBox.get('reserveEndsAt');
-    print(reserveEndsAt);
+    print('Reserve Ends At: ${reserveEndsAt}');
     print(reserveId);
     print('IsReserved:${pantallaReservaModelObj.value.isReserved}');
     if (pantallaReservaModelObj.value.isReserved) {
@@ -164,8 +167,8 @@ class PantallaReservaController extends GetxController {
     await dbHelper.updateBikeStatus(
         pantallaReservaModelObj.value.bike.id!,
         pantallaReservaModelObj.value.isReserved
-            ? BikeStatus.reserved.toString()
-            : BikeStatus.available.toString());
+            ? BikeStatus.reserved
+            : BikeStatus.available);
   }
 
   Future<bool> _showConfirmationDialog() async {

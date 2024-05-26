@@ -18,14 +18,22 @@ class MapaController extends GetxController {
   final defaultPostion = LatLng(41.3851, 2.1734);
   final LocationService locationService;
   final dbHelper = DatabaseHelper();
+  Timer? _timer;
 
   MapaController() : locationService = LocationService();
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     _requestLocationPermission();
-    fetchBikeCoordinates();
+    await fetchBikeCoordinates();
+    //_startFetchingBikeCoordinates();
+  }
+
+  @override
+  void onClose() {
+    _timer?.cancel();
+    super.onClose();
   }
 
   void updateMap() async {
@@ -44,6 +52,8 @@ class MapaController extends GetxController {
 
   Future<void> fetchBikeCoordinates() async {
     List<Bike> bikes = await dbHelper.getUserBikes();
+    bikeMarkers.clear();
+
     for (var bike in bikes) {
       print('BikeStatus:${bike.status}');
       bikeMarkers.add(Marker(
@@ -56,7 +66,7 @@ class MapaController extends GetxController {
           },
           child: Icon(
             Icons.pedal_bike,
-            color: bike.status == BikeStatus.available.toString()
+            color: bike.status == BikeStatus.available
                 ? Colors.blue
                 : Color.fromARGB(255, 233, 128, 9),
             size: 40.0,
@@ -80,6 +90,16 @@ class MapaController extends GetxController {
       arguments: {
         'bike': bike,
       },
-    );
+    )?.then((value) async {
+      // Restart fetching bike coordinates when coming back
+      await fetchBikeCoordinates();
+    });
+    ;
+  }
+
+  void _startFetchingBikeCoordinates() {
+    _timer = Timer.periodic(Duration(seconds: 3), (timer) {
+      fetchBikeCoordinates();
+    });
   }
 }
