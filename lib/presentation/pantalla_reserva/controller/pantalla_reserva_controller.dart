@@ -28,8 +28,7 @@ class PantallaReservaController extends GetxController {
     final args = Get.arguments;
     Bike bike = args['bike'] as Bike;
 
-    //debug
-    print('BikeStatus: ${bike.status}');
+    Logger.logDebug('BikeStatus: ${bike.status}');
 
     // Initialize the model with the bike's status
     pantallaReservaModelObj = PantallaReservaModel(
@@ -39,10 +38,13 @@ class PantallaReservaController extends GetxController {
 
     var reserveBox = await Hive.openBox('reserveBox');
     final reserveId = reserveBox.get('reserveId');
+    //debug purpose
     final reserveEndsAt = reserveBox.get('reserveEndsAt');
     print('Reserve Ends At: ${reserveEndsAt}');
     print(reserveId);
     print('IsReserved:${pantallaReservaModelObj.value.isReserved}');
+    ////
+
     if (pantallaReservaModelObj.value.isReserved) {
       // Load the reservation details and set the timer
 
@@ -62,9 +64,9 @@ class PantallaReservaController extends GetxController {
       address.value = retrievedAddress ?? ' Address Unknown';
 
       //testVar.value = 23;
-      print('Address: $address');
+      Logger.logDebug('Address: $address');
     } catch (e) {
-      Logger.log('Error: $e');
+      Logger.logError('Error: $e');
     }
   }
 
@@ -73,7 +75,7 @@ class PantallaReservaController extends GetxController {
     var userBox = await Hive.openBox('userBox');
     final int userId = userBox.get('userId') ?? 1;
     final int userHotelId = userBox.get('userHotelId') ?? 0;
-    print('User=$userId:$userHotelId');
+    Logger.logDebug('User=$userId:$userHotelId');
 
     // Save reservation to SQLite
     final dbHelper = DatabaseHelper();

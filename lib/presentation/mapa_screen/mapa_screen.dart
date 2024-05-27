@@ -22,11 +22,8 @@ class MapaScreen extends GetWidget<MapaController> {
           child: Stack(
             alignment: Alignment.center,
             children: [
+              //_buildMap(),
               Obx(() => _buildMap()),
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: _buildBottomAppBar(),
-              ),
               Positioned(
                 bottom: MediaQuery.of(context).size.height *
                     0.10, // Adjust based on your layout needs
@@ -77,22 +74,7 @@ class MapaScreen extends GetWidget<MapaController> {
               ),
             ],
           ),
-          if (controller.currentPosition.value != null)
-            MarkerLayer(
-              markers: [
-                Marker(
-                  width: 80.0,
-                  height: 80.0,
-                  point: controller.currentPosition.value!,
-                  child: Icon(
-                    Icons.location_on,
-                    color: Colors.red,
-                    size: 40.0,
-                  ),
-                ),
-              ],
-            ),
-          MarkerLayer(markers: controller.bikeMarkers),
+          MarkerLayer(markers: controller.markers),
         ],
       ),
     );
@@ -116,14 +98,15 @@ class MapaScreen extends GetWidget<MapaController> {
             padding: EdgeInsets.all(SizeUtils.width * 0.02),
             decoration: IconButtonStyleHelper.fillGray,
             onTap: () {
-              updateMap();
+              controller.updateMap();
             },
             child: CustomImageView(
               imagePath: ImageConstant.imgLinkedin,
             ),
           ),
           Spacer(),
-          CustomIconButton(
+          CustomFloatingButton(
+            heroTag: 'settings-1',
             height: 35,
             width: 35,
             onTap: () {
@@ -136,10 +119,6 @@ class MapaScreen extends GetWidget<MapaController> {
         ],
       ),
     );
-  }
-
-  void updateMap() {
-    controller.updateMap();
   }
 
   void navigateToSettings() {

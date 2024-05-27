@@ -16,11 +16,13 @@ void main() async {
 
   // Fetch all users
   List<Map<String, dynamic>> users = await dbHelper.getUsers();
-  print(users);
+  Logger.logDebug(users);
 
   // Fetch all bikes
   List<Bike> bikes = await dbHelper.getBikes();
-  print(bikes);
+  bikes.forEach((bike) {
+    Logger.logDebug('Bike ID: ${bike.id}, Status: ${bike.status}');
+  });
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) {

@@ -56,7 +56,7 @@ class ApiClient extends GetConnect {
       }
     } catch (error, stackTrace) {
       ProgressDialogUtils.hideProgressDialog();
-      Logger.log(
+      Logger.logError(
         error,
         stackTrace: stackTrace,
       );
@@ -92,7 +92,7 @@ class ApiClient extends GetConnect {
       }
     } catch (error, stackTrace) {
       ProgressDialogUtils.hideProgressDialog();
-      Logger.log(
+      Logger.logError(
         error,
         stackTrace: stackTrace,
       );

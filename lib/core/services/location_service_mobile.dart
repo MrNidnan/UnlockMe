@@ -1,13 +1,14 @@
 // location_service_mobile.dart
+import 'package:UnlockMe/core/utils/logger.dart';
 import 'package:geolocator/geolocator.dart';
 import 'location_service.dart';
 
 LocationService getInstance() => LocationServiceMobile();
 
 class LocationServiceMobile implements LocationService {
-
   @override
-  Future<void> requestLocationPermission(Function(double?, double?) updateMapLocation) async {
+  Future<void> requestLocationPermission(
+      Function(double?, double?) updateMapLocation) async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -25,10 +26,16 @@ class LocationServiceMobile implements LocationService {
     }
 
     if (permission == LocationPermission.deniedForever) {
-      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
     }
-
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    updateMapLocation(position.latitude, position.longitude);
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      Logger.logDebug('Position recovered: $position');
+      updateMapLocation(position.latitude, position.longitude);
+    } catch (e) {
+      Logger.logError('Error: $e');
+    }
   }
 }

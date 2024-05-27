@@ -8,13 +8,14 @@ import '../models/mapa_model.dart';
 import 'package:latlong2/latlong.dart';
 import 'dart:async';
 
-class MapaController extends GetxController {
+class MapaController extends GetxController with WidgetsBindingObserver {
   //var userPhoto = Get.arguments[NavigationArgs.userPhoto];
 
   //var userMail = Get.arguments[NavigationArgs.userMail];
   Rx<MapaModel> mapaModelObj = MapaModel().obs;
   var currentPosition = Rx<LatLng?>(null);
-  var bikeMarkers = <Marker>[].obs;
+  RxList<Marker> markers = <Marker>[].obs;
+
   final defaultPostion = LatLng(41.3851, 2.1734);
   final LocationService locationService;
   final dbHelper = DatabaseHelper();
@@ -25,41 +26,42 @@ class MapaController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    _requestLocationPermission();
-    await fetchBikeCoordinates();
+    WidgetsBinding.instance.addObserver(this);
+
     //_startFetchingBikeCoordinates();
+  }
+
+  // Called once the widget is fully rendered and interactive.
+  @override
+  void onReady() {
+    super.onReady();
+    updateMap();
   }
 
   @override
   void onClose() {
     _timer?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
+
     super.onClose();
   }
 
-  void updateMap() async {
-    await _requestLocationPermission();
-    update(); //refresh the UI
-  }
-
-  void updateMapLocation(double? latitude, double? longitude) {
-    if ((latitude == null || longitude == null) &&
-        currentPosition.value == null) {
-      currentPosition.value = defaultPostion;
-      return;
+  // Called when the app is resumed from background
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      updateMap();
     }
-    currentPosition.value = LatLng(latitude!, longitude!);
   }
 
-  Future<void> fetchBikeCoordinates() async {
-    List<Bike> bikes = await dbHelper.getUserBikes();
-    bikeMarkers.clear();
-
-    for (var bike in bikes) {
+  void updateMarkers(List<Bike> bikes) {
+    markers.clear();
+    markers.value = bikes.map((bike) {
       print('BikeStatus:${bike.status}');
-      bikeMarkers.add(Marker(
-        width: 80.0,
-        height: 80.0,
+      return Marker(
         point: LatLng(bike.latitude, bike.longitude),
+        width: 80,
+        height: 80,
         child: GestureDetector(
           onTap: () {
             navigateToBikeDetails(bike);
@@ -72,8 +74,43 @@ class MapaController extends GetxController {
             size: 40.0,
           ),
         ),
+      );
+    }).toList();
+    if (currentPosition.value != null) {
+      markers.add(Marker(
+        point: currentPosition.value!,
+        width: 80,
+        height: 80,
+        child: Icon(
+          Icons.person_pin_circle_outlined,
+          color: Color.fromARGB(255, 235, 215, 38),
+          size: 40.0,
+        ),
       ));
     }
+  }
+
+  void updateMap() async {
+    await _requestLocationPermission();
+
+    var bikes = await fetchBikeCoordinates();
+    updateMarkers(bikes);
+    update(); //refresh the UI
+  }
+
+  void updateMapLocation(double? latitude, double? longitude) {
+    Logger.logDebug(
+        ' called update map location Latitude: $latitude, Longitude: $longitude');
+    if ((latitude == null || longitude == null) &&
+        currentPosition.value == null) {
+      currentPosition.value = defaultPostion;
+      return;
+    }
+    currentPosition.value = LatLng(latitude!, longitude!);
+  }
+
+  Future<List<Bike>> fetchBikeCoordinates() async {
+    return await dbHelper.getUserBikes();
   }
 
   Future<void> _requestLocationPermission() async {
@@ -84,22 +121,16 @@ class MapaController extends GetxController {
   }
 
   void navigateToBikeDetails(Bike bike) {
-    print(bike);
+    Logger.logDebug(bike);
     Get.toNamed(
       AppRoutes.pantallaReserva,
       arguments: {
         'bike': bike,
       },
     )?.then((value) async {
-      // Restart fetching bike coordinates when coming back
-      await fetchBikeCoordinates();
+      //Make sure map is updated when comming back from bike details
+      updateMap();
     });
     ;
-  }
-
-  void _startFetchingBikeCoordinates() {
-    _timer = Timer.periodic(Duration(seconds: 3), (timer) {
-      fetchBikeCoordinates();
-    });
   }
 }

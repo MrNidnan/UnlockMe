@@ -1,3 +1,4 @@
+import 'package:UnlockMe/core/utils/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore_for_file: must_be_immutable
@@ -12,7 +13,7 @@ class PrefUtils {
 
   Future<void> init() async {
     _sharedPreferences ??= await SharedPreferences.getInstance();
-    print('SharedPreference Initialized');
+    Logger.logInfo('SharedPreference Initialized');
   }
 
   ///will clear all the data stored in preference

@@ -1,4 +1,5 @@
 import 'package:UnlockMe/core/storage/contracts/user.dart';
+import 'package:UnlockMe/core/utils/logger.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -196,7 +197,7 @@ class DatabaseHelper {
   }
 
   Future<void> updateBikeStatus(int bikeId, String status) async {
-    print('Updating bike status');
+    Logger.logDebug('Updating bike status');
 
     final db = await database;
     await db.update(
