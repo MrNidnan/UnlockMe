@@ -94,7 +94,6 @@ class MapaController extends GetxController with WidgetsBindingObserver {
 
     var bikes = await fetchBikeCoordinates();
     updateMarkers(bikes);
-    update(); //refresh the UI
   }
 
   void updateMapLocation(double? latitude, double? longitude) {
