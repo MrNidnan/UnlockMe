@@ -146,7 +146,7 @@ class PantallaReservaController extends GetxController {
     final reserveId = reserveBox.get('reserveId');
 
     // Update reservation to SQLite
-
+    //TODO: Fix issue when the timer ends in map screen
     await dbHelper.updateReserve(reserveId, {
       'status': ReserveStatus.cancelled.toString(),
     });

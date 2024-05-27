@@ -52,13 +52,14 @@ class MapaScreen extends GetWidget<MapaController> {
   }
 
   Widget _buildMap() {
+    final mapModel = controller.mapaModelObj.value;
     return SizedBox(
       height: SizeUtils.height,
       width: SizeUtils.width,
       child: FlutterMap(
         options: MapOptions(
           initialCenter:
-              controller.currentPosition.value ?? controller.defaultPostion,
+              mapModel.currentPosition.value ?? controller.defaultPostion,
           initialZoom: 14.4746,
         ),
         children: [
@@ -74,7 +75,7 @@ class MapaScreen extends GetWidget<MapaController> {
               ),
             ],
           ),
-          MarkerLayer(markers: controller.markers),
+          MarkerLayer(markers: mapModel.markers),
         ],
       ),
     );

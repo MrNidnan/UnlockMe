@@ -13,8 +13,6 @@ class MapaController extends GetxController with WidgetsBindingObserver {
 
   //var userMail = Get.arguments[NavigationArgs.userMail];
   Rx<MapaModel> mapaModelObj = MapaModel().obs;
-  var currentPosition = Rx<LatLng?>(null);
-  RxList<Marker> markers = <Marker>[].obs;
 
   final defaultPostion = LatLng(41.3851, 2.1734);
   final LocationService locationService;
@@ -55,8 +53,8 @@ class MapaController extends GetxController with WidgetsBindingObserver {
   }
 
   void updateMarkers(List<Bike> bikes) {
-    markers.clear();
-    markers.value = bikes.map((bike) {
+    mapaModelObj.value.markers.clear();
+    mapaModelObj.value.markers.value = bikes.map((bike) {
       print('BikeStatus:${bike.status}');
       return Marker(
         point: LatLng(bike.latitude, bike.longitude),
@@ -76,9 +74,9 @@ class MapaController extends GetxController with WidgetsBindingObserver {
         ),
       );
     }).toList();
-    if (currentPosition.value != null) {
-      markers.add(Marker(
-        point: currentPosition.value!,
+    if (mapaModelObj.value.currentPosition != null) {
+      mapaModelObj.value.markers.add(Marker(
+        point: mapaModelObj.value.currentPosition.value!,
         width: 80,
         height: 80,
         child: Icon(
@@ -88,6 +86,7 @@ class MapaController extends GetxController with WidgetsBindingObserver {
         ),
       ));
     }
+    mapaModelObj.refresh();
   }
 
   void updateMap() async {
@@ -102,11 +101,11 @@ class MapaController extends GetxController with WidgetsBindingObserver {
     Logger.logDebug(
         ' called update map location Latitude: $latitude, Longitude: $longitude');
     if ((latitude == null || longitude == null) &&
-        currentPosition.value == null) {
-      currentPosition.value = defaultPostion;
+        mapaModelObj.value.currentPosition.value == null) {
+      mapaModelObj.value.currentPosition.value = defaultPostion;
       return;
     }
-    currentPosition.value = LatLng(latitude!, longitude!);
+    mapaModelObj.value.currentPosition.value = LatLng(latitude!, longitude!);
   }
 
   Future<List<Bike>> fetchBikeCoordinates() async {
