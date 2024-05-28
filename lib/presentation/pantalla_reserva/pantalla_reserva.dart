@@ -38,7 +38,7 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                   alignment: Alignment.centerLeft,
                   margin: EdgeInsets.only(left: screenWidth * 0.01),
                   onTap: () {
-                    onTapImgArrowleftone();
+                    controller.goBackToMap();
                   },
                 ),
 
@@ -155,14 +155,5 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
         ),
       ),
     );
-  }
-
-  void onTapImgArrowleftone() {
-    Get.back();
-  }
-
-  //debug
-  void onTapReserve() {
-    Get.toNamed(AppRoutes.contadorreservaScreen);
   }
 }

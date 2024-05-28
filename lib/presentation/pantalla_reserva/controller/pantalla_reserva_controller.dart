@@ -41,7 +41,7 @@ class PantallaReservaController extends GetxController {
     //debug purpose
     final reserveEndsAt = reserveBox.get('reserveEndsAt');
     print('Reserve Ends At: ${reserveEndsAt}');
-    print(reserveId);
+    print('ReserveId: ${reserveId}');
     print('IsReserved:${pantallaReservaModelObj.value.isReserved}');
     ////
 
@@ -85,8 +85,9 @@ class PantallaReservaController extends GetxController {
         bikeId: pantallaReservaModelObj.value.bike.id!,
         createdAt: reserveAt.toIso8601String(),
         endsAt: reserveAt.add(Duration(seconds: 30)).toIso8601String(),
-        status: ReserveStatus.active.toString()));
+        status: ReserveStatus.active));
 
+    Logger.logDebug('reserveId created:$reserveId');
     var reserveBox = await Hive.openBox('reserveBox');
     reserveBox.put('reserveId', reserveId);
     reserveBox.put('reserveEndsAt',
@@ -94,8 +95,8 @@ class PantallaReservaController extends GetxController {
 
     //debug purpose
     // final rId = reserveBox.get('reserveId');
-    // final reserveEndsAt = reserveBox.get('reserveEndsAt');
-    // print(reserveEndsAt);
+    final reserveEndsAt = reserveBox.get('reserveEndsAt');
+    print('Reserve Ends At: ${reserveEndsAt}');
     // print(rId);
     //debug
 
@@ -125,30 +126,30 @@ class PantallaReservaController extends GetxController {
   }
 
   void onReserveExpiration() {
-    cancelReservation();
+    _cancelReservation();
     Get.snackbar('Reservation', 'Reservation expired!');
   }
 
   void onTapCancelReservation() async {
     final isConfirmed = await _showConfirmationDialog();
     if (isConfirmed) {
-      cancelReservation();
+      _cancelReservation();
       // Provide feedback to the user
       Get.snackbar('Reservation', 'Reservation cancelled successfully!');
     }
   }
 
-  void cancelReservation() async {
+  void _cancelReservation() async {
     _timer?.cancel();
     remainingTime.value = 0;
 
     var reserveBox = await Hive.openBox('reserveBox');
     final reserveId = reserveBox.get('reserveId');
-
+    Logger.logDebug('ReserveId on cancelReservation: $reserveId');
     // Update reservation to SQLite
     //TODO: Fix issue when the timer ends in map screen
     await dbHelper.updateReserve(reserveId, {
-      'status': ReserveStatus.cancelled.toString(),
+      'status': ReserveStatus.cancelled,
     });
 
     reserveBox.delete('reserveId');
@@ -199,5 +200,9 @@ class PantallaReservaController extends GetxController {
           ),
         ) ??
         false;
+  }
+
+  void goBackToMap() {
+    Get.back();
   }
 }

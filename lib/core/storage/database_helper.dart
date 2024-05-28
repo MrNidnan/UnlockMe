@@ -197,7 +197,7 @@ class DatabaseHelper {
   }
 
   Future<void> updateBikeStatus(int bikeId, String status) async {
-    Logger.logDebug('Updating bike status');
+    Logger.logDebug('Updating bike status: $status, bikeId: $bikeId');
 
     final db = await database;
     await db.update(
