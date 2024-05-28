@@ -1,8 +1,5 @@
 import 'package:UnlockMe/core/app_export.dart';
-import 'package:UnlockMe/core/storage/contracts/bike.dart';
-import 'package:UnlockMe/core/storage/contracts/reserve.dart';
-import 'package:UnlockMe/core/storage/database_helper.dart';
-import 'package:UnlockMe/core/utils/geolocation_utils.dart';
+import 'package:UnlockMe/core/app_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:async';
@@ -11,10 +8,12 @@ import '../models/pantalla_reserva_model.dart';
 class PantallaReservaController extends GetxController {
   //late defines a variable that is not initialized when it is declared
   late Rx<PantallaReservaModel> pantallaReservaModelObj;
-  Timer? _timer;
+  // Singleton TimerService instance
+  final ReserveTimerService _timerService = Get.find<ReserveTimerService>();
+  // Observing the timer state from TimerService
+  RxInt get remainingTime => _timerService.remainingTime;
   Rx<String> address = 'Address Unknown'.obs;
-  RxInt testVar = 0.obs;
-  var remainingTime = 0.obs;
+
   final dbHelper = DatabaseHelper();
   late Box _userBox;
   late Box _reserveBox;
@@ -25,12 +24,21 @@ class PantallaReservaController extends GetxController {
     final args = Get.arguments;
     Bike bike = args['bike'] as Bike;
 
-    Logger.logDebug('BikeStatus: ${bike.status}');
     // Initialize the model with the bike status
     pantallaReservaModelObj = PantallaReservaModel(
       bike: bike,
       isReserved: bike.status == BikeStatus.reserved,
     ).obs;
+
+    await _initializeReserve(bike);
+    await _retrieveAddress(bike);
+
+    _timerService.onExpire = onExpireReserve;
+    _timerService.onCancel = _cancelReservation;
+  }
+
+  Future<void> _initializeReserve(Bike bike) async {
+    Logger.logDebug('Reserve Screen BikeStatus: ${bike.status}');
 
     _reserveBox = await Hive.openBox('reserveBox');
     _userBox = await Hive.openBox('userBox');
@@ -62,10 +70,12 @@ class PantallaReservaController extends GetxController {
         pantallaReservaModelObj.update((model) {
           model?.endsAt = DateTime.parse(reserveEndsAt);
         });
-        startTimer();
+        _timerService.startTimer(pantallaReservaModelObj.value.endsAt!);
       }
     }
+  }
 
+  Future<void> _retrieveAddress(Bike bike) async {
     try {
       var retrievedAddress =
           await getAddressFromCoordinates(bike.latitude, bike.longitude);
@@ -79,7 +89,6 @@ class PantallaReservaController extends GetxController {
   @override
   void onClose() {
     //// Do NOT cancel the timer here as we want to run it even when the screen is closed to cancel the reservation
-    _timer?.cancel();
     super.onClose();
   }
 
@@ -116,48 +125,25 @@ class PantallaReservaController extends GetxController {
       model?.endsAt = DateTime.now().add(Duration(seconds: 30));
     });
 
-    startTimer();
+    _timerService.startTimer(pantallaReservaModelObj.value.endsAt!);
     await updateBikeStatus();
     Get.snackbar('Reservation', 'Bike reserved successfully!');
   }
 
-  void startTimer() {
-    Logger.logDebug('Start Timer ${pantallaReservaModelObj.value.bike.id}');
-    //ensure the timer is stopped before starting a new one
-    _timer?.cancel();
-
-    //if the reservation has no end time, return
-    if (pantallaReservaModelObj.value.endsAt == null) return;
-
-    final endTime = pantallaReservaModelObj.value.endsAt!;
-    remainingTime.value = endTime.difference(DateTime.now()).inSeconds;
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      final now = DateTime.now();
-      if (now.isAfter(endTime)) {
-        onReserveExpiration();
-      } else {
-        remainingTime.value = endTime.difference(now).inSeconds;
-      }
-    });
-  }
-
-  void onReserveExpiration() {
+  void onExpireReserve() {
     _cancelReservation();
     Get.snackbar('Reservation', 'Reservation expired!');
   }
 
-  void onTapCancelReservation() async {
+  void onCancelReserve() async {
     final isConfirmed = await _showConfirmationDialog();
     if (isConfirmed) {
-      _cancelReservation();
+      _timerService.cancelTimer();
       Get.snackbar('Reservation', 'Reservation cancelled successfully!');
     }
   }
 
   void _cancelReservation() async {
-    _timer?.cancel();
-    remainingTime.value = 0;
-
     final reserveId = _reserveBox.get('reserveId');
     Logger.logDebug('ReserveId on cancelReservation: $reserveId');
 

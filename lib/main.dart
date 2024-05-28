@@ -24,6 +24,9 @@ void main() async {
     Logger.logDebug('Bike ID: ${bike.id}, Status: ${bike.status}');
   });
 
+  // Register TimerService as a singleton
+  Get.put(ReserveTimerService());
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) {
     Logger.init(kReleaseMode ? LogMode.live : LogMode.debug);

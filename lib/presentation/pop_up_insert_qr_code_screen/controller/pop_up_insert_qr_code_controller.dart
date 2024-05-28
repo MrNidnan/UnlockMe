@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-import '../../../core/app_export.dart';
 import '../models/pop_up_insert_qr_code_model.dart';
 
 /// A controller class for the PopUpInsertQrCodeScreen.
@@ -11,4 +11,42 @@ class PopUpInsertQrCodeController extends GetxController {
   Rx<PopUpInsertQrCodeModel> popUpInsertQrCodeModelObj =
       PopUpInsertQrCodeModel().obs;
   TextEditingController inputTextController = TextEditingController();
+
+  late Function(String) qrValidationCallback;
+
+  @override
+  void onInit() {
+    super.onInit();
+    qrValidationCallback = Get.arguments as Function(String);
+  }
+
+  void goBack() {
+    Get.back();
+  }
+
+  void readQrString() {
+    String qrString = inputTextController.text;
+    if (qrString.isNotEmpty) {
+      qrValidationCallback(qrString);
+    } else {
+      Get.snackbar(
+        'Error',
+        'Please enter a QR code.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+      );
+    }
+  }
+
+  @override
+  void onClose() {
+    inputTextController.dispose();
+    super.onClose();
+  }
+
+  @override
+  void dispose() {
+    inputTextController.dispose();
+    super.dispose();
+  }
 }

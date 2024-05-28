@@ -1,7 +1,6 @@
 import 'package:UnlockMe/core/app_export.dart';
+import 'package:UnlockMe/core/app_storage.dart';
 import 'package:UnlockMe/core/services/location_service.dart';
-import 'package:UnlockMe/core/storage/contracts/bike.dart';
-import 'package:UnlockMe/core/storage/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -9,9 +8,10 @@ import 'dart:async';
 import '../models/mapa_model.dart';
 
 class MapaController extends GetxController with WidgetsBindingObserver {
-  //var userPhoto = Get.arguments[NavigationArgs.userPhoto];
+  final ReserveTimerService _timerService = Get.find<ReserveTimerService>();
+  // Observing the timer state from TimerService
+  RxInt get remainingTime => _timerService.remainingTime;
 
-  //var userMail = Get.arguments[NavigationArgs.userMail];
   Rx<MapaModel> mapaModelObj = MapaModel().obs;
 
   final defaultPostion = LatLng(41.3851, 2.1734);

@@ -128,7 +128,7 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                             buttonTextStyle:
                                 CustomTextStyles.titleMediumPrimaryBold,
                             onPressed: () {
-                              controller.onTapCancelReservation();
+                              controller.onCancelReserve();
                             },
                           ),
                         ),

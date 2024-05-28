@@ -32,7 +32,7 @@ class PopUpInsertQrCodeScreen extends GetWidget<PopUpInsertQrCodeController> {
                     height: SizeUtils.height * 0.05,
                     width: SizeUtils.width * 0.15,
                     onTap: () {
-                      onTapImgArrowleftone();
+                      controller.goBack();
                     },
                   ),
                 ),
@@ -61,6 +61,9 @@ class PopUpInsertQrCodeScreen extends GetWidget<PopUpInsertQrCodeController> {
                   text: "lbl_ok".tr,
                   margin: EdgeInsets.all(40.h),
                   buttonStyle: CustomButtonStyles.outlinePrimaryTL20,
+                  onPressed: () {
+                    controller.readQrString();
+                  },
                 ),
               ),
               SizedBox(height: 5.v)
@@ -69,9 +72,5 @@ class PopUpInsertQrCodeScreen extends GetWidget<PopUpInsertQrCodeController> {
         ),
       ),
     );
-  }
-
-  void onTapImgArrowleftone() {
-    Get.back();
   }
 }
