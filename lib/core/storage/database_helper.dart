@@ -196,6 +196,13 @@ class DatabaseHelper {
     });
   }
 
+  Future<Bike> getBikeById(int id) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps =
+        await db.query('bikes', where: 'id = ?', whereArgs: [id]);
+    return Bike.fromMap(maps.first);
+  }
+
   Future<void> updateBikeStatus(int bikeId, String status) async {
     Logger.logDebug('Updating bike status: $status, bikeId: $bikeId');
 

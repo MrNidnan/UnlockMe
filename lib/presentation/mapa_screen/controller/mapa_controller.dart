@@ -1,12 +1,12 @@
+import 'package:UnlockMe/core/app_export.dart';
 import 'package:UnlockMe/core/services/location_service.dart';
 import 'package:UnlockMe/core/storage/contracts/bike.dart';
 import 'package:UnlockMe/core/storage/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import '../../../core/app_export.dart';
-import '../models/mapa_model.dart';
 import 'package:latlong2/latlong.dart';
 import 'dart:async';
+import '../models/mapa_model.dart';
 
 class MapaController extends GetxController with WidgetsBindingObserver {
   //var userPhoto = Get.arguments[NavigationArgs.userPhoto];
