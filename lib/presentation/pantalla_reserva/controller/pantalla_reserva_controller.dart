@@ -1,7 +1,7 @@
 import 'package:UnlockMe/core/app_export.dart';
 import 'package:UnlockMe/core/app_storage.dart';
+import 'package:UnlockMe/core/services/hive_service.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:async';
 import '../models/pantalla_reserva_model.dart';
 
@@ -15,8 +15,9 @@ class PantallaReservaController extends GetxController {
   Rx<String> address = 'Address Unknown'.obs;
 
   final dbHelper = DatabaseHelper();
-  late Box _userBox;
-  late Box _reserveBox;
+  late final HiveService _hiveService = Get.find<HiveService>();
+  late int? _reserveId;
+  late String? _reserveEndsAt;
 
   @override
   void onInit() async {
@@ -40,17 +41,15 @@ class PantallaReservaController extends GetxController {
   Future<void> _initializeReserve(Bike bike) async {
     Logger.logDebug('Reserve Screen BikeStatus: ${bike.status}');
 
-    _reserveBox = await Hive.openBox('reserveBox');
-    _userBox = await Hive.openBox('userBox');
-    final reserveId = _reserveBox.get('reserveId');
-    final reserveEndsAt = _reserveBox.get('reserveEndsAt');
+    _reserveId = _hiveService.getReserveId();
+    _reserveEndsAt = _hiveService.getReserveEndsAt();
 
     //(In case screen was not updated properly, we must check the source of truth in the database)
     //That is if:
     //  bike status is reserved, but the reserveId is null
     //  or bike status is available, but the reserveId is not null
-    if ((pantallaReservaModelObj.value.isReserved && reserveId == null) ||
-        (!pantallaReservaModelObj.value.isReserved && reserveId != null)) {
+    if ((pantallaReservaModelObj.value.isReserved && _reserveId == null) ||
+        (!pantallaReservaModelObj.value.isReserved && _reserveId != null)) {
       await dbHelper.getBikeById(bike.id!).then((bike) {
         Logger.logDebug(' retrieved BikeStatus: ${bike.status}');
         pantallaReservaModelObj.update((model) {
@@ -59,16 +58,16 @@ class PantallaReservaController extends GetxController {
       });
     }
 
-    Logger.logDebug('Reserve Ends At: $reserveEndsAt');
-    Logger.logDebug('ReserveId: $reserveId');
+    Logger.logDebug('Reserve Ends At: $_reserveEndsAt');
+    Logger.logDebug('ReserveId: $_reserveId');
     Logger.logDebug('IsReserved: ${pantallaReservaModelObj.value.isReserved}');
 
     //If the bike is already reserved by the user
     // Load the reservation details and start the timer
     if (pantallaReservaModelObj.value.isReserved) {
-      if (reserveId != null) {
+      if (_reserveId != null) {
         pantallaReservaModelObj.update((model) {
-          model?.endsAt = DateTime.parse(reserveEndsAt);
+          model?.endsAt = DateTime.parse(_reserveEndsAt!);
         });
         _timerService.startTimer(pantallaReservaModelObj.value.endsAt!);
       }
@@ -94,14 +93,19 @@ class PantallaReservaController extends GetxController {
 
   Future<void> createReservation() async {
     //if there is already a reservation, return
-    if (_reserveBox.get('reserveId') != null) {
+    if (_hiveService.getReserveId() != null) {
       Get.snackbar('Reservation', 'You already have a reservation!',
           backgroundColor: Colors.red);
       return;
     }
-    final int userId = _userBox.get('userId') ?? 1;
-    final int userHotelId = _userBox.get('userHotelId') ?? 0;
+    final int? userId = _hiveService.getUserId();
+    final int? userHotelId = _hiveService.getHotelId();
     Logger.logDebug('User=$userId:$userHotelId');
+    if (userId == null || userHotelId == null) {
+      Get.snackbar('Reserve error', 'User or Hotel not found!',
+          backgroundColor: Colors.red);
+      return;
+    }
 
     final reserveAt = DateTime.now();
     final reserveId = await dbHelper.insertReserve(Reserve(
@@ -112,13 +116,11 @@ class PantallaReservaController extends GetxController {
         status: ReserveStatus.active));
 
     Logger.logDebug('reserveId created: $reserveId');
-    var reserveBox = await Hive.openBox('reserveBox');
-    reserveBox.put('reserveId', reserveId);
-    reserveBox.put('reserveEndsAt',
-        reserveAt.add(Duration(seconds: 30)).toIso8601String());
 
-    final reserveEndsAt = reserveBox.get('reserveEndsAt');
-    Logger.logDebug('Reserve Ends At: $reserveEndsAt');
+    _hiveService.setReserve(
+        reserveId, reserveAt.add(Duration(seconds: 30)).toIso8601String());
+
+    Logger.logDebug('Reserve Ends At: ${_hiveService.getReserveEndsAt()}');
 
     pantallaReservaModelObj.update((model) {
       model?.isReserved = true;
@@ -144,15 +146,14 @@ class PantallaReservaController extends GetxController {
   }
 
   void _cancelReservation() async {
-    final reserveId = _reserveBox.get('reserveId');
+    final reserveId = _hiveService.getReserveId();
     Logger.logDebug('ReserveId on cancelReservation: $reserveId');
 
     if (reserveId != null) {
       await dbHelper.updateReserve(reserveId, {
         'status': ReserveStatus.cancelled,
       });
-      _reserveBox.delete('reserveId');
-      _reserveBox.delete('reserveEndsAt');
+      _hiveService.deleteReserve();
       pantallaReservaModelObj.update((model) {
         model?.isReserved = false;
         model?.endsAt = null;

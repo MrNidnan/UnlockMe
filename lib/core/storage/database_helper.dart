@@ -1,3 +1,4 @@
+import 'package:UnlockMe/core/storage/contracts/enums_constants.dart';
 import 'package:UnlockMe/core/storage/contracts/user.dart';
 import 'package:UnlockMe/core/utils/logger.dart';
 import 'package:sqflite/sqflite.dart';
@@ -67,7 +68,8 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE vehicle_actions (
         actionId INTEGER PRIMARY KEY AUTOINCREMENT,
-        tipus_accio TEXT,
+        action_type TEXT,
+        createadAt TEXT DEFAULT CURRENT_TIMESTAMP,
         vehicleId INTEGER,
         userId INTEGER,
         FOREIGN KEY(vehicleId) REFERENCES bikes(id),
@@ -76,7 +78,7 @@ class DatabaseHelper {
     ''');
   }
 
-  void populateWithFakeData() async {
+  Future<void> populateWithFakeData() async {
     final users = await getUsers();
     if (users.isEmpty) {
       User user = User(
@@ -93,22 +95,31 @@ class DatabaseHelper {
     if (bikes.isEmpty) {
       // Insert a couple of bikes with coordinates from Barcelona
       Bike bike1 = Bike(
-        latitude: 41.3851,
-        longitude: 2.1734,
-        batteryLife: 85,
-        hotelId: 1,
-        status: 'available',
-      );
+          latitude: 41.3851,
+          longitude: 2.1734,
+          batteryLife: 85,
+          hotelId: 1,
+          status: 'available',
+          qrCode: 'VALID123abc');
       await this.insertBike(bike1);
 
       Bike bike2 = Bike(
-        latitude: 41.3879,
-        longitude: 2.1699,
-        batteryLife: 90,
-        hotelId: 2,
-        status: 'available',
-      );
+          latitude: 41.3879,
+          longitude: 2.1699,
+          batteryLife: 90,
+          hotelId: 1,
+          status: 'available',
+          qrCode: 'VALID456def');
       await this.insertBike(bike2);
+
+      // Bike bike3 = Bike(
+      //     latitude: 41.3979,
+      //     longitude: 2.1899,
+      //     batteryLife: 90,
+      //     hotelId: 2,
+      //     status: 'available',
+      //     qrCode: 'VALID456def');
+      // await this.insertBike(bike3);
     }
   }
 
@@ -203,6 +214,16 @@ class DatabaseHelper {
     return Bike.fromMap(maps.first);
   }
 
+  Future<Bike?> getBikeByQrCode(String qrCode, int hotelId) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('bikes',
+        where: 'qrCode = ? AND hotelId = ?', whereArgs: [qrCode, hotelId]);
+    if (maps.isNotEmpty) {
+      return Bike.fromMap(maps.first);
+    }
+    return null;
+  }
+
   Future<void> updateBikeStatus(int bikeId, String status) async {
     Logger.logDebug('Updating bike status: $status, bikeId: $bikeId');
 
@@ -269,12 +290,49 @@ class DatabaseHelper {
         .update('reserves', reserve, where: 'reserveId = ?', whereArgs: [id]);
   }
 
+  Future<void> updateReserveStatus(int reserveId, String status) async {
+    final db = await database;
+    await db.update(
+      'reserves',
+      {'status': status},
+      where: 'reserveId = ?',
+      whereArgs: [reserveId],
+    );
+  }
+
   Future<int> deleteReserve(int reserveId) async {
     final db = await database;
     return await db.delete(
       'reserves',
       where: 'reserveId = ?',
       whereArgs: [reserveId],
+    );
+  }
+
+  Future<Reserve?> getActiveReserveForUser(int userId) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('reserves',
+        where: 'userId = ? AND status = ?',
+        whereArgs: [userId, ReserveStatus.active]);
+    if (maps.isNotEmpty) {
+      return Reserve.fromMap(maps.first);
+    }
+    return null;
+  }
+
+  // Insert or update vehicle Action
+  Future<int> setVehicleAction(
+      String actionType, String dateAsString, int vehicleId, int userId) async {
+    final db = await database;
+    return await db.insert(
+      'vehicle_actions',
+      {
+        'action_type': actionType,
+        'createdAt': dateAsString,
+        'vehicleId': vehicleId,
+        'userId': userId,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 }

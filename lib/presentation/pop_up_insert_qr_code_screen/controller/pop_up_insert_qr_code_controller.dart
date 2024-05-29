@@ -27,7 +27,9 @@ class PopUpInsertQrCodeController extends GetxController {
   void readQrString() {
     String qrString = inputTextController.text;
     if (qrString.isNotEmpty) {
-      qrValidationCallback(qrString);
+      if (qrValidationCallback(qrString)) {
+        Get.back();
+      }
     } else {
       Get.snackbar(
         'Error',

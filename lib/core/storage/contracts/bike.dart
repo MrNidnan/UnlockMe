@@ -5,6 +5,7 @@ class Bike {
   final int batteryLife;
   final int hotelId;
   final String status;
+  final String qrCode;
 
   Bike({
     this.id,
@@ -13,6 +14,7 @@ class Bike {
     required this.batteryLife,
     required this.hotelId,
     required this.status,
+    required this.qrCode,
   });
 
   Map<String, dynamic> toMap() {
@@ -23,6 +25,7 @@ class Bike {
       'battery_life': batteryLife,
       'hotelId': hotelId,
       'status': status,
+      'qrCode': qrCode,
     };
   }
 
@@ -34,6 +37,7 @@ class Bike {
       batteryLife: map['battery_life'],
       hotelId: map['hotelId'],
       status: map['status'],
+      qrCode: map['qrCode'],
     );
   }
 }
