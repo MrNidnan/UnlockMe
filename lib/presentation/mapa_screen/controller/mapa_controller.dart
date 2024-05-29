@@ -1,6 +1,7 @@
 import 'package:UnlockMe/core/app_export.dart';
 import 'package:UnlockMe/core/app_storage.dart';
 import 'package:UnlockMe/core/services/location_service.dart';
+import 'package:UnlockMe/core/services/travel_timer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -9,6 +10,7 @@ import '../models/mapa_model.dart';
 
 class MapaController extends GetxController with WidgetsBindingObserver {
   final ReserveTimerService _timerService = Get.find<ReserveTimerService>();
+  final TravelTimerService _travelTimerService = Get.find<TravelTimerService>();
   // Observing the timer state from TimerService
   RxInt get remainingTime => _timerService.remainingTime;
 

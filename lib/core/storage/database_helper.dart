@@ -1,5 +1,6 @@
 import 'package:UnlockMe/core/storage/contracts/enums_constants.dart';
 import 'package:UnlockMe/core/storage/contracts/user.dart';
+import 'package:UnlockMe/core/storage/contracts/vehicle_action.dart';
 import 'package:UnlockMe/core/utils/logger.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -37,7 +38,8 @@ class DatabaseHelper {
         longitude REAL,
         battery_life INTEGER,
         hotelId INTEGER,
-        status TEXT
+        status TEXT,
+        qrCode TEXT
       )
     ''');
 
@@ -69,7 +71,7 @@ class DatabaseHelper {
       CREATE TABLE vehicle_actions (
         actionId INTEGER PRIMARY KEY AUTOINCREMENT,
         action_type TEXT,
-        createadAt TEXT DEFAULT CURRENT_TIMESTAMP,
+        createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
         vehicleId INTEGER,
         userId INTEGER,
         FOREIGN KEY(vehicleId) REFERENCES bikes(id),
@@ -85,7 +87,7 @@ class DatabaseHelper {
         name: 'Angel',
         lastname: 'Test',
         email: 'angel@test.com',
-        password: '123',
+        password: '12345678',
         hotelId: 1,
       );
       await this.insertUser(user);
@@ -130,11 +132,25 @@ class DatabaseHelper {
     await db.delete('reserves');
   }
 
-  // CRUD operations for Users
-  // Future<int> insertUser(Map<String, dynamic> user) async {
-  //   final db = await database;
-  //   return await db.insert('users', user);
-  // }
+  Future<void> closeDatabase() async {
+    if (_database != null) {
+      await _database!.close();
+      _database = null;
+    }
+  }
+
+  Future<void> deleteAndRecreateDatabase() async {
+    String path = join(await getDatabasesPath(), 'unlockme.db');
+    // Close the database before deleting it
+    await closeDatabase();
+    // Delete the database file
+    if (await databaseExists(path)) {
+      await deleteDatabase(path);
+    }
+    // Reinitialize the database
+    _database = await _initDB();
+    await populateWithFakeData();
+  }
 
   Future<List<Map<String, dynamic>>> getUsers() async {
     final db = await database;
@@ -334,5 +350,16 @@ class DatabaseHelper {
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
+  }
+
+  Future<VehicleAction?> getVehicleAction(int actionId) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db
+        .query('vehicle_actions', where: 'actionId = ?', whereArgs: [actionId]);
+    if (maps.isNotEmpty) {
+      Logger.logDebug('Vehicle action: ${maps.first}');
+      return VehicleAction.fromMap(maps.first);
+    }
+    return null;
   }
 }

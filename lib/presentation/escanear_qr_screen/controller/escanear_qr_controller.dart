@@ -22,6 +22,8 @@ class EscanearQrController extends GetxController {
   void onInit() async {
     super.onInit();
     _hiveService = Get.find<HiveService>();
+    _hiveService.openBoxes();
+
     _timerService = Get.find<TravelTimerService>();
 
     _reserveId = _hiveService.getReserveId();
@@ -119,7 +121,7 @@ class EscanearQrController extends GetxController {
   //Start travel timer and variables
   Future<void> startTravel(Bike bike) async {
     final currentDate = DateTime.now();
-    var travelId = await dbHelper.setVehicleAction(VehicleAction.started,
+    var travelId = await dbHelper.setVehicleAction(VehicleActionType.started,
         currentDate.toIso8601String(), bike.id!, _userId!);
     _hiveService.setUserTravel(travelId, currentDate.toIso8601String());
     _timerService.startTimer(currentDate);

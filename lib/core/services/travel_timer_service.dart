@@ -7,6 +7,8 @@ class TravelTimerService extends GetxService {
   var accumulatedTime = 0.obs;
   Function()? onCancel;
 
+  bool get isRunning => _timer != null && _timer!.isActive;
+
   // Starts the timer with a given start time
   void startTimer(DateTime startTime) {
     _timer?.cancel(); // Cancel any existing timer

@@ -29,6 +29,8 @@ class MapaScreen extends GetWidget<MapaController> {
                     0.10, // Adjust based on your layout needs
                 child: CustomFloatingButton(
                   heroTag: 'qr-scan-1',
+                  backgroundColor: appTheme.green900,
+                  decoration: CustomFloatingButton.fillGreen,
                   height: 58,
                   width: 58,
                   onTap: () {
@@ -38,7 +40,7 @@ class MapaScreen extends GetWidget<MapaController> {
                     imagePath: ImageConstant.imgQrIcon,
                     height: 29.0,
                     width: 29.0,
-                    color: Colors.black,
+                    color: appTheme.limeA200,
                   ),
                 ),
               ),

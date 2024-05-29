@@ -1,7 +1,7 @@
 class User {
   int? id;
   String name;
-  String lastname;
+  String? lastname;
   String email;
   String password;
   int? hotelId;
@@ -9,7 +9,7 @@ class User {
   User({
     this.id,
     required this.name,
-    required this.lastname,
+    this.lastname,
     required this.email,
     required this.password,
     this.hotelId,

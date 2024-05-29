@@ -17,11 +17,14 @@ bool isValidPassword(String? inputString, {bool isRequired = false}) {
   if (!isRequired && (inputString == null ? true : inputString.isEmpty)) {
     isInputStringValid = true;
   }
-  if (inputString != null && inputString.isNotEmpty) {
-    const pattern =
-        r'^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$';
-    final regExp = RegExp(pattern);
-    isInputStringValid = regExp.hasMatch(inputString);
+  if (inputString != null &&
+      inputString.isNotEmpty &&
+      inputString.length >= 8) {
+    return true;
+    // const pattern =
+    //     r'^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$';
+    // final regExp = RegExp(pattern);
+    // isInputStringValid = regExp.hasMatch(inputString);
   }
   return isInputStringValid;
 }

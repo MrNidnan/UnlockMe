@@ -15,13 +15,15 @@ class PantallaReservaController extends GetxController {
   Rx<String> address = 'Address Unknown'.obs;
 
   final dbHelper = DatabaseHelper();
-  late final HiveService _hiveService = Get.find<HiveService>();
+  late final HiveService _hiveService;
   late int? _reserveId;
   late String? _reserveEndsAt;
 
   @override
   void onInit() async {
     super.onInit();
+    _hiveService = Get.find<HiveService>();
+    _hiveService.openBoxes();
     final args = Get.arguments;
     Bike bike = args['bike'] as Bike;
 

@@ -8,6 +8,8 @@ class ReserveTimerService extends GetxService {
   Function()? onExpire;
   Function()? onCancel;
 
+  bool get isRunning => _timer != null && _timer!.isActive;
+
   void startTimer(DateTime endTime) {
     _timer?.cancel(); // Cancel any existing timer
     remainingTime.value = endTime.difference(DateTime.now()).inSeconds;

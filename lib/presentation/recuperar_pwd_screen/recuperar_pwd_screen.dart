@@ -5,7 +5,7 @@ import '../../widgets/app_bar/appbar_leading_image.dart';
 import '../../widgets/app_bar/custom_app_bar.dart';
 import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_text_form_field.dart';
-import 'controller/recuperar_pwd_controller.dart'; 
+import 'controller/recuperar_pwd_controller.dart';
 // ignore_for_file: must_be_immutable
 
 class RecuperarPwdScreen extends GetWidget<RecuperarPwdController> {
@@ -88,8 +88,7 @@ class RecuperarPwdScreen extends GetWidget<RecuperarPwdController> {
                     textInputAction: TextInputAction.done,
                     textInputType: TextInputType.visiblePassword,
                     validator: (value) {
-                      if (value == null ||
-                          (!isValidPassword(value, isRequired: true))) {
+                      if (!isValidPassword(value, isRequired: true)) {
                         return "err_msg_please_enter_valid_password".tr;
                       }
                       return null;

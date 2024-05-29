@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import '../core/app_export.dart';
 
 class CustomFloatingButton extends StatelessWidget {
+  static BoxDecoration get defaultDecoration => BoxDecoration(
+        color: appTheme.blueGray100,
+        borderRadius: BorderRadius.circular(29.h),
+      );
+  static BoxDecoration get fillGreen => BoxDecoration(
+        color: appTheme.green900,
+        borderRadius: BorderRadius.circular(29.h),
+      );
+
   CustomFloatingButton(
       {Key? key,
       this.heroTag,
@@ -39,11 +48,7 @@ class CustomFloatingButton extends StatelessWidget {
           alignment: Alignment.center,
           width: width ?? 0,
           height: height ?? 0,
-          decoration: decoration ??
-              BoxDecoration(
-                color: appTheme.blueGray100,
-                borderRadius: BorderRadius.circular(29.h),
-              ),
+          decoration: decoration ?? CustomFloatingButton.defaultDecoration,
           child: child,
         ),
       );

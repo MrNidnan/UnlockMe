@@ -23,7 +23,7 @@ class ImageConstant {
   static String imgCamera = '$imagePath/img_camera.svg';
 
 // ContadorViaje images
-  static String imgC268d1f55b3a = '$imagePath/img_c268d1f5_5b3a.png';
+  static String imgTraveller = '$imagePath/img_traveller.png';
 
 // Bienvenido images
   static String imgBuscar1 = '$imagePath/img_buscar_1.png';

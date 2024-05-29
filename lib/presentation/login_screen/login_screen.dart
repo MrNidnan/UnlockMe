@@ -1,6 +1,4 @@
-import 'package:UnlockMe/core/storage/contracts/user.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import '../../core/app_export.dart';
 import '../../core/utils/validation_functions.dart';
 import '../../widgets/custom_checkbox_button.dart';
@@ -8,16 +6,11 @@ import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_outlined_button.dart';
 import '../../widgets/custom_text_form_field.dart';
 import 'controller/login_controller.dart';
-import 'package:UnlockMe/core/storage/database_helper.dart';
 
-// ignore_for_file: must_be_immutable
 class LoginScreen extends GetWidget<LoginController> {
-  LoginScreen({Key? key})
-      : super(
-          key: key,
-        );
+  LoginScreen({Key? key}) : super(key: key);
 
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +64,7 @@ class LoginScreen extends GetWidget<LoginController> {
                       SizedBox(height: screenHeight * 0.03),
                       GestureDetector(
                         onTap: () {
-                          navigateToRecoverPwd();
+                          controller.navigateToRecoverPwd();
                         },
                         child: Text(
                           "msg_has_olvidado_tu".tr,
@@ -136,7 +129,7 @@ class LoginScreen extends GetWidget<LoginController> {
           maxHeight: SizeUtils.textBoxHeight() * 1.1,
         ),
         validator: (value) {
-          if (value == null || (!isValidPassword(value, isRequired: true))) {
+          if (!isValidPassword(value, isRequired: true)) {
             return "err_msg_please_enter_valid_password".tr;
           }
           return null;
@@ -198,12 +191,12 @@ class LoginScreen extends GetWidget<LoginController> {
       width: SizeUtils.width * 0.4,
       text: "lbl_entrar".tr,
       onPressed: () {
-        //if (_formKey.currentState?.validate() ?? false) {
-        callAuthMock();
-        //Get.toNamed(AppRoutes.bienvenidoOneScreen);
-        //} else {
-        //  Get.rawSnackbar(message: "Please fill in all required fields correctly.");
-        //}
+        if (_formKey.currentState?.validate() ?? false) {
+          controller.callAuthMock();
+        } else {
+          Get.rawSnackbar(
+              message: "Please fill in all required fields correctly.");
+        }
       },
     );
   }
@@ -213,63 +206,8 @@ class LoginScreen extends GetWidget<LoginController> {
       width: SizeUtils.width * 0.4,
       text: "lbl_registrarse".tr,
       onPressed: () {
-        navigateToRegister();
+        controller.navigateToRegister();
       },
-    );
-  }
-
-  // Future<void> callAuth() async {
-  //   PostLoginDeviceAuthReq postLoginDeviceAuthReq = PostLoginDeviceAuthReq();
-  //   try {
-  //     _onCallAuthSuccess();
-  //   } on PostLoginDeviceAuthResp {
-  //     _onCallAuthError();
-  //   } on NoInternetException catch (e) {
-  //     Get.rawSnackbar(message: e.toString());
-  //   } catch (e) {}
-  // }
-
-  Future<void> callAuthMock() async {
-    final dbHelper = DatabaseHelper();
-    final user = await dbHelper.getUser(controller.emailController.text);
-
-    if (user != null && controller.eyeController.text == user.password) {
-      _onCallAuthSuccess(user);
-    } else {
-      _onCallAuthError(user);
-    }
-  }
-
-  void _onCallAuthSuccess(User user) async {
-    var box = await Hive.openBox('userBox');
-    box.put('userId', user.id);
-    box.put('userHotelId', user.hotelId);
-    Get.toNamed(
-      AppRoutes.mapaScreen,
-    );
-  }
-
-  void _onCallAuthError(user) {
-    user == null
-        ? Get.rawSnackbar(message: "User not found")
-        : Get.rawSnackbar(message: "Invalid password");
-
-    // Get.defaultDialog(
-    //   onConfirm: () => Get.back(),
-    //   title: 'Authentication Error',
-    //   middleText: controller.postLoginDeviceAuthResp.message.toString() ?? '',
-    // );
-  }
-
-  navigateToRegister() {
-    Get.toNamed(
-      AppRoutes.registerScreen,
-    );
-  }
-
-  navigateToRecoverPwd() {
-    Get.toNamed(
-      AppRoutes.recuperarPwdScreen,
     );
   }
 }

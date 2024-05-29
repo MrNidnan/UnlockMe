@@ -14,12 +14,7 @@ class HiveService extends GetxService {
   Box get reserveBox => _reserveBox;
   Box get userBox => _userBox;
 
-  Future<void> initializeHive() async {
-    await Hive.initFlutter();
-    await _openBoxes();
-  }
-
-  Future<void> _openBoxes() async {
+  Future<void> openBoxes() async {
     _reserveBox = await Hive.openBox(reserveBoxName);
     _userBox = await Hive.openBox(userBoxName);
   }

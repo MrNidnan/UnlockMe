@@ -15,7 +15,8 @@ class RegisterScreen extends GetWidget<RegisterController> {
 
   @override
   Widget build(BuildContext context) {
-    SizeUtils.setScreenSize(MediaQuery.of(context), MediaQuery.of(context).orientation);
+    SizeUtils.setScreenSize(
+        MediaQuery.of(context), MediaQuery.of(context).orientation);
 
     return SafeArea(
       child: Scaffold(
@@ -45,11 +46,11 @@ class RegisterScreen extends GetWidget<RegisterController> {
                       margin: EdgeInsets.only(right: SizeUtils.width * 0.04),
                     ),
                     Spacer(),
-                    _buildNameOne(),
+                    _buildName(),
                     SizedBox(height: SizeUtils.height * 0.01),
                     _buildEmail(),
                     SizedBox(height: SizeUtils.height * 0.01),
-                    _buildPasswordOne(),
+                    _buildPassword(),
                     SizedBox(height: SizeUtils.height * 0.01),
                     _buildConfirmPassword(),
                     SizedBox(height: SizeUtils.height * 0.01),
@@ -61,7 +62,8 @@ class RegisterScreen extends GetWidget<RegisterController> {
                     SizedBox(height: SizeUtils.height * 0.03),
                     Text(
                       "msg_has_olvidado_tu".tr,
-                      style: CustomTextStyles.bodySmallPrimaryContainer.copyWith(
+                      style:
+                          CustomTextStyles.bodySmallPrimaryContainer.copyWith(
                         decoration: TextDecoration.underline,
                       ),
                     ),
@@ -76,7 +78,7 @@ class RegisterScreen extends GetWidget<RegisterController> {
     );
   }
 
-  Widget _buildNameOne() {
+  Widget _buildName() {
     return CustomTextFormField(
       controller: controller.nameOneController,
       hintText: "lbl_nombre".tr,
@@ -99,7 +101,7 @@ class RegisterScreen extends GetWidget<RegisterController> {
     );
   }
 
-  Widget _buildPasswordOne() {
+  Widget _buildPassword() {
     return Obx(
       () => CustomTextFormField(
         controller: controller.passwordOneController,
@@ -152,7 +154,8 @@ class RegisterScreen extends GetWidget<RegisterController> {
         textInputType: TextInputType.visiblePassword,
         suffix: InkWell(
           onTap: () {
-            controller.isShowPassword1.value = !controller.isShowPassword1.value;
+            controller.isShowPassword1.value =
+                !controller.isShowPassword1.value;
           },
           child: Container(
             margin: EdgeInsets.fromLTRB(
@@ -217,7 +220,8 @@ class RegisterScreen extends GetWidget<RegisterController> {
           // callRegister();
           Get.toNamed(AppRoutes.bienvenidoOneScreen);
         } else {
-          Get.rawSnackbar(message: "Please fill in all required fields correctly.");
+          Get.rawSnackbar(
+              message: "Please fill in all required fields correctly.");
         }
       },
     );
@@ -228,7 +232,12 @@ class RegisterScreen extends GetWidget<RegisterController> {
       width: SizeUtils.width * 0.4,
       text: "lbl_registrarse".tr,
       onPressed: () {
-        Get.toNamed(AppRoutes.mapaScreen);
+        if (_formKey.currentState?.validate() ?? false) {
+          controller.registerUser();
+        } else {
+          Get.rawSnackbar(
+              message: "Please fill in all required fields correctly.");
+        }
       },
     );
   }

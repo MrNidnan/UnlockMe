@@ -121,4 +121,10 @@ final Map<String, String> enUs = {
 // Network Error String
   "msg_network_err": "Network Error",
   "msg_something_went_wrong": "Something Went Wrong!",
+
+  //error message
+  "err_msg_please_enter_valid_password":
+      "Por favor ingrese una contraseña válida",
+  "err_msg_please_enter_valid_email":
+      "Por favor ingrese un correo electrónico válido",
 };
