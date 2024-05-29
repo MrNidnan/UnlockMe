@@ -26,7 +26,14 @@ class ContadorviajeController extends GetxController {
 
   void endTravel() async {
     final travelId = _hiveService.getTravelId();
-
+    if (travelId == null) {
+      Logger.logError('Travel ID is null');
+      return;
+    }
+    //get travel from db by user id
+    //check if travel is active
+    //TODO: check if this is the correct way to get vehicle action
+    // to fix if travelId is null
     await _dbHelper.getVehicleAction(travelId!).then((vehicleAction) async {
       if (vehicleAction == null) return;
       await stopTravel(vehicleAction);

@@ -40,7 +40,7 @@ class AppRoutes {
 
   static const String editarPerfilOneScreen = '/editar_perfil_one_screen';
 
-  static const String contadorviajeScreen = '/contadorviaje_screen';
+  static const String contadorViajeScreen = '/contadorviaje_screen';
 
   static const String bienvenidoScreen = '/bienvenido_screen';
 
@@ -86,7 +86,7 @@ class AppRoutes {
       bindings: [EditarPerfilOneBinding()],
     ),
     GetPage(
-      name: contadorviajeScreen,
+      name: contadorViajeScreen,
       page: () => ContadorviajeScreen(),
       bindings: [ContadorviajeBinding()],
     ),

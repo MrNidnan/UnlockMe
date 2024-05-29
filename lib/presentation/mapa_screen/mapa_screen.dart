@@ -101,7 +101,8 @@ class MapaScreen extends GetWidget<MapaController> {
             padding: EdgeInsets.all(SizeUtils.width * 0.02),
             decoration: IconButtonStyleHelper.fillGray,
             onTap: () {
-              controller.updateMap();
+              navigateToContador();
+              //controller.updateMap();
             },
             child: CustomImageView(
               imagePath: ImageConstant.imgLinkedin,
@@ -110,6 +111,8 @@ class MapaScreen extends GetWidget<MapaController> {
           Spacer(),
           CustomFloatingButton(
             heroTag: 'settings-1',
+            backgroundColor: appTheme.green900,
+            decoration: CustomFloatingButton.fillGreen,
             height: 35,
             width: 35,
             onTap: () {
@@ -117,11 +120,18 @@ class MapaScreen extends GetWidget<MapaController> {
             },
             child: CustomImageView(
               imagePath: ImageConstant.imgSettings,
+              height: 25,
+              width: 25,
+              color: appTheme.limeA200,
             ),
           ),
         ],
       ),
     );
+  }
+
+  void navigateToContador() {
+    Get.toNamed(AppRoutes.contadorViajeScreen);
   }
 
   void navigateToSettings() {

@@ -83,7 +83,7 @@ class MapaController extends GetxController with WidgetsBindingObserver {
         height: 80,
         child: Icon(
           Icons.person_pin_circle_outlined,
-          color: Color.fromARGB(255, 235, 215, 38),
+          color: appTheme.green900,
           size: 40.0,
         ),
       ));

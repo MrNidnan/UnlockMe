@@ -66,7 +66,7 @@ class DatabaseHelper {
         FOREIGN KEY(bikeId) REFERENCES bikes(id)
       )
     ''');
-
+    //TODO change to travels
     await db.execute('''
       CREATE TABLE vehicle_actions (
         actionId INTEGER PRIMARY KEY AUTOINCREMENT,

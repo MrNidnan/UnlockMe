@@ -123,7 +123,7 @@ class EscanearQrController extends GetxController {
     final currentDate = DateTime.now();
     var travelId = await dbHelper.setVehicleAction(VehicleActionType.started,
         currentDate.toIso8601String(), bike.id!, _userId!);
-    _hiveService.setUserTravel(travelId, currentDate.toIso8601String());
+    await _hiveService.setUserTravel(travelId, currentDate.toIso8601String());
     _timerService.startTimer(currentDate);
   }
 
