@@ -77,32 +77,24 @@ class HiveService extends GetxService {
     await _userBox.delete(userHotelIdKey);
   }
 
-  int? getTravelId() {
-    return _userBox.get(userTravelIdKey);
+  int? getRouteId() {
+    return _userBox.get(userRouteIdKey);
   }
 
-  Future<void> setUserTravel(
-      int userTravelId, String userTravelStartsAt) async {
-    await _userBox.put(userTravelIdKey, userTravelId);
-    await _userBox.put(userTravelStartsAt, userTravelStartsAt);
+  Future<void> setUserRoute(
+      int userRouteIdKey, String userRouteStartsAt) async {
+    await _userBox.put(userRouteIdKey, userRouteIdKey);
+    await _userBox.put(userRouteStartsAt, userRouteStartsAt);
   }
 
-  Future<void> deleteUserTravel() async {
-    await _userBox.delete(userTravelIdKey);
-    await _userBox.delete(userTravelStartsAt);
+  Future<void> deleteUserRoute() async {
+    await _userBox.delete(userRouteIdKey);
+    await _userBox.delete(userRouteStartsAt);
   }
 
-  String? getTravelStartsAt() {
-    return _userBox.get(userTravelStartsAt);
+  String? getRouteStartsAt() {
+    return _userBox.get(userRouteStartsAt);
   }
-
-  // Future<void> setTravelStartsAt(String userTravelStartsAt) async {
-  //   await _userBox.put(userTravelStartsAt, userTravelStartsAt);
-  // }
-
-  // Future<void> deleteTravelStartsAt() async {
-  //   await _userBox.delete(userTravelStartsAt);
-  // }
 
   //// Constants for Hive
   // Box names
@@ -116,6 +108,6 @@ class HiveService extends GetxService {
   // User box keys
   static const String userIdKey = 'userId';
   static const String userHotelIdKey = 'userHotelId';
-  static const String userTravelIdKey = 'userTravelId';
-  static const String userTravelStartsAt = 'userTravelStartsAt';
+  static const String userRouteIdKey = 'userRouteId';
+  static const String userRouteStartsAt = 'userRouteStartsAt';
 }

@@ -1,4 +1,4 @@
-import 'package:UnlockMe/core/app_storage.dart';
+import 'package:UnlockMe/core/app_storage.dart' as db;
 import 'package:UnlockMe/core/utils/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,48 +13,44 @@ import '../models/contadorviaje_model.dart';
 class ContadorviajeController extends GetxController {
   Rx<ContadorviajeModel> contadorviajeModelObj = ContadorviajeModel().obs;
 
-  final TravelTimerService _travelTimerService = Get.find<TravelTimerService>();
-  late final HiveService _hiveService;
-  final DatabaseHelper _dbHelper = DatabaseHelper();
+  final _travelTimerService = Get.find<TravelTimerService>();
+  final _hiveService = Get.find<HiveService>();
+  final _dbHelper = db.DatabaseHelper();
 
   @override
   void onInit() {
     super.onInit();
-    _hiveService = Get.find<HiveService>();
     _hiveService.openBoxes();
+    Logger.logDebug(
+        'ContadorviajeController initializedÑ ${_hiveService.getRouteId()}');
   }
 
-  void endTravel() async {
-    final travelId = _hiveService.getTravelId();
-    if (travelId == null) {
-      Logger.logError('Travel ID is null');
+  void endTravelRoute() async {
+    final userId = _hiveService.getUserId();
+    if (userId == null) {
+      Logger.logError('User ID is null, cannot end travel route!');
       return;
     }
-    //get travel from db by user id
-    //check if travel is active
-    //TODO: check if this is the correct way to get vehicle action
-    // to fix if travelId is null
-    await _dbHelper.getVehicleAction(travelId!).then((vehicleAction) async {
-      if (vehicleAction == null) return;
-      await stopTravel(vehicleAction);
+
+    await _dbHelper.getCurrentRouteForUser(userId).then((route) async {
+      if (route == null) return;
+      await finishRoute(route);
     });
   }
 
-  Future<void> stopTravel(VehicleAction vehicleAction) async {
+  Future<void> finishRoute(db.Route route) async {
     // Cancel the travel timer
     try {
       _travelTimerService.cancelTimer();
 
-      int bikeId = vehicleAction.vehicleId;
+      // Get bike to get it's current position, as is safer than the device one
+      // Bike position should be updated in the backend on retrieval the bike.
+      var bike = await _dbHelper.getBikeById(route.vehicleId);
       // Update vehicle action to ended
-      _dbHelper.setVehicleAction(
-          VehicleActionType.ended,
-          DateTime.now().toIso8601String(),
-          vehicleAction.vehicleId,
-          vehicleAction.userId);
-      _hiveService.deleteUserTravel();
+      _dbHelper.updateRouteEnd(route.routeId!, bike.latitude, bike.longitude);
+      await _hiveService.deleteUserRoute();
 
-      _dbHelper.updateBikeStatus(bikeId, BikeStatus.available);
+      _dbHelper.updateBikeStatus(route.vehicleId, db.BikeStatus.available);
     } catch (e) {
       Logger.logError('Error stopping travel: $e');
       Get.snackbar('Error cancelling travel', 'Unable to end travel right now',

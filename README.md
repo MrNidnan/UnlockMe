@@ -19,8 +19,7 @@ Flutter SDK Version 3.19.4 or greater.
 
 ### Figma design guidelines for better UI accuracy
 
-Read our guidelines to increase the accuracy of design-to-code conversion by optimizing Figma designs.
-https://docs.dhiwise.com/docs/Designguidelines/intro
+https://www.figma.com/design/STIe1enjP75D7AcmdOyGt4/UnlockMe-App-for-sharing?node-id=0-1&t=VCF5wr8Enp0TidMu-1
 
 ### Check the UI of the entire app
 
@@ -47,9 +46,11 @@ After successful build, your application structure should look like this:
     ├── main.dart                   - Starting point of the application
     ├── core
     │   ├── app_export.dart         - It contains commonly used file imports
+    │   ├── app_storage.dart        - It contains db contracts and storage related imports (including constants)
     │   ├── constants               - It contains all constants classes
     │   ├── errors                  - It contains error handling classes
     │   ├── network                 - It contains network-related classes
+    │   ├── services                - It contains common internal services used across the app (like timers)
     │   └── utils                   - It contains common files and utilities of the application
     ├── data
     │   ├── apiClient               - It contains API calling methods
@@ -57,6 +58,7 @@ After successful build, your application structure should look like this:
     │   └── repository              - Network repository
     ├── localization                - It contains localization classes
     ├── presentation                - It contains widgets of the screens with their controllers and the models of the whole application.
+    │                                 Every Screen has its screen (UI) Model (variables) Controller (business logic) and binding (binds controller with the screen (DI)
     ├── routes                      - It contains all the routes of the application
     └── theme                       - It contains app theme and decoration classes
     └── widgets                     - It contains all custom widget classes

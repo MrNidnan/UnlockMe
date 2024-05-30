@@ -3,13 +3,13 @@ import 'package:UnlockMe/core/services/travel_timer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:UnlockMe/core/app_export.dart';
-import 'package:UnlockMe/core/app_storage.dart';
+import 'package:UnlockMe/core/app_storage.dart' as db;
 import '../models/escanear_qr_model.dart';
 
 class EscanearQrController extends GetxController {
   Rx<EscanearQrModel> escanearQrModelObj = EscanearQrModel().obs;
   QRViewController? qrViewController;
-  final dbHelper = DatabaseHelper();
+  final dbHelper = db.DatabaseHelper();
 
   late final int? _reserveId;
   late final int? _userId;
@@ -92,7 +92,7 @@ class EscanearQrController extends GetxController {
       }
 
       await _unlockVehicle(bike);
-      await startTravel(bike);
+      await startRoute(bike);
       return true;
     } catch (e) {
       Logger.logError('Error unlocking bike: $e');
@@ -106,34 +106,44 @@ class EscanearQrController extends GetxController {
     }
   }
 
-  Future<void> _unlockVehicle(Bike bike) async {
+  Future<void> _unlockVehicle(db.Bike bike) async {
     Logger.logDebug('Unlocking bike with ID: ${bike.id}');
 
     // Update bike status to inUse (triggering on the admin backend the unlock of the bike)
-    await dbHelper.updateBike(bike.id!, {'status': BikeStatus.inUse});
+    await dbHelper.updateBike(bike.id!, {'status': db.BikeStatus.inUse});
     // Update reserve status to used and delete the reserve from the local storage
     if (_reserveId != null && _reserveId! > 0) {
-      await dbHelper.updateReserve(_reserveId!, {'status': ReserveStatus.used});
+      await dbHelper
+          .updateReserve(_reserveId!, {'status': db.ReserveStatus.used});
       _hiveService.deleteReserve();
     }
   }
 
   //Start travel timer and variables
-  Future<void> startTravel(Bike bike) async {
+  Future<void> startRoute(db.Bike bike) async {
     final currentDate = DateTime.now();
-    var travelId = await dbHelper.setVehicleAction(VehicleActionType.started,
-        currentDate.toIso8601String(), bike.id!, _userId!);
-    await _hiveService.setUserTravel(travelId, currentDate.toIso8601String());
+    var routeId = await dbHelper.insertRoute(
+      db.Route(
+        vehicleId: bike.id!,
+        userId: _userId!,
+        createdAt: currentDate.toIso8601String(),
+        startLatitude: bike.latitude,
+        startLongitude: bike.longitude,
+      ),
+    );
+    Logger.logDebug('Route started with ID: $routeId');
+
+    await _hiveService.setUserRoute(routeId, currentDate.toIso8601String());
     _timerService.startTimer(currentDate);
   }
 
   //Validates Qr and gets the bike
-  Future<Bike?> _getBikeWithQrCode(String code) async {
+  Future<db.Bike?> _getBikeWithQrCode(String code) async {
     Logger.logDebug('Validating QR code: $code');
     if (code.isNotEmpty && code.startsWith('VALID')) {
       // Implement logic querying DB and external services to validate QR code and unlock bike
       // Query the database for the vehicle with the associated QR code
-      Bike? bike = await dbHelper.getBikeByQrCode(code, _userHotelId!);
+      db.Bike? bike = await dbHelper.getBikeByQrCode(code, _userHotelId!);
       return bike;
     }
     return null;

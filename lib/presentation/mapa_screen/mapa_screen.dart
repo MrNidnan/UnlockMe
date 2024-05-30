@@ -1,3 +1,5 @@
+import 'package:UnlockMe/theme/custom_button_style.dart';
+import 'package:UnlockMe/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -24,6 +26,32 @@ class MapaScreen extends GetWidget<MapaController> {
             children: [
               //_buildMap(),
               Obx(() => _buildMap()),
+              Obx(() {
+                final isRunning = controller.isReserveTimerRunning.value;
+                return Positioned(
+                  bottom: MediaQuery.of(context).size.height * 0.20,
+                  child: Column(
+                    children: [
+                      isRunning
+                          ? CustomElevatedButton(
+                              width: SizeUtils.width * 0.7,
+                              text:
+                                  'lb_reserve_time_left ${controller.getTimerTime()}'
+                                      .tr,
+                              buttonStyle:
+                                  CustomButtonStyles.outlinePrimaryTL20,
+                              buttonTextStyle:
+                                  CustomTextStyles.titleMediumOnPrimary,
+                              onPressed: () {
+                                controller.navigateToReserveScreen();
+                              },
+                            )
+                          : Container(),
+                      SizedBox(height: 16.0),
+                    ],
+                  ),
+                );
+              }),
               Positioned(
                 bottom: MediaQuery.of(context).size.height *
                     0.10, // Adjust based on your layout needs

@@ -166,7 +166,7 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
                   ),
                   onDragging: (handlerIndex, lowerValue, upperValue) {
                     if (lowerValue == 100) {
-                      controller.endTravel();
+                      controller.endTravelRoute();
                     }
                   },
                   tooltip: FlutterSliderTooltip(

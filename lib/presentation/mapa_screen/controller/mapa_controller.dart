@@ -1,5 +1,6 @@
 import 'package:UnlockMe/core/app_export.dart';
 import 'package:UnlockMe/core/app_storage.dart';
+import 'package:UnlockMe/core/services/hive_service.dart';
 import 'package:UnlockMe/core/services/location_service.dart';
 import 'package:UnlockMe/core/services/travel_timer_service.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,14 @@ import 'dart:async';
 import '../models/mapa_model.dart';
 
 class MapaController extends GetxController with WidgetsBindingObserver {
-  final ReserveTimerService _timerService = Get.find<ReserveTimerService>();
-  final TravelTimerService _travelTimerService = Get.find<TravelTimerService>();
+  final _hiveService = Get.find<HiveService>();
+  late ReserveTimerService _reserveTimerService;
+  late TravelTimerService _travelTimerService;
   // Observing the timer state from TimerService
-  RxInt get remainingTime => _timerService.remainingTime;
+  RxInt get remainingTime => _reserveTimerService.remainingTime;
+  RxInt get acumulateTime => _travelTimerService.accumulatedTime;
+  RxBool get isReserveTimerRunning => _reserveTimerService.isRunning;
+  RxBool get isTravelTimerRunning => _travelTimerService.isRunning.obs;
 
   Rx<MapaModel> mapaModelObj = MapaModel().obs;
 
@@ -27,8 +32,31 @@ class MapaController extends GetxController with WidgetsBindingObserver {
   void onInit() async {
     super.onInit();
     WidgetsBinding.instance.addObserver(this);
+    _reserveTimerService = Get.find<ReserveTimerService>();
+    _travelTimerService = Get.find<TravelTimerService>();
 
-    //_startFetchingBikeCoordinates();
+    // Observe the timers independently
+    ever(isReserveTimerRunning, _handleReserveTimerStateChange);
+    ever(isTravelTimerRunning, _handleTravelTimerStateChange);
+  }
+
+  void _handleReserveTimerStateChange(bool isRunning) {
+    Logger.logDebug('reserve Time status change $isRunning');
+    if (isRunning) {
+      // Handle logic when reserve timer starts
+    } else {
+      // Handle logic when reserve timer stops
+    }
+  }
+
+  void _handleTravelTimerStateChange(bool isRunning) {
+    Logger.logDebug('Travel Time status change $isRunning');
+
+    if (isRunning) {
+      // Handle logic when travel timer starts
+    } else {
+      // Handle logic when travel timer stops
+    }
   }
 
   // Called once the widget is fully rendered and interactive.
@@ -68,9 +96,7 @@ class MapaController extends GetxController with WidgetsBindingObserver {
           },
           child: Icon(
             Icons.pedal_bike,
-            color: bike.status == BikeStatus.available
-                ? Colors.blue
-                : Color.fromARGB(255, 233, 128, 9),
+            color: getBikeColor(bike.status),
             size: 40.0,
           ),
         ),
@@ -132,5 +158,50 @@ class MapaController extends GetxController with WidgetsBindingObserver {
       updateMap();
     });
     ;
+  }
+
+  void navigateToReserveScreen() {
+    dbHelper.getActiveReserveForUser(_hiveService.getUserId()!).then((reserve) {
+      if (reserve == null) {
+        Get.snackbar(
+          'Error',
+          'Reserve could not be loaded',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.red,
+        );
+        return;
+      }
+      dbHelper.getBikeById(reserve.bikeId).then((bike) {
+        navigateToBikeDetails(bike);
+      });
+    });
+  }
+
+  Color getBikeColor(String status) {
+    switch (status) {
+      case BikeStatus.available:
+        return Colors.blue;
+      case BikeStatus.inUse:
+        return appTheme.green900;
+      case BikeStatus.reserved:
+        return Colors.orange;
+      default:
+        return Colors.black; // Color for other statuses
+    }
+  }
+
+  String getTimerTime() {
+    if (isReserveTimerRunning.value) {
+      final time = remainingTime.value;
+      final minutes = (time ~/ 60).toString().padLeft(2, '0');
+      final seconds = (time % 60).toString().padLeft(2, '0');
+      return '$minutes:$seconds';
+    } else if (isTravelTimerRunning.value) {
+      final time = acumulateTime.value;
+      final minutes = (time ~/ 60).toString().padLeft(2, '0');
+      final seconds = (time % 60).toString().padLeft(2, '0');
+      return '$minutes:$seconds';
+    }
+    return '00:00'; // Default case
   }
 }

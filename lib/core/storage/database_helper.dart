@@ -1,12 +1,8 @@
-import 'package:UnlockMe/core/storage/contracts/enums_constants.dart';
-import 'package:UnlockMe/core/storage/contracts/user.dart';
-import 'package:UnlockMe/core/storage/contracts/vehicle_action.dart';
 import 'package:UnlockMe/core/utils/logger.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-import 'contracts/bike.dart';
-import 'contracts/reserve.dart';
+import 'package:UnlockMe/core/app_storage.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -66,14 +62,18 @@ class DatabaseHelper {
         FOREIGN KEY(bikeId) REFERENCES bikes(id)
       )
     ''');
-    //TODO change to travels
+
     await db.execute('''
-      CREATE TABLE vehicle_actions (
-        actionId INTEGER PRIMARY KEY AUTOINCREMENT,
-        action_type TEXT,
+      CREATE TABLE routes (
+        routeId INTEGER PRIMARY KEY AUTOINCREMENT,
         createdAt TEXT DEFAULT CURRENT_TIMESTAMP,
+        finishedAt TEXT,
         vehicleId INTEGER,
         userId INTEGER,
+        startLatitude REAL,
+        startLongitude REAL,
+        endLatitude REAL,
+        endLongitude REAL,
         FOREIGN KEY(vehicleId) REFERENCES bikes(id),
         FOREIGN KEY(userId) REFERENCES users(id)
       )
@@ -130,6 +130,7 @@ class DatabaseHelper {
     await db.delete('users');
     await db.delete('bikes');
     await db.delete('reserves');
+    await db.delete('routes');
   }
 
   Future<void> closeDatabase() async {
@@ -181,16 +182,6 @@ class DatabaseHelper {
     }
     return User.fromMap(user.first);
   }
-
-  // Future<int> updateUser(User user) async {
-  //   final db = await database;
-  //   return await db.update(
-  //     'users',
-  //     user.toMap(),
-  //     where: 'id = ?',
-  //     whereArgs: [user.id],
-  //   );
-  // }
 
   Future<int> deleteUser(int id) async {
     final db = await database;
@@ -290,16 +281,6 @@ class DatabaseHelper {
     });
   }
 
-  // Future<int> updateReserve(Reserve reserve) async {
-  //   final db = await database;
-  //   return await db.update(
-  //     'reserves',
-  //     reserve.toMap(),
-  //     where: 'reserveId = ?',
-  //     whereArgs: [reserve.reserveId],
-  //   );
-  // }
-
   Future<int> updateReserve(int id, Map<String, dynamic> reserve) async {
     final db = await database;
     return await db
@@ -336,30 +317,53 @@ class DatabaseHelper {
     return null;
   }
 
-  // Insert or update vehicle Action
-  Future<int> setVehicleAction(
-      String actionType, String dateAsString, int vehicleId, int userId) async {
+  // CRUD for routes
+  // Methods for the Route table
+  Future<int> insertRoute(Route route) async {
     final db = await database;
-    return await db.insert(
-      'vehicle_actions',
+    return await db.insert('routes', route.toMap());
+  }
+
+  Future<void> updateRouteEnd(
+      int routeId, double endLatitude, double endLongitude) async {
+    final db = await database;
+    await db.update(
+      'routes',
       {
-        'action_type': actionType,
-        'createdAt': dateAsString,
-        'vehicleId': vehicleId,
-        'userId': userId,
+        'endLatitude': endLatitude,
+        'endLongitude': endLongitude,
+        'finishedAt': DateTime.now().toIso8601String(),
       },
-      conflictAlgorithm: ConflictAlgorithm.replace,
+      where: 'routeId = ?',
+      whereArgs: [routeId],
     );
   }
 
-  Future<VehicleAction?> getVehicleAction(int actionId) async {
+  Future<List<Route>> getRoutesByUserId(int userId) async {
     final db = await database;
-    final List<Map<String, dynamic>> maps = await db
-        .query('vehicle_actions', where: 'actionId = ?', whereArgs: [actionId]);
+    final List<Map<String, dynamic>> maps = await db.query(
+      'routes',
+      where: 'userId = ?',
+      whereArgs: [userId],
+    );
+    return List.generate(maps.length, (i) {
+      return Route.fromMap(maps[i]);
+    });
+  }
+
+  Future<Route?> getCurrentRouteForUser(int userId) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'routes',
+      where: 'userId = ? AND finishedAt IS NULL',
+      whereArgs: [userId],
+      limit: 1,
+    );
+
     if (maps.isNotEmpty) {
-      Logger.logDebug('Vehicle action: ${maps.first}');
-      return VehicleAction.fromMap(maps.first);
+      return Route.fromMap(maps.first);
+    } else {
+      return null;
     }
-    return null;
   }
 }

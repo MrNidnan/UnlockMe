@@ -210,6 +210,6 @@ class LightCodeColors {
 // Teal
   Color get teal900 => Color(0XFF063C2B);
 // Yellow
-  Color get yellow300 => Color(0XFFEFF276);
+  Color get yellow300 => Color(0XFFF0F276);
   Color get yellow400 => Color(0XFFF2FF60);
 }
