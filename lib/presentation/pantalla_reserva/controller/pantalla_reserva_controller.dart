@@ -87,13 +87,6 @@ class PantallaReservaController extends GetxController {
   }
 
   @override
-  void onReady() {
-    // TODO: implement onReady
-    super.onReady();
-    Logger.logDebug(_hiveService.getRouteId() ?? 'No route found');
-  }
-
-  @override
   void onClose() {
     //// Do NOT cancel the timer here as we want to run it even when the screen is closed to cancel the reservation
     super.onClose();

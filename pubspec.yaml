@@ -27,6 +27,7 @@ dependencies:
   qr_code_scanner: ^1.0.1
   hive_flutter: ^1.1.0
   flutter_xlider: ^3.5.0
+  mockito: ^5.4.4
 dev_dependencies:
   flutter_test:
     sdk: flutter

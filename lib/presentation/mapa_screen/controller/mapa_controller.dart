@@ -164,8 +164,16 @@ class MapaController extends GetxController with WidgetsBindingObserver {
 
   void navigateToContador() {
     Get.toNamed(AppRoutes.contadorViajeScreen)?.then((value) async {
-      //Make sure map is updated when comming back route deatils in case travel is cancelled
-      updateMap();
+      if (_hiveService.getRouteId() == null) {
+        //Make sure map is updated when comming back route deatils in case travel is cancelled
+        updateMap();
+        Get.snackbar(
+          'Success',
+          'Travel route finished, enjoy your day!',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.green,
+        );
+      }
     });
     ;
   }
@@ -174,13 +182,13 @@ class MapaController extends GetxController with WidgetsBindingObserver {
     Get.toNamed(AppRoutes.escanearQrScreen)?.then((value) async {
       if (_hiveService.getRouteId() != null) {
         //Make sure map is updated when comming back from qr scan with bike unlocked
+        updateMap();
         Get.snackbar(
           'Success',
           'Bike unlocked successfully!',
           snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.green,
         );
-        updateMap();
       }
     });
   }
