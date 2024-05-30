@@ -277,7 +277,7 @@ class PerfilUsuarioScreen extends GetWidget<PerfilUsuarioController> {
   /// Navigates to the escanearQrScreen when the action is triggered.
   onTapLinkvehicles() {
     Get.toNamed(
-      AppRoutes.escanearQrScreen,
+      AppRoutes.qrScanScreen,
     );
   }
 

@@ -15,9 +15,6 @@ class RegisterScreen extends GetWidget<RegisterController> {
 
   @override
   Widget build(BuildContext context) {
-    SizeUtils.setScreenSize(
-        MediaQuery.of(context), MediaQuery.of(context).orientation);
-
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,

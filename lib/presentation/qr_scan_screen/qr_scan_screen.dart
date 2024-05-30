@@ -4,16 +4,13 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import '../../core/app_export.dart';
 import '../../theme/custom_button_style.dart';
 import '../../widgets/custom_elevated_button.dart';
-import 'controller/escanear_qr_controller.dart';
+import 'controller/qr_scan_controller.dart';
 
-class EscanearQrScreen extends GetWidget<EscanearQrController> {
-  const EscanearQrScreen({Key? key}) : super(key: key);
+class QrScanScreen extends GetWidget<QrScanController> {
+  const QrScanScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    SizeUtils.setScreenSize(
-        MediaQuery.of(context), MediaQuery.of(context).orientation);
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: appTheme.gray100,

@@ -14,11 +14,6 @@ class LoginScreen extends GetWidget<LoginController> {
 
   @override
   Widget build(BuildContext context) {
-    SizeUtils.setScreenSize(
-        MediaQuery.of(context), MediaQuery.of(context).orientation);
-    final screenHeight = SizeUtils.height;
-    final screenWidth = SizeUtils.width;
-
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -29,39 +24,39 @@ class LoginScreen extends GetWidget<LoginController> {
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
             child: SizedBox(
-              height: screenHeight,
+              height: SizeUtils.height,
               child: Form(
                 key: _formKey,
                 child: Container(
                   width: double.infinity,
                   padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 0.08,
-                    vertical: screenHeight * 0.10,
+                    horizontal: SizeUtils.width * 0.08,
+                    vertical: SizeUtils.height * 0.10,
                   ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: screenHeight * 0.005),
+                      SizedBox(height: SizeUtils.height * 0.005),
                       CustomImageView(
                         imagePath: ImageConstant.imgImage3TracedGreen900,
-                        height: screenHeight * 0.06,
-                        width: screenWidth * 0.65,
+                        height: SizeUtils.height * 0.06,
+                        width: SizeUtils.width * 0.65,
                         alignment: Alignment.centerRight,
-                        margin: EdgeInsets.only(right: screenWidth * 0.07),
+                        margin: EdgeInsets.only(right: SizeUtils.width * 0.07),
                       ),
                       Spacer(),
                       _buildEmail(context),
-                      SizedBox(height: screenHeight * 0.01),
+                      SizedBox(height: SizeUtils.height * 0.01),
                       _buildEye(context),
-                      SizedBox(height: screenHeight * 0.01),
+                      SizedBox(height: SizeUtils.height * 0.01),
                       _buildRecordarMisDato(context),
-                      SizedBox(height: screenHeight * 0.01),
+                      SizedBox(height: SizeUtils.height * 0.01),
                       _buildReply(context),
-                      SizedBox(height: screenHeight * 0.05),
+                      SizedBox(height: SizeUtils.height * 0.05),
                       _buildEntrar(context),
-                      SizedBox(height: screenHeight * 0.02),
+                      SizedBox(height: SizeUtils.height * 0.02),
                       _buildRegistrarse(context),
-                      SizedBox(height: screenHeight * 0.03),
+                      SizedBox(height: SizeUtils.height * 0.03),
                       GestureDetector(
                         onTap: () {
                           controller.navigateToRecoverPwd();

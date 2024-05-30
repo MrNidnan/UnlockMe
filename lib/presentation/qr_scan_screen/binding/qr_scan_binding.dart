@@ -1,13 +1,13 @@
 import '../../../core/app_export.dart';
-import '../controller/escanear_qr_controller.dart';
+import '../controller/qr_scan_controller.dart';
 
 /// A binding class for the EscanearQrScreen.
 ///
 /// This class ensures that the EscanearQrController is created when the
 /// EscanearQrScreen is first loaded.
-class EscanearQrBinding extends Bindings {
+class QrScanBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => EscanearQrController());
+    Get.lazyPut(() => QrScanController());
   }
 }

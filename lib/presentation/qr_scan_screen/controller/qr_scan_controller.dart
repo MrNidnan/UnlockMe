@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:UnlockMe/core/app_export.dart';
 import 'package:UnlockMe/core/app_storage.dart' as db;
-import '../models/escanear_qr_model.dart';
+import '../models/qr_scan_model.dart';
 
-class EscanearQrController extends GetxController {
-  Rx<EscanearQrModel> escanearQrModelObj = EscanearQrModel().obs;
+class QrScanController extends GetxController {
+  Rx<QrScanModel> qrScanModel = QrScanModel().obs;
   QRViewController? qrViewController;
   final dbHelper = db.DatabaseHelper();
 
@@ -153,7 +153,7 @@ class EscanearQrController extends GetxController {
 
   void navigateToManualQr() {
     Get.offAndToNamed(
-      AppRoutes.popUpInsertQrCodeScreen,
+      AppRoutes.qrManualScreen,
       arguments: _onManualQrSubmit,
     )?.then((value) {
       // Retrieve MapaController and trigger refresh so the map will be updated

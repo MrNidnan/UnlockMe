@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../models/pop_up_insert_qr_code_model.dart';
+import '../models/qr_manual_model.dart';
 
 /// A controller class for the PopUpInsertQrCodeScreen.
 ///
 /// This class manages the state of the PopUpInsertQrCodeScreen, including the
 /// current popUpInsertQrCodeModelObj
-class PopUpInsertQrCodeController extends GetxController {
-  Rx<PopUpInsertQrCodeModel> popUpInsertQrCodeModelObj =
-      PopUpInsertQrCodeModel().obs;
+class QrManualController extends GetxController {
+  Rx<QrManualModel> qrManualModelobj = QrManualModel().obs;
   TextEditingController inputTextController = TextEditingController();
 
   late Function(String) qrValidationCallback;

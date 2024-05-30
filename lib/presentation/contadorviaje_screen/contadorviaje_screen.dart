@@ -2,8 +2,6 @@ import 'package:UnlockMe/widgets/custom_nav_left.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import '../../core/app_export.dart';
-import '../../widgets/app_bar/appbar_leading_image.dart';
-import '../../widgets/app_bar/custom_app_bar.dart';
 import 'controller/contadorviaje_controller.dart';
 
 class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
@@ -11,11 +9,7 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
 
   @override
   Widget build(BuildContext context) {
-    // Set the screen size using SizeUtils
-    SizeUtils.setScreenSize(
-        MediaQuery.of(context), MediaQuery.of(context).orientation);
-    final screenHeight = SizeUtils.height;
-    final screenWidth = SizeUtils.width;
+    ;
 
     return SafeArea(
       child: Scaffold(
@@ -30,10 +24,10 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: screenHeight * 0.05),
+                SizedBox(height: SizeUtils.height * 0.05),
                 CustomNavLeftWidget(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
+                  screenHeight: SizeUtils.height,
+                  screenWidth: SizeUtils.width,
                   onTap: () {
                     controller.goBackToMap();
                   },

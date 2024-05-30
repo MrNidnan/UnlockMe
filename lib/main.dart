@@ -66,26 +66,3 @@ class MyApp extends StatelessWidget {
     });
   }
 }
-
-// class MyAppBinding extends Bindings {
-//   @override
-//   void dependencies() {
-//     Get.lazyPut<HiveService>(() => HiveService());
-//   }
-// }
-
-// class MyAppController extends GetxController {
-//   final HiveService _hiveService = Get.find<HiveService>();
-
-//   @override
-//   void onInit() {
-//     super.onInit();
-//     _hiveService.init();
-//   }
-
-//   @override
-//   void onClose() {
-//     super.onClose();
-//     _hiveService.closeHive();
-//   }
-// }

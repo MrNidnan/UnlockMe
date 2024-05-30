@@ -179,7 +179,7 @@ class MapaController extends GetxController with WidgetsBindingObserver {
   }
 
   void navigateToQrScan() {
-    Get.toNamed(AppRoutes.escanearQrScreen)?.then((value) async {
+    Get.toNamed(AppRoutes.qrScanScreen)?.then((value) async {
       if (_hiveService.getRouteId() != null) {
         //Make sure map is updated when comming back from qr scan with bike unlocked
         updateMap();
@@ -194,7 +194,7 @@ class MapaController extends GetxController with WidgetsBindingObserver {
   }
 
   void navigateToSettings() {
-    Get.toNamed(AppRoutes.editarPerfilOneScreen);
+    Get.toNamed(AppRoutes.perfilUsuarioScreen);
   }
 
   Color getBikeColor(String status) {
@@ -210,11 +210,12 @@ class MapaController extends GetxController with WidgetsBindingObserver {
     }
   }
 
+  //TODO fix this label resolution
   String getTimerButtonLabel() {
     if (isReserveTimerRunning.value) {
-      return 'lbl_reserve_time_left ${getTimerTime()}'.tr;
+      return 'Reserva  ${getTimerTime()}'.tr;
     } else if (isTravelTimerRunning.value) {
-      return 'lbl_route_time ${getTimerTime()}'.tr;
+      return 'Tiempo viaje  ${getTimerTime()}'.tr;
     }
     return 'Timer'; // Default case
   }

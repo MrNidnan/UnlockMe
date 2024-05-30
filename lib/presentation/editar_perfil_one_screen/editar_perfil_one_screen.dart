@@ -98,18 +98,6 @@ class EditarPerfilOneScreen extends GetWidget<EditarPerfilOneController> {
             ],
           ),
         ),
-        bottomNavigationBar: _buildBottomAppBar(),
-        floatingActionButton: CustomFloatingButton(
-          heroTag: 'search-1',
-          height: 35,
-          width: 35,
-          child: CustomImageView(
-            imagePath: ImageConstant.imgSearch,
-            height: 17.5.v,
-            width: 17.5.h,
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
   }
@@ -250,7 +238,7 @@ class EditarPerfilOneScreen extends GetWidget<EditarPerfilOneController> {
   Widget _buildBottomAppBar() {
     return SizedBox(
       child: SizedBox(
-        height: 95.v,
+        height: 120.v,
         width: double.maxFinite,
         child: Stack(
           alignment: Alignment.topCenter,

@@ -13,9 +13,6 @@ class MapaScreen extends GetWidget<MapaController> {
 
   @override
   Widget build(BuildContext context) {
-    SizeUtils.setScreenSize(
-        MediaQuery.of(context), MediaQuery.of(context).orientation);
-
     return SafeArea(
       child: Scaffold(
         body: SizedBox(

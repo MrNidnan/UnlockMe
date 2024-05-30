@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 import '../../theme/custom_button_style.dart';
 import '../../widgets/custom_elevated_button.dart';
-import 'controller/pop_up_insert_qr_code_controller.dart'; // ignore_for_file: must_be_immutable
+import 'controller/qr_manual_controller.dart'; // ignore_for_file: must_be_immutable
 
-class PopUpInsertQrCodeScreen extends GetWidget<PopUpInsertQrCodeController> {
-  const PopUpInsertQrCodeScreen({Key? key})
+class QrManualScreen extends GetWidget<QrManualController> {
+  const QrManualScreen({Key? key})
       : super(
           key: key,
         );

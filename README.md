@@ -64,17 +64,6 @@ After successful build, your application structure should look like this:
     └── widgets                     - It contains all custom widget classes
 ```
 
-### How to format your code?
-
-- if your code is not formatted then run following command in your terminal to format code
-  ```
-  dart format .
-  ```
-
-### How you can improve code readability?
-
-Resolve the errors and warnings that are shown in the application.
-
 ### Libraries and tools used
 
 - get - State management
@@ -85,7 +74,23 @@ Resolve the errors and warnings that are shown in the application.
   https://pub.dev/packages/shared_preferences
 - cached_network_image - For storing internet image into cache
   https://pub.dev/packages/cached_network_image
+- Flutter_map
+  https://docs.fleaflet.dev/
+- Open street maps
+  https://pub.dev/packages/flutter_osm_plugin
+- SqlLite for Mocking the Backend:
+- Hive for local storage key/value registries
+  https://docs.hivedb.dev/#/
+
+### Further reading
+
+For the map inteeractions I got some ideas from here:
+https://medium.com/zipper-studios/flutter-map-custom-and-dynamic-popup-over-the-marker-732d26ef9bc7
+
+Conditional imports to allow multiplataform in flutter: (by abstract class)
+https://medium.com/techskool/adding-conditional-imports-in-flutter-for-cross-platform-development-5d7b6bff689c
+
+Mastering Flutter’s Routing with GetX: A Comprehensive Guide
+https://medium.com/@sajjadjavadi/mastering-flutters-routing-with-getx-9c0796ff3a9d
 
 ### Support
-
-If you have any problems or questions, go to our Discord channel, where we will help you as quickly as possible: https://discord.com/invite/rFMnCG5MZ7

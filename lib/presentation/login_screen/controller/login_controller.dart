@@ -20,8 +20,6 @@ class LoginController extends GetxController {
   Rx<bool> recordarMisDato = false.obs;
   Rx<bool> reply = false.obs;
 
-  PostLoginDeviceAuthResp postLoginDeviceAuthResp = PostLoginDeviceAuthResp();
-
   late final HiveService _hiveService;
 
   @override
@@ -62,9 +60,13 @@ class LoginController extends GetxController {
   }
 
   void _onCallAuthError(User? user) {
-    user == null
-        ? Get.rawSnackbar(message: "User not found")
-        : Get.rawSnackbar(message: "Invalid password");
+    if (user == null) {
+      Logger.logError('User not found');
+      Get.rawSnackbar(message: "User not found");
+    } else {
+      Logger.logError('Invalid password');
+      Get.rawSnackbar(message: "Invalid password");
+    }
   }
 
   void navigateToRegister() {

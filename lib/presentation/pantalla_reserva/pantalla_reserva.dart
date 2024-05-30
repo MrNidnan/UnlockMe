@@ -11,11 +11,6 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
 
   @override
   Widget build(BuildContext context) {
-    // Set the screen size using SizeUtils
-    SizeUtils.setScreenSize(
-        MediaQuery.of(context), MediaQuery.of(context).orientation);
-    final screenHeight = SizeUtils.height;
-    final screenWidth = SizeUtils.width;
     //var modelReserva = controller.pantallaReservaModelObj.value; //observable variable
 
     return SafeArea(
@@ -25,22 +20,22 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
           child: Container(
             width: double.maxFinite,
             padding: EdgeInsets.symmetric(
-              horizontal: screenWidth * 0.05,
-              vertical: screenHeight * 0.05,
+              horizontal: SizeUtils.width * 0.05,
+              vertical: SizeUtils.height * 0.05,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenHeight * 0.05),
+                SizedBox(height: SizeUtils.height * 0.05),
                 CustomNavLeftWidget(
-                  screenHeight: screenHeight,
-                  screenWidth: screenWidth,
+                  screenHeight: SizeUtils.height,
+                  screenWidth: SizeUtils.width,
                   onTap: () {
                     controller.goBackToMap();
                   },
                 ),
 
-                SizedBox(height: screenHeight * 0.02), // Responsive spacing
+                SizedBox(height: SizeUtils.height * 0.02), // Responsive spacing
                 Align(
                   alignment: Alignment.center,
                   child: Obx(() {
@@ -52,9 +47,9 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                     );
                   }),
                 ),
-                SizedBox(height: screenHeight * 0.01),
+                SizedBox(height: SizeUtils.height * 0.01),
                 Padding(
-                  padding: EdgeInsets.only(left: screenWidth * 0.15),
+                  padding: EdgeInsets.only(left: SizeUtils.width * 0.15),
                   child: Obx(() {
                     final address = controller.address.value;
                     //final testVar = controller.testVar.value;
@@ -64,9 +59,9 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                     );
                   }),
                 ),
-                SizedBox(height: screenHeight * 0.01),
+                SizedBox(height: SizeUtils.height * 0.01),
                 Padding(
-                  padding: EdgeInsets.only(left: screenWidth * 0.15),
+                  padding: EdgeInsets.only(left: SizeUtils.width * 0.15),
                   child: Obx(() {
                     final modelReserva =
                         controller.pantallaReservaModelObj.value;
@@ -77,9 +72,9 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                     );
                   }),
                 ),
-                SizedBox(height: screenHeight * 0.03),
+                SizedBox(height: SizeUtils.height * 0.03),
                 Padding(
-                  padding: EdgeInsets.only(left: screenWidth * 0.15),
+                  padding: EdgeInsets.only(left: SizeUtils.width * 0.15),
                   child: Obx(() {
                     final modelReserva =
                         controller.pantallaReservaModelObj.value;
@@ -90,9 +85,9 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                     );
                   }),
                 ),
-                SizedBox(height: screenHeight * 0.03),
+                SizedBox(height: SizeUtils.height * 0.03),
                 Padding(
-                  padding: EdgeInsets.only(left: screenWidth * 0.15),
+                  padding: EdgeInsets.only(left: SizeUtils.width * 0.15),
                   child: Obx(() {
                     final modelReserva =
                         controller.pantallaReservaModelObj.value;
@@ -103,7 +98,7 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                     );
                   }),
                 ),
-                SizedBox(height: screenHeight * 0.07),
+                SizedBox(height: SizeUtils.height * 0.07),
                 Obx(() {
                   final modelReserva = controller.pantallaReservaModelObj.value;
 
@@ -116,12 +111,12 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                             style: theme.textTheme.headlineSmall,
                           );
                         }),
-                        SizedBox(height: screenHeight * 0.03),
+                        SizedBox(height: SizeUtils.height * 0.03),
                         Align(
                           alignment: Alignment.center,
                           child: CustomElevatedButton(
                             text: "lbl_cancelar".tr,
-                            width: screenWidth * 0.4,
+                            width: SizeUtils.width * 0.4,
                             buttonStyle: CustomButtonStyles.outlineDark,
                             buttonTextStyle:
                                 CustomTextStyles.titleMediumPrimaryBold,
@@ -136,7 +131,7 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                     return Align(
                       alignment: Alignment.center,
                       child: CustomElevatedButton(
-                        width: screenWidth * 0.4,
+                        width: SizeUtils.width * 0.4,
                         text: "Reserve".tr,
                         onPressed: () {
                           //onTapReserve();
@@ -146,7 +141,7 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                     );
                   }
                 }),
-                SizedBox(height: screenHeight * 0.02),
+                SizedBox(height: SizeUtils.height * 0.02),
               ],
             ),
           ),

@@ -15,10 +15,6 @@ class BienvenidoScreen extends GetWidget<BienvenidoController> {
 
   @override
   Widget build(BuildContext context) {
-    SizeUtils.setScreenSize(MediaQuery.of(context), MediaQuery.of(context).orientation);
-    final screenHeight = SizeUtils.height;
-    final screenWidth = SizeUtils.width;
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: appTheme.gray100,
@@ -27,8 +23,8 @@ class BienvenidoScreen extends GetWidget<BienvenidoController> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _buildWelcomeColumn(screenWidth, screenHeight),
-                SizedBox(height: screenHeight * 0.01),
+                _buildWelcomeColumn(),
+                SizedBox(height: SizeUtils.height * 0.01),
                 RichText(
                   text: TextSpan(
                     children: [
@@ -44,16 +40,16 @@ class BienvenidoScreen extends GetWidget<BienvenidoController> {
                   ),
                   textAlign: TextAlign.left,
                 ),
-                SizedBox(height: screenHeight * 0.01),
+                SizedBox(height: SizeUtils.height * 0.01),
                 CustomElevatedButton(
-                  width: screenWidth * 0.6,
+                  width: SizeUtils.width * 0.6,
                   text: "msg_contin_a_con_google".tr,
                   leftIcon: Container(
-                    margin: EdgeInsets.only(right: screenWidth * 0.02),
+                    margin: EdgeInsets.only(right: SizeUtils.width * 0.02),
                     child: CustomImageView(
                       imagePath: ImageConstant.imgBuscar1,
-                      height: screenHeight * 0.02,
-                      width: screenHeight * 0.02,
+                      height: SizeUtils.height * 0.02,
+                      width: SizeUtils.height * 0.02,
                     ),
                   ),
                   buttonStyle: CustomButtonStyles.outlinePrimary,
@@ -62,14 +58,14 @@ class BienvenidoScreen extends GetWidget<BienvenidoController> {
                     signInWithGoogle();
                   },
                 ),
-                SizedBox(height: screenHeight * 0.01),
+                SizedBox(height: SizeUtils.height * 0.01),
                 Text(
                   "lbl".tr,
                   style: CustomTextStyles.titleMediumManrope,
                 ),
-                SizedBox(height: screenHeight * 0.01),
+                SizedBox(height: SizeUtils.height * 0.01),
                 CustomElevatedButton(
-                  width: screenWidth * 0.6,
+                  width: SizeUtils.width * 0.6,
                   text: "msg_ingresar_con_email".tr,
                   buttonStyle: CustomButtonStyles.outlinePrimaryTL20,
                   buttonTextStyle: CustomTextStyles.titleMediumManrope,
@@ -77,12 +73,12 @@ class BienvenidoScreen extends GetWidget<BienvenidoController> {
                     onTapIngresarcon();
                   },
                 ),
-                SizedBox(height: screenHeight * 0.01),
+                SizedBox(height: SizeUtils.height * 0.01),
                 Text(
                   "msg_selecciona_un_idioma".tr,
                   style: CustomTextStyles.bodySmallPrimaryContainer,
                 ),
-                SizedBox(height: screenHeight * 0.03),
+                SizedBox(height: SizeUtils.height * 0.03),
                 GestureDetector(
                   onTap: () {
                     onTapTxtYatienescuenta();
@@ -106,12 +102,12 @@ class BienvenidoScreen extends GetWidget<BienvenidoController> {
                     textAlign: TextAlign.left,
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.07),
+                SizedBox(height: SizeUtils.height * 0.07),
                 Text(
                   "lbl_versi_n_2_0".tr,
                   style: CustomTextStyles.bodySmall10,
                 ),
-                SizedBox(height: screenHeight * 0.01)
+                SizedBox(height: SizeUtils.height * 0.01)
               ],
             ),
           ),
@@ -120,12 +116,12 @@ class BienvenidoScreen extends GetWidget<BienvenidoController> {
     );
   }
 
-  Widget _buildWelcomeColumn(double screenWidth, double screenHeight) {
+  Widget _buildWelcomeColumn() {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(
-        horizontal: screenWidth * 0.1,
-        vertical: screenHeight * 0.08,
+        horizontal: SizeUtils.width * 0.1,
+        vertical: SizeUtils.height * 0.08,
       ),
       decoration: AppDecoration.fillGreen.copyWith(
         borderRadius: BorderRadiusStyle.customBorderBL50,
@@ -134,11 +130,11 @@ class BienvenidoScreen extends GetWidget<BienvenidoController> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          SizedBox(height: screenHeight * 0.1),
+          SizedBox(height: SizeUtils.height * 0.1),
           CustomImageView(
             imagePath: ImageConstant.imgImage3Traced,
-            height: screenHeight * 0.06,
-            width: screenWidth * 0.6,
+            height: SizeUtils.height * 0.06,
+            width: SizeUtils.width * 0.6,
           )
         ],
       ),
