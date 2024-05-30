@@ -1,5 +1,4 @@
 import 'package:UnlockMe/core/services/hive_service.dart';
-import 'package:UnlockMe/data/models/loginDeviceAuth/post_login_device_auth_resp.dart';
 import 'package:UnlockMe/core/storage/contracts/user.dart';
 import 'package:UnlockMe/core/storage/database_helper.dart';
 import 'package:UnlockMe/presentation/login_screen/controller/login_controller.dart';
@@ -24,6 +23,7 @@ void main() {
   //late MockLogger mockLogger;
 
   setUp(() {
+    Get.reset();
     mockHiveService = MockHiveService();
     mockDatabaseHelper = MockDatabaseHelper();
     //mockLogger = MockLogger();
