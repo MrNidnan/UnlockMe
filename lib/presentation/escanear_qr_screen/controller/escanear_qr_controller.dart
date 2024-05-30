@@ -1,5 +1,6 @@
 import 'package:UnlockMe/core/services/hive_service.dart';
 import 'package:UnlockMe/core/services/travel_timer_service.dart';
+import 'package:UnlockMe/presentation/mapa_screen/controller/mapa_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:UnlockMe/core/app_export.dart';
@@ -15,7 +16,8 @@ class EscanearQrController extends GetxController {
   late final int? _userId;
   late final int? _userHotelId;
   // Singleton Services instances
-  late final TravelTimerService _timerService;
+  late final TravelTimerService _travelTimerService;
+  late final ReserveTimerService _reserveTimerService;
   late final HiveService _hiveService;
 
   @override
@@ -24,7 +26,8 @@ class EscanearQrController extends GetxController {
     _hiveService = Get.find<HiveService>();
     _hiveService.openBoxes();
 
-    _timerService = Get.find<TravelTimerService>();
+    _travelTimerService = Get.find<TravelTimerService>();
+    _reserveTimerService = Get.find<ReserveTimerService>();
 
     _reserveId = _hiveService.getReserveId();
     _userId = _hiveService.getUserId();
@@ -45,17 +48,7 @@ class EscanearQrController extends GetxController {
     bool isOk = await _validateQrAndStartTravel(scannedCode);
 
     if (isOk) {
-      Get.snackbar(
-        'Success',
-        'Bike unlocked successfully!',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-      );
-      Future.delayed(Duration(seconds: 2), () {
-        Get.back();
-      });
-      //Get.back();
-      return;
+      Get.back();
     }
     qrViewController?.resumeCamera();
   }
@@ -116,6 +109,7 @@ class EscanearQrController extends GetxController {
       await dbHelper
           .updateReserve(_reserveId!, {'status': db.ReserveStatus.used});
       _hiveService.deleteReserve();
+      _reserveTimerService.cancelTimer();
     }
   }
 
@@ -134,7 +128,7 @@ class EscanearQrController extends GetxController {
     Logger.logDebug('Route started with ID: $routeId');
 
     await _hiveService.setUserRoute(routeId, currentDate.toIso8601String());
-    _timerService.startTimer(currentDate);
+    _travelTimerService.startTimer(currentDate);
   }
 
   //Validates Qr and gets the bike
@@ -161,7 +155,11 @@ class EscanearQrController extends GetxController {
     Get.offAndToNamed(
       AppRoutes.popUpInsertQrCodeScreen,
       arguments: _onManualQrSubmit,
-    );
+    )?.then((value) {
+      // Retrieve MapaController and trigger refresh so the map will be updated
+      MapaController mapaController = Get.find<MapaController>();
+      mapaController.updateMap();
+    });
   }
 
   @override

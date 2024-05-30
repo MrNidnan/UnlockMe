@@ -1,5 +1,6 @@
 import 'package:UnlockMe/core/utils/bike_helper.dart';
 import 'package:UnlockMe/theme/custom_button_style.dart';
+import 'package:UnlockMe/widgets/custom_nav_left.dart';
 import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
@@ -31,12 +32,9 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: screenHeight * 0.05),
-                CustomImageView(
-                  imagePath: ImageConstant.imgChevronLeft,
-                  height: screenHeight * 0.05,
-                  width: screenWidth * 0.15,
-                  alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.only(left: screenWidth * 0.01),
+                CustomNavLeftWidget(
+                  screenHeight: screenHeight,
+                  screenWidth: screenWidth,
                   onTap: () {
                     controller.goBackToMap();
                   },

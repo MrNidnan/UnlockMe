@@ -6,8 +6,7 @@ class TravelTimerService extends GetxService {
   Timer? _timer;
   var accumulatedTime = 0.obs;
   Function()? onCancel;
-
-  bool get isRunning => _timer != null && _timer!.isActive;
+  var isRunning = false.obs; // Make isRunning reactive
 
   // Starts the timer with a given start time
   void startTimer(DateTime startTime) {
@@ -16,6 +15,7 @@ class TravelTimerService extends GetxService {
     // Calculate the initial accumulated time based on the start time
     var now = DateTime.now();
     accumulatedTime.value = now.difference(startTime).inSeconds;
+    isRunning.value = true;
 
     Logger.logDebug(
         'Start Timer with accumulatedTime ${accumulatedTime.value}');
@@ -30,6 +30,7 @@ class TravelTimerService extends GetxService {
   void cancelTimer() {
     _timer?.cancel();
     accumulatedTime.value = 0;
+    isRunning.value = false;
     onCancel?.call(); // Call the cancellation callback
   }
 

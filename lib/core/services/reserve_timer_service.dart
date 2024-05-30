@@ -9,8 +9,6 @@ class ReserveTimerService extends GetxService {
   Function()? onCancel;
   var isRunning = false.obs; // Make isRunning reactive
 
-  // bool get isRunning => _timer != null && _timer!.isActive;
-
   void startTimer(DateTime endTime) {
     _timer?.cancel(); // Cancel any existing timer
     remainingTime.value = endTime.difference(DateTime.now()).inSeconds;

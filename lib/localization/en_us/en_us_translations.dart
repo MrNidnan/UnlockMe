@@ -2,6 +2,10 @@ final Map<String, String> enUs = {
   // Bienvenido One Screen
   "lbl_empezar": "Empezar",
 
+  // Mapa Screen
+  "lbl_reserve_time_left": "Reserva",
+  "lbl_route_time": "Tiempo viaje",
+
   // Perfil usuario Screen
   "lbl_ayuda": "Ayuda",
   "lbl_formas_de_pago": "Formas de pago",
@@ -19,7 +23,8 @@ final Map<String, String> enUs = {
   "lbl_02_30_00": "02 : 30 : 00",
   "lbl_11_00": "11:00",
   "lbl_hora_de_inicio": "Hora de inicio",
-  "msg_desliza_para_finalizar": "Desliza para finalizar",
+  "msg_desliza_para_finalizar":
+      "Desliza para finalizar viaje y devolver la bici",
 
   // Bienvenido Screen
   "lbl": "ó",

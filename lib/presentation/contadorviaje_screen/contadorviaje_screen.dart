@@ -1,3 +1,4 @@
+import 'package:UnlockMe/widgets/custom_nav_left.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import '../../core/app_export.dart';
@@ -10,10 +11,15 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
 
   @override
   Widget build(BuildContext context) {
+    // Set the screen size using SizeUtils
+    SizeUtils.setScreenSize(
+        MediaQuery.of(context), MediaQuery.of(context).orientation);
+    final screenHeight = SizeUtils.height;
+    final screenWidth = SizeUtils.width;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: theme.colorScheme.onSecondaryContainer,
-        appBar: _buildAppBar(),
         body: Container(
           width: double.maxFinite,
           padding: EdgeInsets.symmetric(
@@ -22,62 +28,22 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
           ),
           child: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: EdgeInsets.only(right: 4.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: 7.0,
-                          bottom: 4.0,
-                        ),
-                        child: Text(
-                          "lbl_c_mo_llegar".tr,
-                          style: CustomTextStyles.bodySmall10.copyWith(
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                      CustomImageView(
-                        imagePath: ImageConstant.imgArrowLeftYellow300,
-                        height: 22.0,
-                        width: 23.0,
-                        margin: EdgeInsets.only(left: 8.0),
-                        onTap: () {
-                          onTapImgArrowleftone();
-                        },
-                      ),
-                      Spacer(),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 7.0),
-                        child: Text(
-                          "lbl_01_abr_2024".tr,
-                          style: CustomTextStyles.labelLargePrimary,
-                        ),
-                      )
-                    ],
-                  ),
+                SizedBox(height: screenHeight * 0.05),
+                CustomNavLeftWidget(
+                  screenHeight: screenHeight,
+                  screenWidth: screenWidth,
+                  onTap: () {
+                    controller.goBackToMap();
+                  },
                 ),
-                SizedBox(height: 37.0),
                 SizedBox(
                   height: 239.0,
-                  width: 238.0,
+                  width: 278.0,
                   child: Stack(
                     alignment: Alignment.bottomCenter,
                     children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: SizedBox(
-                          height: 239.0,
-                          width: 238.0,
-                          child: CircularProgressIndicator(
-                            value: 0.5,
-                          ),
-                        ),
-                      ),
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Padding(
@@ -89,13 +55,13 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(
-                                "lbl_02_30_00".tr,
-                                style: CustomTextStyles.displaySmallPrimary,
-                              ),
+                              Obx(() => Text(
+                                    "${controller.getTimerTime()}".tr,
+                                    style: CustomTextStyles.displaySmallPrimary,
+                                  )),
                               SizedBox(height: 4.0),
                               Padding(
-                                padding: EdgeInsets.only(left: 4.0),
+                                padding: EdgeInsets.only(left: 20.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -104,7 +70,7 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
                                       style: CustomTextStyles.bodyMediumPrimary,
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(left: 24.0),
+                                      padding: EdgeInsets.only(left: 14.0),
                                       child: Text(
                                         "lbl_minutos".tr,
                                         style:
@@ -112,7 +78,7 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(left: 16.0),
+                                      padding: EdgeInsets.only(left: 10.0),
                                       child: Text(
                                         "lbl_segundos".tr,
                                         style:
@@ -139,10 +105,13 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(left: 7.0),
-                      child: Text(
-                        "lbl_11_00".tr,
-                        style: CustomTextStyles.bodyLargePrimary,
-                      ),
+                      child: Obx(() {
+                        final started = controller.routeCreatedAt.value;
+                        return Text(
+                          "${started}".tr,
+                          style: CustomTextStyles.bodyLargePrimary,
+                        );
+                      }),
                     )
                   ],
                 ),
@@ -152,39 +121,8 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
                   height: 133.0,
                   width: 134.0,
                 ),
-                SizedBox(height: 20.0),
-                FlutterSlider(
-                  values: [0],
-                  max: 100,
-                  min: 0,
-                  handler: FlutterSliderHandler(
-                    decoration: BoxDecoration(),
-                    child: Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.white,
-                    ),
-                  ),
-                  onDragging: (handlerIndex, lowerValue, upperValue) {
-                    if (lowerValue == 100) {
-                      controller.endTravelRoute();
-                    }
-                  },
-                  tooltip: FlutterSliderTooltip(
-                    disabled: true,
-                  ),
-                  trackBar: FlutterSliderTrackBar(
-                    activeTrackBarHeight: 8.0,
-                    inactiveTrackBarHeight: 8.0,
-                    activeTrackBar: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4.0),
-                      color: theme.colorScheme.primary,
-                    ),
-                    inactiveTrackBar: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4.0),
-                      color: Colors.grey,
-                    ),
-                  ),
-                ),
+                SizedBox(height: 30.0),
+                _buildSlider(context),
                 SizedBox(height: 5.0)
               ],
             ),
@@ -194,30 +132,70 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
     );
   }
 
-  /// Section Widget
-  PreferredSizeWidget _buildAppBar() {
-    return CustomAppBar(
-      leadingWidth: double.maxFinite,
-      leading: AppbarLeadingImage(
-        imagePath: ImageConstant.imgChevronLeft,
-        margin: EdgeInsets.only(
-          left: 14.0,
-          right: 337.0,
+  Widget _buildSlider(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          "msg_desliza_para_finalizar".tr,
+          style: TextStyle(
+            fontSize: 16.0,
+            fontWeight: FontWeight.bold,
+            color: theme.colorScheme.primary,
+          ),
         ),
-        onTap: () {
-          onTapChevronleftone();
-        },
-      ),
+        SizedBox(height: 5.0), // Spacer between text and slider
+        Container(
+          width: MediaQuery.of(context).size.width *
+              0.8, // Adjust the width as needed
+          child: FlutterSlider(
+            values: [0],
+            max: 100,
+            min: 0,
+            handler: FlutterSliderHandler(
+              decoration: BoxDecoration(
+                color: appTheme.yellow300,
+                borderRadius: BorderRadius.circular(10.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: theme.colorScheme.primary.withOpacity(0.5),
+                    blurRadius: 8.0,
+                    spreadRadius: 2.0,
+                    offset: Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Container(
+                height: 20.0, // Adjust handler height
+                width: 20.0, // Adjust handler width
+                decoration: BoxDecoration(
+                  color: appTheme.yellow300,
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+            ),
+            onDragging: (handlerIndex, lowerValue, upperValue) {
+              if (lowerValue == 100 && !controller.routeFinished) {
+                controller.endTravelRoute();
+              }
+            },
+            tooltip: FlutterSliderTooltip(
+              disabled: true,
+            ),
+            trackBar: FlutterSliderTrackBar(
+              activeTrackBarHeight: 16.0, // Increased height
+              inactiveTrackBarHeight: 16.0, // Increased height
+              activeTrackBar: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                color: appTheme.yellow300,
+              ),
+              inactiveTrackBar: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+                color: Colors.grey,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
-  }
-
-  /// Navigates to the previous screen.
-  onTapChevronleftone() {
-    Get.back();
-  }
-
-  /// Navigates to the previous screen.
-  onTapImgArrowleftone() {
-    Get.back();
   }
 }

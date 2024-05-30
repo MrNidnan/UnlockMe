@@ -27,23 +27,22 @@ class MapaScreen extends GetWidget<MapaController> {
               //_buildMap(),
               Obx(() => _buildMap()),
               Obx(() {
-                final isRunning = controller.isReserveTimerRunning.value;
+                final isRouteRunning = controller.isTravelTimerRunning.value;
+                final isReserveRunning = controller.isReserveTimerRunning.value;
                 return Positioned(
                   bottom: MediaQuery.of(context).size.height * 0.20,
                   child: Column(
                     children: [
-                      isRunning
+                      isRouteRunning || isReserveRunning
                           ? CustomElevatedButton(
                               width: SizeUtils.width * 0.7,
-                              text:
-                                  'lb_reserve_time_left ${controller.getTimerTime()}'
-                                      .tr,
+                              text: controller.getTimerButtonLabel(),
                               buttonStyle:
-                                  CustomButtonStyles.outlinePrimaryTL20,
+                                  CustomButtonStyles.outlinedTimerButton,
                               buttonTextStyle:
                                   CustomTextStyles.titleMediumOnPrimary,
                               onPressed: () {
-                                controller.navigateToReserveScreen();
+                                controller.navigateFromTimer();
                               },
                             )
                           : Container(),
@@ -53,25 +52,10 @@ class MapaScreen extends GetWidget<MapaController> {
                 );
               }),
               Positioned(
-                bottom: MediaQuery.of(context).size.height *
-                    0.10, // Adjust based on your layout needs
-                child: CustomFloatingButton(
-                  heroTag: 'qr-scan-1',
-                  backgroundColor: appTheme.green900,
-                  decoration: CustomFloatingButton.fillGreen,
-                  height: 58,
-                  width: 58,
-                  onTap: () {
-                    navigateToQrScan();
-                  },
-                  child: CustomImageView(
-                    imagePath: ImageConstant.imgQrIcon,
-                    height: 29.0,
-                    width: 29.0,
-                    color: appTheme.limeA200,
-                  ),
-                ),
-              ),
+                  bottom: MediaQuery.of(context).size.height *
+                      0.10, // Adjust based on your layout needs
+                  child: Obx(() => _buildQrScanButton(
+                      disabled: controller.isTravelTimerRunning.value))),
             ],
           ),
         ),
@@ -129,8 +113,7 @@ class MapaScreen extends GetWidget<MapaController> {
             padding: EdgeInsets.all(SizeUtils.width * 0.02),
             decoration: IconButtonStyleHelper.fillGray,
             onTap: () {
-              navigateToContador();
-              //controller.updateMap();
+              controller.updateMap();
             },
             child: CustomImageView(
               imagePath: ImageConstant.imgLinkedin,
@@ -141,15 +124,15 @@ class MapaScreen extends GetWidget<MapaController> {
             heroTag: 'settings-1',
             backgroundColor: appTheme.green900,
             decoration: CustomFloatingButton.fillGreen,
-            height: 35,
-            width: 35,
+            height: 60,
+            width: 60,
             onTap: () {
-              navigateToSettings();
+              controller.navigateToSettings();
             },
             child: CustomImageView(
               imagePath: ImageConstant.imgSettings,
-              height: 25,
-              width: 25,
+              height: 30,
+              width: 30,
               color: appTheme.limeA200,
             ),
           ),
@@ -158,15 +141,35 @@ class MapaScreen extends GetWidget<MapaController> {
     );
   }
 
-  void navigateToContador() {
-    Get.toNamed(AppRoutes.contadorViajeScreen);
-  }
+  Widget _buildQrScanButton({disabled = false}) {
+    var decoration = CustomFloatingButton.fillGreen;
+    var color = appTheme.limeA200;
+    var onTap = controller.navigateToQrScan;
+    var backgroundColor = appTheme.green900;
 
-  void navigateToSettings() {
-    Get.toNamed(AppRoutes.perfilUsuarioScreen);
-  }
-
-  void navigateToQrScan() {
-    Get.toNamed(AppRoutes.escanearQrScreen);
+    if (disabled) {
+      decoration = CustomFloatingButton.defaultDecoration.copyWith(
+        color: appTheme.gray300,
+      );
+      color = appTheme.gray600;
+      backgroundColor = appTheme.gray300;
+      onTap = () {
+        // Do nothing
+      };
+    }
+    return CustomFloatingButton(
+      heroTag: 'qr-scan-1',
+      backgroundColor: backgroundColor,
+      decoration: decoration,
+      height: 60,
+      width: 60,
+      onTap: onTap,
+      child: CustomImageView(
+        imagePath: ImageConstant.imgQrIcon,
+        height: 30.0,
+        width: 30.0,
+        color: color,
+      ),
+    );
   }
 }

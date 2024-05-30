@@ -17,7 +17,7 @@ class MapaController extends GetxController with WidgetsBindingObserver {
   RxInt get remainingTime => _reserveTimerService.remainingTime;
   RxInt get acumulateTime => _travelTimerService.accumulatedTime;
   RxBool get isReserveTimerRunning => _reserveTimerService.isRunning;
-  RxBool get isTravelTimerRunning => _travelTimerService.isRunning.obs;
+  RxBool get isTravelTimerRunning => _travelTimerService.isRunning;
 
   Rx<MapaModel> mapaModelObj = MapaModel().obs;
 
@@ -34,29 +34,6 @@ class MapaController extends GetxController with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     _reserveTimerService = Get.find<ReserveTimerService>();
     _travelTimerService = Get.find<TravelTimerService>();
-
-    // Observe the timers independently
-    ever(isReserveTimerRunning, _handleReserveTimerStateChange);
-    ever(isTravelTimerRunning, _handleTravelTimerStateChange);
-  }
-
-  void _handleReserveTimerStateChange(bool isRunning) {
-    Logger.logDebug('reserve Time status change $isRunning');
-    if (isRunning) {
-      // Handle logic when reserve timer starts
-    } else {
-      // Handle logic when reserve timer stops
-    }
-  }
-
-  void _handleTravelTimerStateChange(bool isRunning) {
-    Logger.logDebug('Travel Time status change $isRunning');
-
-    if (isRunning) {
-      // Handle logic when travel timer starts
-    } else {
-      // Handle logic when travel timer stops
-    }
   }
 
   // Called once the widget is fully rendered and interactive.
@@ -92,7 +69,7 @@ class MapaController extends GetxController with WidgetsBindingObserver {
         height: 80,
         child: GestureDetector(
           onTap: () {
-            navigateToBikeDetails(bike);
+            _navigateToBikeDetails(bike);
           },
           child: Icon(
             Icons.pedal_bike,
@@ -146,18 +123,12 @@ class MapaController extends GetxController with WidgetsBindingObserver {
     });
   }
 
-  void navigateToBikeDetails(Bike bike) {
-    Logger.logDebug(bike);
-    Get.toNamed(
-      AppRoutes.pantallaReserva,
-      arguments: {
-        'bike': bike,
-      },
-    )?.then((value) async {
-      //Make sure map is updated when comming back from bike details
-      updateMap();
-    });
-    ;
+  void navigateFromTimer() {
+    if (isReserveTimerRunning.value) {
+      navigateToReserveScreen();
+    } else if (isTravelTimerRunning.value) {
+      navigateToContador();
+    }
   }
 
   void navigateToReserveScreen() {
@@ -172,9 +143,50 @@ class MapaController extends GetxController with WidgetsBindingObserver {
         return;
       }
       dbHelper.getBikeById(reserve.bikeId).then((bike) {
-        navigateToBikeDetails(bike);
+        _navigateToBikeDetails(bike);
       });
     });
+  }
+
+  void _navigateToBikeDetails(Bike bike) {
+    Logger.logDebug(bike);
+    Get.toNamed(
+      AppRoutes.pantallaReserva,
+      arguments: {
+        'bike': bike,
+      },
+    )?.then((value) async {
+      //Make sure map is updated when comming back from bike details
+      updateMap();
+    });
+    ;
+  }
+
+  void navigateToContador() {
+    Get.toNamed(AppRoutes.contadorViajeScreen)?.then((value) async {
+      //Make sure map is updated when comming back route deatils in case travel is cancelled
+      updateMap();
+    });
+    ;
+  }
+
+  void navigateToQrScan() {
+    Get.toNamed(AppRoutes.escanearQrScreen)?.then((value) async {
+      if (_hiveService.getRouteId() != null) {
+        //Make sure map is updated when comming back from qr scan with bike unlocked
+        Get.snackbar(
+          'Success',
+          'Bike unlocked successfully!',
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: Colors.green,
+        );
+        updateMap();
+      }
+    });
+  }
+
+  void navigateToSettings() {
+    Get.toNamed(AppRoutes.editarPerfilOneScreen);
   }
 
   Color getBikeColor(String status) {
@@ -190,6 +202,15 @@ class MapaController extends GetxController with WidgetsBindingObserver {
     }
   }
 
+  String getTimerButtonLabel() {
+    if (isReserveTimerRunning.value) {
+      return 'lbl_reserve_time_left ${getTimerTime()}'.tr;
+    } else if (isTravelTimerRunning.value) {
+      return 'lbl_route_time ${getTimerTime()}'.tr;
+    }
+    return 'Timer'; // Default case
+  }
+
   String getTimerTime() {
     if (isReserveTimerRunning.value) {
       final time = remainingTime.value;
@@ -198,10 +219,12 @@ class MapaController extends GetxController with WidgetsBindingObserver {
       return '$minutes:$seconds';
     } else if (isTravelTimerRunning.value) {
       final time = acumulateTime.value;
-      final minutes = (time ~/ 60).toString().padLeft(2, '0');
+      final hours = (time ~/ 3600).toString().padLeft(2, '0');
+      final minutes = ((time % 3600) ~/ 60).toString().padLeft(2, '0');
       final seconds = (time % 60).toString().padLeft(2, '0');
-      return '$minutes:$seconds';
+      return '$hours:$minutes:$seconds';
     }
+
     return '00:00'; // Default case
   }
 }

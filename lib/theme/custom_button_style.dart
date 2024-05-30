@@ -41,6 +41,16 @@ class CustomButtonStyles {
         shadowColor: theme.colorScheme.primary,
         elevation: 2,
       );
+  static ButtonStyle get outlinedTimerButton => ElevatedButton.styleFrom(
+        backgroundColor: appTheme.yellow300,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+          // Adjust border color and width
+        ),
+
+        shadowColor: theme.colorScheme.primary,
+        elevation: 1, // Increase elevation for a more prominent shadow
+      );
 // text button style
   static ButtonStyle get none => ButtonStyle(
         backgroundColor: WidgetStateProperty.all<Color>(Colors.transparent),

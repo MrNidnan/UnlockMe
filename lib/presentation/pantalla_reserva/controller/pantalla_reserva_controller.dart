@@ -22,8 +22,6 @@ class PantallaReservaController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    _hiveService = Get.find<HiveService>();
-    _hiveService.openBoxes();
     final args = Get.arguments;
     Bike bike = args['bike'] as Bike;
 
@@ -32,7 +30,8 @@ class PantallaReservaController extends GetxController {
       bike: bike,
       isReserved: bike.status == BikeStatus.reserved,
     ).obs;
-
+    _hiveService = Get.find<HiveService>();
+    await _hiveService.openBoxes();
     await _initializeReserve(bike);
     await _retrieveAddress(bike);
 
@@ -88,6 +87,13 @@ class PantallaReservaController extends GetxController {
   }
 
   @override
+  void onReady() {
+    // TODO: implement onReady
+    super.onReady();
+    Logger.logDebug(_hiveService.getRouteId() ?? 'No route found');
+  }
+
+  @override
   void onClose() {
     //// Do NOT cancel the timer here as we want to run it even when the screen is closed to cancel the reservation
     super.onClose();
@@ -100,6 +106,12 @@ class PantallaReservaController extends GetxController {
           backgroundColor: Colors.red);
       return;
     }
+    if (_hiveService.getRouteId() != null) {
+      Get.snackbar('Reservation', 'You are already on a travel route!',
+          backgroundColor: Colors.red);
+      return;
+    }
+
     final int? userId = _hiveService.getUserId();
     final int? userHotelId = _hiveService.getHotelId();
     Logger.logDebug('User=$userId:$userHotelId');
