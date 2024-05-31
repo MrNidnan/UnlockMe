@@ -51,6 +51,7 @@ After successful build, your application structure should look like this:
     │   ├── errors                  - It contains error handling classes
     │   ├── network                 - It contains network-related classes
     │   ├── services                - It contains common internal services used across the app (like timers)
+    |   ├── storage                 - It contains storage related classes (db , hive)
     │   └── utils                   - It contains common files and utilities of the application
     ├── data
     │   ├── apiClient               - It contains API calling methods
