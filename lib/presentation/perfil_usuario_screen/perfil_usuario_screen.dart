@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../core/app_export.dart';
-import '../../core/utils/file_upload_helper.dart';
 import 'controller/perfil_usuario_controller.dart'; // ignore_for_file: must_be_immutable
 
 class PerfilUsuarioScreen extends GetWidget<PerfilUsuarioController> {
@@ -251,6 +250,8 @@ class PerfilUsuarioScreen extends GetWidget<PerfilUsuarioController> {
     );
   }
 
+  ///
+  /// TODO
   /// Requests permission to access the camera and storage, and displays a model
   /// sheet for selecting images.
   ///
@@ -258,10 +259,6 @@ class PerfilUsuarioScreen extends GetWidget<PerfilUsuarioController> {
   requestCameraGalleryPermission() async {
     await PermissionManager.askForPermission(Permission.camera);
     await PermissionManager.askForPermission(Permission.storage);
-    List<String?>? imageList = [];
-    await FileManager().showModelSheetForImage(getImages: (value) async {
-      imageList = value;
-    });
   }
 
   /// Navigates to the editarPerfilScreen when the action is triggered.

@@ -12,8 +12,6 @@ class BienvenidoOneScreen extends GetWidget<BienvenidoOneController> {
 
   @override
   Widget build(BuildContext context) {
-    SizeUtils.init(context); // Initialize SizeUtils here
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: theme.colorScheme.secondaryContainer,

@@ -154,7 +154,8 @@ class PantallaReservaController extends GetxController {
 
   void _cancelReservation() async {
     final reserveId = _hiveService.getReserveId();
-    Logger.logDebug('ReserveId on cancelReservation: $reserveId');
+    final userId = _hiveService.getUserId();
+    Logger.logDebug('ReserveId on cancelReservation: $reserveId $userId');
 
     if (reserveId != null) {
       await dbHelper.updateReserve(reserveId, {
