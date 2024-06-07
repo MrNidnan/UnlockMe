@@ -79,18 +79,18 @@ class MapaController extends GetxController with WidgetsBindingObserver {
         ),
       );
     }).toList();
-    if (mapaModelObj.value.currentPosition != null) {
-      mapaModelObj.value.markers.add(Marker(
-        point: mapaModelObj.value.currentPosition.value!,
-        width: 80,
-        height: 80,
-        child: Icon(
-          Icons.person_pin_circle_outlined,
-          color: appTheme.green900,
-          size: 40.0,
-        ),
-      ));
-    }
+    //if (mapaModelObj.value.currentPosition != null) {
+    mapaModelObj.value.markers.add(Marker(
+      point: mapaModelObj.value.currentPosition.value!,
+      width: 80,
+      height: 80,
+      child: Icon(
+        Icons.person_pin_circle_outlined,
+        color: appTheme.green900,
+        size: 40.0,
+      ),
+    ));
+    //}
     mapaModelObj.refresh();
   }
 
