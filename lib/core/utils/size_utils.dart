@@ -96,6 +96,20 @@ class SizeUtils {
     deviceType = DeviceType.mobile;
   }
 
+  static void init(BuildContext context) {
+    width = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    horizontalBlockSize = width / 100;
+    verticalBlockSize = height / 100;
+
+    boxConstraints = new BoxConstraints(
+      maxHeight: height,
+      maxWidth: width,
+    );
+
+    deviceType = DeviceType.mobile;
+  }
+
   static double paddingSmall() => height * 0.01;
   static double paddingMedium() => height * 0.02;
   static double paddingLarge() => height * 0.03;
