@@ -17,6 +17,7 @@ This README provides a comprehensive guide to setting up the development environ
 - [Compiling for Android](#compiling-for-android)
 - [Compiling for iOS](#compiling-for-ios)
 - [User Manual](#user-manual)
+- [License](#license)
 
 ### System requirements
 
@@ -206,3 +207,9 @@ If you don't have macOS, you can use the following steps:
 4. **Testing and distribution:**
    - Use [BrowserStack](https://www.browserstack.com/) to test the app on iOS devices.
    - Or Distribute the app to testers using [Diawi](https://www.diawi.com/).
+
+### License
+
+This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License. To view a copy of this license, visit [Creative Commons Attribution-NonCommercial 4.0 International License](https://creativecommons.org/licenses/by-nc/4.0/deed.ca).
+
+© [Angel de Paz Toldra], 2024
