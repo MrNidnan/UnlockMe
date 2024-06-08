@@ -1,4 +1,4 @@
-import 'package:UnlockMe/core/services/hive_service.dart';
+import 'package:unlockme/core/services/hive_service.dart';
 import 'package:flutter/material.dart';
 import '../../../core/app_export.dart';
 import '../../../core/storage/contracts/user.dart';

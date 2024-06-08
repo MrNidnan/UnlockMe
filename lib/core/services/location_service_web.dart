@@ -1,6 +1,6 @@
 // location_service_web.dart
 import 'dart:html' as html;
-import 'package:UnlockMe/core/utils/logger.dart';
+import 'package:unlockme/core/utils/logger.dart';
 
 import 'location_service.dart';
 

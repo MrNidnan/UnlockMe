@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 import '../../core/utils/validation_functions.dart';
 import '../../widgets/custom_checkbox_button.dart';
-import '../../widgets/custom_elevated_button.dart';
 import '../../widgets/custom_outlined_button.dart';
 import '../../widgets/custom_text_form_field.dart';
 import 'controller/register_controller.dart';
 
 // ignore_for_file: must_be_immutable
 class RegisterScreen extends GetWidget<RegisterController> {
-  RegisterScreen({Key? key}) : super(key: key);
+  RegisterScreen({super.key});
 
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +41,7 @@ class RegisterScreen extends GetWidget<RegisterController> {
                       alignment: Alignment.centerRight,
                       margin: EdgeInsets.only(right: SizeUtils.width * 0.04),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     _buildName(),
                     SizedBox(height: SizeUtils.height * 0.01),
                     _buildEmail(),
@@ -52,8 +51,6 @@ class RegisterScreen extends GetWidget<RegisterController> {
                     _buildConfirmPassword(),
                     SizedBox(height: SizeUtils.height * 0.01),
                     _buildRecordarMisDatos(),
-                    SizedBox(height: SizeUtils.height * 0.03),
-                    _buildEntrar(),
                     SizedBox(height: SizeUtils.height * 0.02),
                     _buildRegistrarse(),
                     SizedBox(height: SizeUtils.height * 0.03),
@@ -205,22 +202,6 @@ class RegisterScreen extends GetWidget<RegisterController> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildEntrar() {
-    return CustomElevatedButton(
-      width: SizeUtils.width * 0.4,
-      text: "lbl_entrar".tr,
-      onPressed: () {
-        if (_formKey.currentState?.validate() ?? false) {
-          // callRegister();
-          Get.toNamed(AppRoutes.bienvenidoOneScreen);
-        } else {
-          Get.rawSnackbar(
-              message: "Please fill in all required fields correctly.");
-        }
-      },
     );
   }
 

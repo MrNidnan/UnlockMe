@@ -1,10 +1,10 @@
-import 'package:UnlockMe/presentation/bienvenido_one_screen/bienvenido_one_screen.dart';
-import 'package:UnlockMe/presentation/bienvenido_one_screen/controller/bienvenido_one_controller.dart';
-import 'package:UnlockMe/presentation/bienvenido_one_screen/models/bienvenido_one_model.dart';
+import 'package:unlockme/presentation/bienvenido_one_screen/bienvenido_one_screen.dart';
+import 'package:unlockme/presentation/bienvenido_one_screen/controller/bienvenido_one_controller.dart';
+import 'package:unlockme/presentation/bienvenido_one_screen/models/bienvenido_one_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get/get.dart';
-import 'package:UnlockMe/routes/app_routes.dart';
+import 'package:unlockme/routes/app_routes.dart';
 
 class MockBienvenidoOneController extends GetxController
     implements BienvenidoOneController {
@@ -35,7 +35,7 @@ void main() {
           GetPage(
             name: AppRoutes.bienvenidoScreen,
             page: () =>
-                Scaffold(body: Center(child: Text('Bienvenido Screen'))),
+                const Scaffold(body: Center(child: Text('Bienvenido Screen'))),
           ),
         ],
       ),

@@ -1,5 +1,5 @@
-import 'package:UnlockMe/theme/custom_button_style.dart';
-import 'package:UnlockMe/widgets/custom_elevated_button.dart';
+import 'package:unlockme/theme/custom_button_style.dart';
+import 'package:unlockme/widgets/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -9,7 +9,7 @@ import '../../widgets/custom_floating_button.dart';
 import '../../widgets/custom_icon_button.dart';
 
 class MapaScreen extends GetWidget<MapaController> {
-  MapaScreen({Key? key}) : super(key: key);
+  const MapaScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,7 @@ class MapaScreen extends GetWidget<MapaController> {
                               },
                             )
                           : Container(),
-                      SizedBox(height: 16.0),
+                      const SizedBox(height: 16.0),
                     ],
                   ),
                 );
@@ -116,7 +116,7 @@ class MapaScreen extends GetWidget<MapaController> {
               imagePath: ImageConstant.imgLinkedin,
             ),
           ),
-          Spacer(),
+          const Spacer(),
           CustomFloatingButton(
             heroTag: 'settings-1',
             backgroundColor: appTheme.green900,

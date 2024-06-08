@@ -1,4 +1,4 @@
-import 'package:UnlockMe/core/utils/logger.dart';
+import 'package:unlockme/core/utils/logger.dart';
 import 'package:get/get.dart';
 import 'dart:async';
 
@@ -16,7 +16,7 @@ class ReserveTimerService extends GetxService {
 
     Logger.logDebug('Start Timer with remainingTime ${remainingTime.value}');
 
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       final now = DateTime.now();
       if (now.isAfter(endTime)) {
         expireTimer();

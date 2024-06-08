@@ -7,7 +7,7 @@ import '../../widgets/custom_elevated_button.dart';
 import 'controller/qr_scan_controller.dart';
 
 class QrScanScreen extends GetWidget<QrScanController> {
-  const QrScanScreen({Key? key}) : super(key: key);
+  const QrScanScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +30,13 @@ class QrScanScreen extends GetWidget<QrScanController> {
                         color: theme.colorScheme.primaryContainer,
                         padding: EdgeInsets.all(SizeUtils.width * 0.01),
                         strokeWidth: SizeUtils.width * 0.005,
-                        radius: Radius.circular(50),
+                        radius: const Radius.circular(50),
                         borderType: BorderType.Rect,
-                        dashPattern: [250, 50],
+                        dashPattern: const [250, 50],
                         child: Container(
                           height: SizeUtils.width * 0.8,
                           width: SizeUtils.width * 0.8,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             borderRadius: BorderRadius.zero,
                           ),
                           child: QRView(

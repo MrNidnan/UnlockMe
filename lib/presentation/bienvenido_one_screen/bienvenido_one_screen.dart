@@ -1,14 +1,11 @@
-import 'package:UnlockMe/core/app_export.dart';
+import 'package:unlockme/core/app_export.dart';
 import 'package:flutter/material.dart';
 import '../../theme/custom_button_style.dart';
 import '../../widgets/custom_elevated_button.dart';
 import 'controller/bienvenido_one_controller.dart'; // ignore_for_file: must_be_immutable
 
 class BienvenidoOneScreen extends GetWidget<BienvenidoOneController> {
-  const BienvenidoOneScreen({Key? key})
-      : super(
-          key: key,
-        );
+  const BienvenidoOneScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,22 +1,21 @@
-import 'package:UnlockMe/widgets/custom_nav_left.dart';
+import 'package:unlockme/widgets/custom_nav_left.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import '../../core/app_export.dart';
 import 'controller/contadorviaje_controller.dart';
 
 class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
-  const ContadorviajeScreen({Key? key}) : super(key: key);
+  const ContadorviajeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    ;
 
     return SafeArea(
       child: Scaffold(
         backgroundColor: theme.colorScheme.onSecondaryContainer,
         body: Container(
           width: double.maxFinite,
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: 16.0,
             vertical: 16.0,
           ),
@@ -41,7 +40,7 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
                       Align(
                         alignment: Alignment.bottomCenter,
                         child: Padding(
-                          padding: EdgeInsets.only(
+                          padding: const EdgeInsets.only(
                             left: 28.0,
                             right: 22.0,
                             bottom: 83.0,
@@ -50,12 +49,12 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Obx(() => Text(
-                                    "${controller.getTimerTime()}".tr,
+                                    controller.getTimerTime().tr,
                                     style: CustomTextStyles.displaySmallPrimary,
                                   )),
-                              SizedBox(height: 4.0),
+                              const SizedBox(height: 4.0),
                               Padding(
-                                padding: EdgeInsets.only(left: 20.0),
+                                padding: const EdgeInsets.only(left: 20.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -64,7 +63,7 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
                                       style: CustomTextStyles.bodyMediumPrimary,
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(left: 14.0),
+                                      padding: const EdgeInsets.only(left: 14.0),
                                       child: Text(
                                         "lbl_minutos".tr,
                                         style:
@@ -72,7 +71,7 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
                                       ),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.only(left: 10.0),
+                                      padding: const EdgeInsets.only(left: 10.0),
                                       child: Text(
                                         "lbl_segundos".tr,
                                         style:
@@ -89,7 +88,7 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
                     ],
                   ),
                 ),
-                SizedBox(height: 27.0),
+                const SizedBox(height: 27.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -98,26 +97,26 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
                       style: CustomTextStyles.titleMediumPrimary,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(left: 7.0),
+                      padding: const EdgeInsets.only(left: 7.0),
                       child: Obx(() {
                         final started = controller.routeCreatedAt.value;
                         return Text(
-                          "${started}".tr,
+                          started.tr,
                           style: CustomTextStyles.bodyLargePrimary,
                         );
                       }),
                     )
                   ],
                 ),
-                SizedBox(height: 27.0),
+                const SizedBox(height: 27.0),
                 CustomImageView(
                   imagePath: ImageConstant.imgTraveller,
                   height: 133.0,
                   width: 134.0,
                 ),
-                SizedBox(height: 30.0),
+                const SizedBox(height: 30.0),
                 _buildSlider(context),
-                SizedBox(height: 5.0)
+                const SizedBox(height: 5.0)
               ],
             ),
           ),
@@ -137,12 +136,12 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
             color: theme.colorScheme.primary,
           ),
         ),
-        SizedBox(height: 5.0), // Spacer between text and slider
-        Container(
+        const SizedBox(height: 5.0), // Spacer between text and slider
+        SizedBox(
           width: MediaQuery.of(context).size.width *
               0.8, // Adjust the width as needed
           child: FlutterSlider(
-            values: [0],
+            values: const [0],
             max: 100,
             min: 0,
             handler: FlutterSliderHandler(
@@ -154,7 +153,7 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
                     color: theme.colorScheme.primary.withOpacity(0.5),
                     blurRadius: 8.0,
                     spreadRadius: 2.0,
-                    offset: Offset(0, 4),
+                    offset: const Offset(0, 4),
                   ),
                 ],
               ),

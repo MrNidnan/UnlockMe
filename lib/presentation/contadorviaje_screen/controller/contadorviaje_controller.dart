@@ -1,6 +1,6 @@
-import 'package:UnlockMe/core/app_storage.dart' as db;
-import 'package:UnlockMe/core/utils/logger.dart';
-import 'package:UnlockMe/core/utils/progress_dialog_utils.dart';
+import 'package:unlockme/core/app_storage.dart' as db;
+import 'package:unlockme/core/utils/logger.dart';
+import 'package:unlockme/core/utils/progress_dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -62,7 +62,7 @@ class ContadorviajeController extends GetxController {
       return;
     }
     await finishRoute(_travelRoute);
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       ProgressDialogUtils.hideProgressDialog();
     });
   }

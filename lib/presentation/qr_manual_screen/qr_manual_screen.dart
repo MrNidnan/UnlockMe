@@ -1,4 +1,4 @@
-import 'package:UnlockMe/widgets/custom_text_form_field.dart';
+import 'package:unlockme/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 import '../../theme/custom_button_style.dart';
@@ -6,10 +6,7 @@ import '../../widgets/custom_elevated_button.dart';
 import 'controller/qr_manual_controller.dart'; // ignore_for_file: must_be_immutable
 
 class QrManualScreen extends GetWidget<QrManualController> {
-  const QrManualScreen({Key? key})
-      : super(
-          key: key,
-        );
+  const QrManualScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

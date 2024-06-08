@@ -8,7 +8,7 @@ import '../../widgets/custom_text_form_field.dart';
 import 'controller/login_controller.dart';
 
 class LoginScreen extends GetWidget<LoginController> {
-  LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({super.key});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -44,7 +44,7 @@ class LoginScreen extends GetWidget<LoginController> {
                         alignment: Alignment.centerRight,
                         margin: EdgeInsets.only(right: SizeUtils.width * 0.07),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       _buildEmail(context),
                       SizedBox(height: SizeUtils.height * 0.01),
                       _buildEye(context),

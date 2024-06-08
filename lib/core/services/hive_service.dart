@@ -6,9 +6,7 @@ Service for managing Hive box access and using constants for keys
 Using GetxService with GetX dependency injection provides lifecycle management and easier integration with GetX's reactive state management.
 */
 class HiveService extends GetxService {
-  /**
-   * Retrieving the box reference every time you want to access or set a value can introduce unnecessary overhead, even if it is relatively small. It is more efficient to store the box references as class variables within your HiveService. This way, you only retrieve the box reference once during initialization and reuse it throughout the service's lifetime.
-   */
+  /// Retrieving the box reference every time you want to access or set a value can introduce unnecessary overhead, even if it is relatively small. It is more efficient to store the box references as class variables within your HiveService. This way, you only retrieve the box reference once during initialization and reuse it throughout the service's lifetime.
   late Box _reserveBox;
   late Box _userBox;
   Box get reserveBox => _reserveBox;

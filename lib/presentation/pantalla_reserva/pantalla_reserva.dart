@@ -1,13 +1,13 @@
-import 'package:UnlockMe/core/utils/bike_helper.dart';
-import 'package:UnlockMe/theme/custom_button_style.dart';
-import 'package:UnlockMe/widgets/custom_nav_left.dart';
+import 'package:unlockme/core/utils/bike_helper.dart';
+import 'package:unlockme/theme/custom_button_style.dart';
+import 'package:unlockme/widgets/custom_nav_left.dart';
 import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_elevated_button.dart';
 import 'controller/pantalla_reserva_controller.dart';
 
 class PantallaReserva extends GetWidget<PantallaReservaController> {
-  const PantallaReserva({Key? key}) : super(key: key);
+  const PantallaReserva({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class PantallaReserva extends GetWidget<PantallaReservaController> {
                     final address = controller.address.value;
                     //final testVar = controller.testVar.value;
                     return Text(
-                      "\n${address} ",
+                      "\n$address ",
                       style: theme.textTheme.titleMedium,
                     );
                   }),

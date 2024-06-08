@@ -13,7 +13,7 @@ class MapaModel {
     LatLng? initialPosition,
     List<Marker>? initialMarkers,
   }) {
-    currentPosition.value = initialPosition ?? LatLng(41.3851, 2.1734);
+    currentPosition.value = initialPosition ?? const LatLng(41.3851, 2.1734);
     if (initialMarkers != null) {
       markers.addAll(initialMarkers);
       //markerLayer = MarkerLayer(markers: markers).obs;

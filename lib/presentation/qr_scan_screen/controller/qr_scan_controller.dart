@@ -1,10 +1,10 @@
-import 'package:UnlockMe/core/services/hive_service.dart';
-import 'package:UnlockMe/core/services/travel_timer_service.dart';
-import 'package:UnlockMe/presentation/mapa_screen/controller/mapa_controller.dart';
+import 'package:unlockme/core/services/hive_service.dart';
+import 'package:unlockme/core/services/travel_timer_service.dart';
+import 'package:unlockme/presentation/mapa_screen/controller/mapa_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:UnlockMe/core/app_export.dart';
-import 'package:UnlockMe/core/app_storage.dart' as db;
+import 'package:unlockme/core/app_export.dart';
+import 'package:unlockme/core/app_storage.dart' as db;
 import '../models/qr_scan_model.dart';
 
 class QrScanController extends GetxController {
@@ -53,12 +53,12 @@ class QrScanController extends GetxController {
     qrViewController?.resumeCamera();
   }
 
-  /**
-   * // get actives reserve  user from db
-      // if exists compare bikeId with the bikeId from the reserve
-      // if they are different show error indicating you have another bike reserved
-      //UnlockVehicle() if the user has no active reserves or the bikeId reserve is equal to the bikeId scanned
-   */
+  ///
+  //  get actives reserve  user from db
+  //     if exists compare bikeId with the bikeId from the reserve
+  //     if they are different show error indicating you have another bike reserved
+  //    UnlockVehicle() if the user has no active reserves or the bikeId reserve is equal to the bikeId scanned
+  ///
   Future<bool> _validateQrAndStartTravel(String scannedCode) async {
     try {
       var bike = await _getBikeWithQrCode(scannedCode);

@@ -9,12 +9,9 @@ import 'controller/recuperar_pwd_controller.dart';
 // ignore_for_file: must_be_immutable
 
 class RecuperarPwdScreen extends GetWidget<RecuperarPwdController> {
-  RecuperarPwdScreen({Key? key})
-      : super(
-          key: key,
-        );
+  RecuperarPwdScreen({super.key});
 
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {

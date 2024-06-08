@@ -1,8 +1,8 @@
-import 'package:UnlockMe/core/utils/logger.dart';
+import 'package:unlockme/core/utils/logger.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-import 'package:UnlockMe/core/app_storage.dart';
+import 'package:unlockme/core/app_storage.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -18,9 +18,9 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDB() async {
-    String path = await getDatabasesPath();
+    String directory = await getDatabasesPath();
     return openDatabase(
-      join(path, 'unlockme.db'),
+      join(directory, 'unlockme.db'),
       onCreate: _onCreate,
       version: 1,
     );
@@ -90,7 +90,7 @@ class DatabaseHelper {
         password: '12345678',
         hotelId: 1,
       );
-      await this.insertUser(user);
+      await insertUser(user);
     }
 
     final bikes = await getBikes();
@@ -103,7 +103,7 @@ class DatabaseHelper {
           hotelId: 1,
           status: 'available',
           qrCode: 'VALID123abc');
-      await this.insertBike(bike1);
+      await insertBike(bike1);
 
       Bike bike2 = Bike(
           latitude: 41.3879,
@@ -112,7 +112,7 @@ class DatabaseHelper {
           hotelId: 1,
           status: 'available',
           qrCode: 'VALID456def');
-      await this.insertBike(bike2);
+      await insertBike(bike2);
 
       // Bike bike3 = Bike(
       //     latitude: 41.3979,
@@ -121,7 +121,7 @@ class DatabaseHelper {
       //     hotelId: 2,
       //     status: 'available',
       //     qrCode: 'VALID456def');
-      // await this.insertBike(bike3);
+      // await insertBike(bike3);
     }
   }
 

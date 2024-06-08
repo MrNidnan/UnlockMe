@@ -1,4 +1,4 @@
-import 'package:UnlockMe/core/utils/logger.dart';
+import 'package:unlockme/core/utils/logger.dart';
 import 'package:get/get.dart';
 import 'dart:async';
 
@@ -21,7 +21,7 @@ class TravelTimerService extends GetxService {
         'Start Timer with accumulatedTime ${accumulatedTime.value}');
 
     // Start the timer and update the accumulated time every second
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       accumulatedTime.value += 1;
     });
   }

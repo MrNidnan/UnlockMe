@@ -8,21 +8,21 @@ ThemeData get theme => ThemeHelper().themeData();
 // ignore_for_file: must_be_immutable
 class ThemeHelper {
   // The current app theme
-  var _appTheme = PrefUtils().getThemeData();
+  final _appTheme = PrefUtils().getThemeData();
 
 // A map of custom color themes supported by the app
-  Map<String, LightCodeColors> _supportedCustomColor = {
+  final Map<String, LightCodeColors> _supportedCustomColor = {
     'lightCode': LightCodeColors()
   };
 
 // A map of color schemes supported by the app
-  Map<String, ColorScheme> _supportedColorScheme = {
+  final Map<String, ColorScheme> _supportedColorScheme = {
     'lightCode': ColorSchemes.lightCodeColorScheme
   };
 
-  /// Changes the app theme to [_newTheme].
-  void changeTheme(String _newTheme) {
-    PrefUtils().setThemeData(_newTheme);
+  /// Changes the app theme to [newTheme].
+  void changeTheme(String newTheme) {
+    PrefUtils().setThemeData(newTheme);
     Get.forceAppUpdate();
   }
 
@@ -76,7 +76,7 @@ class ThemeHelper {
           }
           return Colors.transparent;
         }),
-        side: BorderSide(
+        side: const BorderSide(
           width: 1,
         ),
         visualDensity: const VisualDensity(
@@ -171,7 +171,7 @@ class TextThemes {
 
 /// Class containing the supported color schemes.
 class ColorSchemes {
-  static final lightCodeColorScheme = ColorScheme.light(
+  static const lightCodeColorScheme = ColorScheme.light(
     primary: Color(0X33000000),
     primaryContainer: Color(0XFF001103),
     secondaryContainer: Color(0XFF124F20),
@@ -184,32 +184,32 @@ class ColorSchemes {
 /// Class containing custom colors for a lightCode theme.
 class LightCodeColors {
   // BlueGray
-  Color get blueGray100 => Color(0XFFCFCDC9);
-  Color get blueGray20033 => Color(0X33B9C7D2);
-  Color get blueGray2003301 => Color(0X33BAC8D2);
-  Color get blueGray300 => Color(0XFF8996A3);
-  Color get blueGray400 => Color(0XFF888888);
+  Color get blueGray100 => const Color(0XFFCFCDC9);
+  Color get blueGray20033 => const Color(0X33B9C7D2);
+  Color get blueGray2003301 => const Color(0X33BAC8D2);
+  Color get blueGray300 => const Color(0XFF8996A3);
+  Color get blueGray400 => const Color(0XFF888888);
 // Gray
-  Color get gray100 => Color(0XFFF1F5F8);
-  Color get gray300 => Color(0XFFE3E4E6);
-  Color get gray30001 => Color(0XFFD5DFE6);
-  Color get gray30066 => Color(0X66E5E4E4);
-  Color get gray400 => Color(0XFFC2C9D0);
-  Color get gray40087 => Color(0X87C8C8C8);
-  Color get gray600 => Color(0XFF727271);
-  Color get gray800 => Color(0XFF393737);
-  Color get gray80001 => Color(0XFF393838);
+  Color get gray100 => const Color(0XFFF1F5F8);
+  Color get gray300 => const Color(0XFFE3E4E6);
+  Color get gray30001 => const Color(0XFFD5DFE6);
+  Color get gray30066 => const Color(0X66E5E4E4);
+  Color get gray400 => const Color(0XFFC2C9D0);
+  Color get gray40087 => const Color(0X87C8C8C8);
+  Color get gray600 => const Color(0XFF727271);
+  Color get gray800 => const Color(0XFF393737);
+  Color get gray80001 => const Color(0XFF393838);
 // Green
-  Color get green900 => Color(0XFF135020);
+  Color get green900 => const Color(0XFF135020);
 // Indigo
-  Color get indigo50 => Color(0XFFE5EBEF);
+  Color get indigo50 => const Color(0XFFE5EBEF);
 // Lime
-  Color get limeA200 => Color(0XFFF3F740);
+  Color get limeA200 => const Color(0XFFF3F740);
 // Orange
-  Color get orange800 => Color(0XFFE87104);
+  Color get orange800 => const Color(0XFFE87104);
 // Teal
-  Color get teal900 => Color(0XFF063C2B);
+  Color get teal900 => const Color(0XFF063C2B);
 // Yellow
-  Color get yellow300 => Color(0XFFF0F276);
-  Color get yellow400 => Color(0XFFF2FF60);
+  Color get yellow300 => const Color(0XFFF0F276);
+  Color get yellow400 => const Color(0XFFF2FF60);
 }

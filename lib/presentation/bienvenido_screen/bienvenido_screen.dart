@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import '../../core/app_export.dart';
-import '../../domain/googleauth/google_auth_helper.dart';
-import '../../routes/navigation_args.dart';
 import '../../theme/custom_button_style.dart';
 import '../../widgets/custom_elevated_button.dart';
 import 'controller/bienvenido_controller.dart'; // ignore_for_file: must_be_immutable
 
 class BienvenidoScreen extends GetWidget<BienvenidoController> {
-  const BienvenidoScreen({Key? key})
-      : super(
-          key: key,
-        );
+  const BienvenidoScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +49,7 @@ class BienvenidoScreen extends GetWidget<BienvenidoController> {
                   buttonStyle: CustomButtonStyles.outlinePrimary,
                   buttonTextStyle: CustomTextStyles.titleMediumManrope,
                   onPressed: () {
-                    signInWithGoogle();
+                    controller.signInWithGoogle();
                   },
                 ),
                 SizedBox(height: SizeUtils.height * 0.01),
@@ -139,25 +133,6 @@ class BienvenidoScreen extends GetWidget<BienvenidoController> {
         ],
       ),
     );
-  }
-
-  signInWithGoogle() async {
-    await GoogleAuthHelper().googleSignInProcess().then((googleUser) {
-      if (googleUser != null) {
-        onSuccessGoogleAuthResponse(googleUser);
-      } else {
-        Get.snackbar('Error', 'user data is empty');
-      }
-    }).catchError((onError) {
-      Get.snackbar('Error', onError.toString());
-    });
-  }
-
-  onSuccessGoogleAuthResponse(GoogleSignInAccount googleUser) {
-    Get.toNamed(AppRoutes.mapaScreen, arguments: {
-      NavigationArgs.userPhoto: googleUser.photoUrl,
-      NavigationArgs.userMail: googleUser.email
-    });
   }
 
   onTapIngresarcon() {

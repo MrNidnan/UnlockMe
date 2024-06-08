@@ -4,10 +4,7 @@ import '../../core/app_export.dart';
 import 'controller/perfil_usuario_controller.dart'; // ignore_for_file: must_be_immutable
 
 class PerfilUsuarioScreen extends GetWidget<PerfilUsuarioController> {
-  const PerfilUsuarioScreen({Key? key})
-      : super(
-          key: key,
-        );
+  const PerfilUsuarioScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +43,7 @@ class PerfilUsuarioScreen extends GetWidget<PerfilUsuarioController> {
                           child: Card(
                             clipBehavior: Clip.antiAlias,
                             elevation: 0,
-                            margin: EdgeInsets.all(0),
+                            margin: const EdgeInsets.all(0),
                             color: appTheme.gray100,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadiusStyle.circleBorder56,
@@ -73,7 +70,7 @@ class PerfilUsuarioScreen extends GetWidget<PerfilUsuarioController> {
                                     ),
                                     alignment: Alignment.center,
                                     onTap: () {
-                                      requestCameraGalleryPermission();
+                                      onTapPicture();
                                     },
                                   ),
                                   CustomImageView(
@@ -165,7 +162,6 @@ class PerfilUsuarioScreen extends GetWidget<PerfilUsuarioController> {
                         SizedBox(height: 33.v),
                         GestureDetector(
                           onTap: () {
-                            onTapLinkvehicles();
                           },
                           child: Padding(
                             padding: EdgeInsets.only(left: 17.h),
@@ -216,7 +212,7 @@ class PerfilUsuarioScreen extends GetWidget<PerfilUsuarioController> {
                         SizedBox(height: 34.v),
                         GestureDetector(
                           onTap: () {
-                            onTapHowtouse();
+                            onTapHowtoUse();
                           },
                           child: Padding(
                             padding: EdgeInsets.only(left: 25.h),
@@ -269,14 +265,16 @@ class PerfilUsuarioScreen extends GetWidget<PerfilUsuarioController> {
   }
 
   onTapHistory() {}
-  navigateToHistory() {}
 
-  /// Navigates to the escanearQrScreen when the action is triggered.
-  onTapLinkvehicles() {
-    Get.toNamed(
-      AppRoutes.qrScanScreen,
-    );
+  onTapPicture() async {
+    await requestCameraGalleryPermission();
+    Get.toNamed(AppRoutes.editarPerfilOneScreen);
   }
 
-  onTapHowtouse() {}
+  /// Navigates to the escanearQrScreen when the action is triggered.
+  navigateToHistory() {
+
+  }
+
+  onTapHowtoUse() {}
 }

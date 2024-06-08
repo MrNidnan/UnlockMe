@@ -15,8 +15,8 @@ class CustomFloatingButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(29.h),
       );
 
-  CustomFloatingButton(
-      {Key? key,
+  const CustomFloatingButton(
+      {super.key,
       this.heroTag,
       this.alignment,
       this.backgroundColor,
@@ -24,10 +24,7 @@ class CustomFloatingButton extends StatelessWidget {
       this.width,
       this.height,
       this.decoration,
-      this.child})
-      : super(
-          key: key,
-        );
+      this.child});
   final String? heroTag;
   final Alignment? alignment;
   final Color? backgroundColor;

@@ -58,27 +58,27 @@ class AppRoutes {
   static List<GetPage> pages = [
     GetPage(
       name: bienvenidoOneScreen,
-      page: () => BienvenidoOneScreen(),
+      page: () => const BienvenidoOneScreen(),
       bindings: [BienvenidoOneBinding()],
     ),
     GetPage(
       name: perfilUsuarioScreen,
-      page: () => PerfilUsuarioScreen(),
+      page: () => const PerfilUsuarioScreen(),
       bindings: [PerfilUsuarioBinding()],
     ),
     GetPage(
       name: editarPerfilOneScreen,
-      page: () => EditarPerfilOneScreen(),
+      page: () => const EditarPerfilOneScreen(),
       bindings: [EditarPerfilOneBinding()],
     ),
     GetPage(
       name: contadorViajeScreen,
-      page: () => ContadorviajeScreen(),
+      page: () => const ContadorviajeScreen(),
       bindings: [ContadorviajeBinding()],
     ),
     GetPage(
       name: bienvenidoScreen,
-      page: () => BienvenidoScreen(),
+      page: () => const BienvenidoScreen(),
       bindings: [BienvenidoBinding()],
     ),
     GetPage(
@@ -88,27 +88,27 @@ class AppRoutes {
     ),
     GetPage(
       name: qrScanScreen,
-      page: () => QrScanScreen(),
+      page: () => const QrScanScreen(),
       bindings: [QrScanBinding()],
     ),
     GetPage(
       name: mapaScreen,
-      page: () => MapaScreen(),
+      page: () => const MapaScreen(),
       bindings: [MapaBinding()],
     ),
     GetPage(
       name: pantallaReserva,
-      page: () => PantallaReserva(),
+      page: () => const PantallaReserva(),
       bindings: [PantallaReservaBinding()],
     ),
     GetPage(
       name: qrManualScreen,
-      page: () => QrManualScreen(),
+      page: () => const QrManualScreen(),
       bindings: [QrManualBinding()],
     ),
     GetPage(
       name: editarPerfilScreen,
-      page: () => EditarPerfilScreen(),
+      page: () => const EditarPerfilScreen(),
       bindings: [EditarPerfilBinding()],
     ),
     GetPage(
@@ -123,7 +123,7 @@ class AppRoutes {
     ),
     GetPage(
       name: initialRoute,
-      page: () => BienvenidoOneScreen(),
+      page: () => const BienvenidoOneScreen(),
       bindings: [BienvenidoOneBinding()],
     )
   ];

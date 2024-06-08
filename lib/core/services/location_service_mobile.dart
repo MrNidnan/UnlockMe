@@ -1,5 +1,5 @@
 // location_service_mobile.dart
-import 'package:UnlockMe/core/utils/logger.dart';
+import 'package:unlockme/core/utils/logger.dart';
 import 'package:geolocator/geolocator.dart';
 import 'location_service.dart';
 

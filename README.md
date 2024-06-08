@@ -1,4 +1,4 @@
-# UnlockMe
+# unlockme mobile application
 
 ### Table of contents
 

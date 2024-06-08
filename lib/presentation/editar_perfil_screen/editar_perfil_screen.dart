@@ -8,10 +8,7 @@ import '../../widgets/custom_text_form_field.dart';
 import 'controller/editar_perfil_controller.dart'; // ignore_for_file: must_be_immutable
 
 class EditarPerfilScreen extends GetWidget<EditarPerfilController> {
-  const EditarPerfilScreen({Key? key})
-      : super(
-          key: key,
-        );
+  const EditarPerfilScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

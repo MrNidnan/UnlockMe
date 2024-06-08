@@ -1,4 +1,4 @@
-import 'package:UnlockMe/core/app_export.dart';
+import 'package:unlockme/core/app_export.dart';
 import 'package:flutter/material.dart';
 
 class CustomNavLeftWidget extends StatelessWidget {
@@ -6,7 +6,7 @@ class CustomNavLeftWidget extends StatelessWidget {
   final double screenWidth;
   final VoidCallback onTap;
 
-  CustomNavLeftWidget({
+  const CustomNavLeftWidget({super.key, 
     required this.screenHeight,
     required this.screenWidth,
     required this.onTap,

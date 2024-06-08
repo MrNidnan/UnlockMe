@@ -1,8 +1,8 @@
-import 'package:UnlockMe/core/app_export.dart';
-import 'package:UnlockMe/core/app_storage.dart';
-import 'package:UnlockMe/core/services/hive_service.dart';
-import 'package:UnlockMe/core/services/location_service.dart';
-import 'package:UnlockMe/core/services/travel_timer_service.dart';
+import 'package:unlockme/core/app_export.dart';
+import 'package:unlockme/core/app_storage.dart';
+import 'package:unlockme/core/services/hive_service.dart';
+import 'package:unlockme/core/services/location_service.dart';
+import 'package:unlockme/core/services/travel_timer_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
@@ -21,7 +21,7 @@ class MapaController extends GetxController with WidgetsBindingObserver {
 
   Rx<MapaModel> mapaModelObj = MapaModel().obs;
 
-  final defaultPostion = LatLng(41.3851, 2.1734);
+  final defaultPostion = const LatLng(41.3851, 2.1734);
   final LocationService locationService;
   final dbHelper = DatabaseHelper();
   Timer? _timer;
@@ -79,7 +79,6 @@ class MapaController extends GetxController with WidgetsBindingObserver {
         ),
       );
     }).toList();
-    //if (mapaModelObj.value.currentPosition != null) {
     mapaModelObj.value.markers.add(Marker(
       point: mapaModelObj.value.currentPosition.value!,
       width: 80,
@@ -90,8 +89,7 @@ class MapaController extends GetxController with WidgetsBindingObserver {
         size: 40.0,
       ),
     ));
-    //}
-    mapaModelObj.refresh();
+      mapaModelObj.refresh();
   }
 
   void updateMap() async {
@@ -159,7 +157,6 @@ class MapaController extends GetxController with WidgetsBindingObserver {
       //Make sure map is updated when comming back from bike details
       updateMap();
     });
-    ;
   }
 
   void navigateToContador() {
@@ -175,7 +172,6 @@ class MapaController extends GetxController with WidgetsBindingObserver {
         );
       }
     });
-    ;
   }
 
   void navigateToQrScan() {

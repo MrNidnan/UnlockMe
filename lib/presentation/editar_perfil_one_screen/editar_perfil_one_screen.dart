@@ -5,10 +5,7 @@ import '../../widgets/custom_text_form_field.dart';
 import 'controller/editar_perfil_one_controller.dart'; // ignore_for_file: must_be_immutable
 
 class EditarPerfilOneScreen extends GetWidget<EditarPerfilOneController> {
-  const EditarPerfilOneScreen({Key? key})
-      : super(
-          key: key,
-        );
+  const EditarPerfilOneScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -35,7 +35,7 @@ class AppDecoration {
             color: appTheme.blueGray2003301,
             spreadRadius: 2.h,
             blurRadius: 2.h,
-            offset: Offset(
+            offset: const Offset(
               0,
               4,
             ),

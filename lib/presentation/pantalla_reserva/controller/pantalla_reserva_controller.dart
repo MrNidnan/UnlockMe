@@ -1,7 +1,8 @@
-import 'package:UnlockMe/core/app_export.dart';
-import 'package:UnlockMe/core/app_storage.dart';
-import 'package:UnlockMe/core/services/hive_service.dart';
+import 'package:unlockme/core/app_export.dart';
+import 'package:unlockme/core/app_storage.dart';
+import 'package:unlockme/core/services/hive_service.dart';
 import 'package:flutter/material.dart';
+import 'package:unlockme/presentation/mapa_screen/controller/mapa_controller.dart';
 import 'dart:async';
 import '../models/pantalla_reserva_model.dart';
 
@@ -119,19 +120,19 @@ class PantallaReservaController extends GetxController {
         userId: userId,
         bikeId: pantallaReservaModelObj.value.bike.id!,
         createdAt: reserveAt.toIso8601String(),
-        endsAt: reserveAt.add(Duration(seconds: 30)).toIso8601String(),
+        endsAt: reserveAt.add(const Duration(seconds: 30)).toIso8601String(),
         status: ReserveStatus.active));
 
     Logger.logDebug('reserveId created: $reserveId');
 
     _hiveService.setReserve(
-        reserveId, reserveAt.add(Duration(seconds: 30)).toIso8601String());
+        reserveId, reserveAt.add(const Duration(seconds: 30)).toIso8601String());
 
     Logger.logDebug('Reserve Ends At: ${_hiveService.getReserveEndsAt()}');
 
     pantallaReservaModelObj.update((model) {
       model?.isReserved = true;
-      model?.endsAt = DateTime.now().add(Duration(seconds: 30));
+      model?.endsAt = DateTime.now().add(const Duration(seconds: 30));
     });
 
     _timerService.startTimer(pantallaReservaModelObj.value.endsAt!);
@@ -141,6 +142,8 @@ class PantallaReservaController extends GetxController {
 
   void onExpireReserve() {
     _cancelReservation();
+    final MapaController mapaController = Get.find<MapaController>();
+    mapaController.updateMap();
     Get.snackbar('Reservation', 'Reservation expired!');
   }
 
@@ -181,19 +184,19 @@ class PantallaReservaController extends GetxController {
   Future<bool> _showConfirmationDialog() async {
     return await Get.dialog(
           AlertDialog(
-            title: Text('Cancel Reservation'),
-            content: Text('Are you sure you want to cancel the reservation?'),
+            title: const Text('Cancel Reservation'),
+            content: const Text('Are you sure you want to cancel the reservation?'),
             actions: [
               TextButton(
                 onPressed: () => Get.back(result: false),
-                child: Text(
+                child: const Text(
                   'No',
                   style: TextStyle(color: Colors.red),
                 ),
               ),
               TextButton(
                 onPressed: () => Get.back(result: true),
-                child: Text(
+                child: const Text(
                   'Yes',
                   style: TextStyle(color: Colors.black),
                 ),
