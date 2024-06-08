@@ -1,6 +1,6 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import '../../core/app_export.dart';
 import '../../theme/custom_button_style.dart';
 import '../../widgets/custom_elevated_button.dart';
@@ -39,9 +39,13 @@ class QrScanScreen extends GetWidget<QrScanController> {
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.zero,
                           ),
-                          child: QRView(
+                          child: MobileScanner(
                             key: GlobalKey(debugLabel: 'QR'),
-                            onQRViewCreated: controller.onQRViewCreated,
+                            onDetect: (barcode) {
+                              if (barcode.raw != null) {
+                                controller.onQrDetect(barcode.barcodes.first);
+                              }
+                            },
                           ),
                         ),
                       ),

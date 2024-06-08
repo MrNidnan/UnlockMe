@@ -2,14 +2,14 @@ import 'package:unlockme/core/services/hive_service.dart';
 import 'package:unlockme/core/services/travel_timer_service.dart';
 import 'package:unlockme/presentation/mapa_screen/controller/mapa_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:unlockme/core/app_export.dart';
 import 'package:unlockme/core/app_storage.dart' as db;
 import '../models/qr_scan_model.dart';
 
 class QrScanController extends GetxController {
   Rx<QrScanModel> qrScanModel = QrScanModel().obs;
-  QRViewController? qrViewController;
+  late final MobileScannerController? qrController;
   final dbHelper = db.DatabaseHelper();
 
   late final int? _reserveId;
@@ -32,25 +32,27 @@ class QrScanController extends GetxController {
     _reserveId = _hiveService.getReserveId();
     _userId = _hiveService.getUserId();
     _userHotelId = _hiveService.getHotelId();
+    qrController = MobileScannerController(autoStart: false);
   }
 
-  void onQRViewCreated(QRViewController controller) {
-    qrViewController = controller;
-    controller.scannedDataStream.listen((scanData) {
-      _handleScannedData(scanData);
-    });
-  }
+  // void onQRViewCreated(QRViewController controller) {
+  //   qrViewController = controller;
+  //   controller.scannedDataStream.listen((scanData) {
+  //     _handleScannedData(scanData);
+  //   });
+  // }
 
-  void _handleScannedData(Barcode scanData) async {
-    qrViewController?.pauseCamera();
-    Logger.logDebug('Scanned Data: ${scanData.code}, Type: ${scanData.format}');
-    String scannedCode = scanData.code ?? '';
+  void onQrDetect(Barcode barcode) async {
+    qrController!.stop();
+    Logger.logDebug('Scanned Data: ${barcode.rawValue}');
+    String scannedCode = barcode.rawValue ?? '';
     bool isOk = await _validateQrAndStartTravel(scannedCode);
 
     if (isOk) {
       Get.back();
+    } else {
+      qrController!.start();
     }
-    qrViewController?.resumeCamera();
   }
 
   ///
@@ -164,13 +166,13 @@ class QrScanController extends GetxController {
 
   @override
   void onClose() {
-    qrViewController?.dispose();
+    qrController?.dispose();
     super.onClose();
   }
 
   @override
   void dispose() {
-    qrViewController?.dispose();
+    qrController?.dispose();
     super.dispose();
   }
 }
