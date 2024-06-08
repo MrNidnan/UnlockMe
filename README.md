@@ -16,11 +16,16 @@ This README provides a comprehensive guide to setting up the development environ
 - [How to install the development environment](#how-to-install-the-development-environment)
 - [Compiling for Android](#compiling-for-android)
 - [Compiling for iOS](#compiling-for-ios)
+- [User Manual](#user-manual)
 
 ### System requirements
 
 Dart SDK Version 3.3.2 or greater.  
 Flutter SDK Version 3.19.4 or greater.
+
+### User Manual
+
+For detailed instructions on how to use the UnlockMe mobile application, please refer to the [User Manual](user_manual.md).
 
 ### Figma design guidelines for better UI accuracy
 
