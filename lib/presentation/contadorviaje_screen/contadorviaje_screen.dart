@@ -9,7 +9,6 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: theme.colorScheme.onSecondaryContainer,
@@ -48,34 +47,46 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Obx(() => Text(
-                                    controller.getTimerTime().tr,
-                                    style: CustomTextStyles.displaySmallPrimary,
-                                  )),
+                              Obx(() => FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  controller.getTimerTime().tr,
+                                  style: CustomTextStyles.displaySmallPrimary,
+                                ),
+                              )),
                               const SizedBox(height: 4.0),
                               Padding(
                                 padding: const EdgeInsets.only(left: 20.0),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      "lbl_horas".tr,
-                                      style: CustomTextStyles.bodyMediumPrimary,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 14.0),
-                                      child: Text(
-                                        "lbl_minutos".tr,
-                                        style:
-                                            CustomTextStyles.bodyMediumPrimary,
+                                    Flexible(
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: Text(
+                                          "lbl_horas".tr,
+                                          style: CustomTextStyles.bodyMediumPrimary.copyWith(fontSize: 14.0),
+                                        ),
                                       ),
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10.0),
-                                      child: Text(
-                                        "lbl_segundos".tr,
-                                        style:
-                                            CustomTextStyles.bodyMediumPrimary,
+                                    const SizedBox(width: 14.0),
+                                    Flexible(
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: Text(
+                                          "lbl_minutos".tr,
+                                          style: CustomTextStyles.bodyMediumPrimary.copyWith(fontSize: 14.0),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10.0),
+                                    Flexible(
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: Text(
+                                          "lbl_segundos".tr,
+                                          style: CustomTextStyles.bodyMediumPrimary.copyWith(fontSize: 14.0),
+                                        ),
                                       ),
                                     )
                                   ],
@@ -138,8 +149,7 @@ class ContadorviajeScreen extends GetWidget<ContadorviajeController> {
         ),
         const SizedBox(height: 5.0), // Spacer between text and slider
         SizedBox(
-          width: MediaQuery.of(context).size.width *
-              0.8, // Adjust the width as needed
+          width: MediaQuery.of(context).size.width * 0.8, // Adjust the width as needed
           child: FlutterSlider(
             values: const [0],
             max: 100,

@@ -19,6 +19,8 @@ class QrScanController extends GetxController {
   late final TravelTimerService _travelTimerService;
   late final ReserveTimerService _reserveTimerService;
   late final HiveService _hiveService;
+  bool _isProcessing = false; // Flag to prevent qr scanning
+
 
   @override
   void onInit() async {
@@ -43,16 +45,23 @@ class QrScanController extends GetxController {
   // }
 
   void onQrDetect(Barcode barcode) async {
+    if (_isProcessing) return; // Return if already processing
+    _isProcessing = true; // Set the flag
+
     qrController!.stop();
     Logger.logDebug('Scanned Data: ${barcode.rawValue}');
     String scannedCode = barcode.rawValue ?? '';
-    bool isOk = await _validateQrAndStartTravel(scannedCode);
+    var isOk = await _validateQrAndStartTravel(scannedCode);
 
     if (isOk) {
       Get.back();
     } else {
-      qrController!.start();
+      Future.delayed(const Duration(seconds: 1), ()
+      {
+        qrController!.start();
+      });
     }
+    _isProcessing = false; // Reset the flag
   }
 
   ///
@@ -65,24 +74,14 @@ class QrScanController extends GetxController {
     try {
       var bike = await _getBikeWithQrCode(scannedCode);
       if (bike == null) {
-        Get.snackbar(
-          'Error',
-          'Invalid QR code.',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-        );
+        printSnackBarErrorMessage('Invalid QR code.');
         return false;
       }
 
       // Check active reservations
       var activeReserve = await dbHelper.getActiveReserveForUser(_userId!);
       if (activeReserve != null && activeReserve.bikeId != bike.id) {
-        Get.snackbar(
-          'Error',
-          'This is not your bike! You have another bike reserved.',
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.red,
-        );
+        printSnackBarErrorMessage('This is not your bike! You have another bike reserved.');
         return false;
       }
 
@@ -91,13 +90,19 @@ class QrScanController extends GetxController {
       return true;
     } catch (e) {
       Logger.logError('Error unlocking bike: $e');
-      Get.snackbar(
-        'Error',
-        'An error occurred while unlocking the bike. Please try again.',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
-      );
+      printSnackBarErrorMessage('An error occurred while unlocking the bike. Please try again.');
       return false;
+    }
+  }
+
+  void printSnackBarErrorMessage(String message) {
+    if (!Get.isSnackbarOpen) {
+    Get.snackbar(
+      'Error',
+      message,
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.red,
+    );
     }
   }
 
