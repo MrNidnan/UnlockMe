@@ -140,8 +140,8 @@ class PantallaReservaController extends GetxController {
     Get.snackbar('Reservation', 'Bike reserved successfully!');
   }
 
-  void onExpireReserve() {
-    _cancelReservation();
+  void onExpireReserve() async {
+    await _cancelReservation();
     final MapaController mapaController = Get.find<MapaController>();
     mapaController.updateMap();
     Get.snackbar('Reservation', 'Reservation expired!');
@@ -155,7 +155,7 @@ class PantallaReservaController extends GetxController {
     }
   }
 
-  void _cancelReservation() async {
+  Future<void> _cancelReservation() async {
     final reserveId = _hiveService.getReserveId();
     final userId = _hiveService.getUserId();
     Logger.logDebug('ReserveId on cancelReservation: $reserveId $userId');
