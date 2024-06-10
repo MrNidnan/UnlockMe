@@ -89,7 +89,7 @@ class PerfilUsuarioScreen extends GetWidget<PerfilUsuarioController> {
                         Align(
                           alignment: Alignment.center,
                           child: Text(
-                            "lbl_juana_sanz".tr,
+                            "Angel".tr,
                             style: CustomTextStyles.titleMediumPrimaryBold,
                           ),
                         ),
@@ -97,7 +97,7 @@ class PerfilUsuarioScreen extends GetWidget<PerfilUsuarioController> {
                         Align(
                           alignment: Alignment.center,
                           child: Text(
-                            "msg_juanasanz_gmail_com".tr,
+                            "angel@test.com".tr,
                             style: CustomTextStyles.bodySmallBluegray300,
                           ),
                         ),

@@ -2,7 +2,6 @@ import 'package:unlockme/core/app_export.dart';
 import 'package:unlockme/core/app_storage.dart';
 import 'package:unlockme/core/services/hive_service.dart';
 import 'package:flutter/material.dart';
-import 'package:unlockme/presentation/mapa_screen/controller/mapa_controller.dart';
 import 'dart:async';
 import '../models/pantalla_reserva_model.dart';
 
@@ -142,8 +141,8 @@ class PantallaReservaController extends GetxController {
 
   void onExpireReserve() async {
     await _cancelReservation();
-    final MapaController mapaController = Get.find<MapaController>();
-    mapaController.updateMap();
+    //final MapaController mapaController = Get.find<MapaController>();
+    //mapaController.updateMap();
     Get.snackbar('Reservation', 'Reservation expired!');
   }
 

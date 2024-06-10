@@ -28,7 +28,7 @@ class NetworkInfo implements NetworkInfoI {
   @override
   Future<bool> isConnected() async {
     final result = await connectivity.checkConnectivity();
-    if (result != ConnectivityResult.none) {
+    if (result.isNotEmpty && result.first != ConnectivityResult.none) {
       return true;
     }
     return false;
@@ -38,7 +38,7 @@ class NetworkInfo implements NetworkInfoI {
   @override
   Future<ConnectivityResult> get connectivityResult async {
       final result = await connectivity.checkConnectivity();
-      if (result != ConnectivityResult.none) {
+      if (result.isNotEmpty && result.first != ConnectivityResult.none) {
         return result.first;
       } else {
         throw NoInternetException();

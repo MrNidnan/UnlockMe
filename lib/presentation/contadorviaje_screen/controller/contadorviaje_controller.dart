@@ -20,8 +20,8 @@ class ContadorviajeController extends GetxController {
 
   late final HiveService _hiveService;
   final _dbHelper = db.DatabaseHelper();
-  late final _userId;
-  late final _travelRoute;
+  late final int? _userId;
+  late db.Route? _travelRoute;
   Rx<String> routeCreatedAt = ''.obs;
   bool routeFinished = false;
 
@@ -44,11 +44,11 @@ class ContadorviajeController extends GetxController {
       return;
     }
     Logger.logDebug('User ID: $_userId');
-    _travelRoute = await _dbHelper.getCurrentRouteForUser(_userId);
+    _travelRoute = await _dbHelper.getCurrentRouteForUser(_userId!);
     Logger.logDebug(
         'Route: ${_travelRoute?.routeId} ${_travelRoute?.createdAt}');
     if (_travelRoute != null) {
-      DateTime dateTime = DateTime.parse(_travelRoute.createdAt);
+      DateTime dateTime = DateTime.parse(_travelRoute?.createdAt ?? "");
       String formattedDate = DateFormat('hh:mm:ss a').format(dateTime);
       routeCreatedAt.value = formattedDate;
     }
@@ -61,7 +61,7 @@ class ContadorviajeController extends GetxController {
           'User ID is: $_userId. Route ais $_travelRoute. Cannot end travel route!');
       return;
     }
-    await finishRoute(_travelRoute);
+    await finishRoute(_travelRoute!);
     Future.delayed(const Duration(seconds: 1), () {
       ProgressDialogUtils.hideProgressDialog();
     });
