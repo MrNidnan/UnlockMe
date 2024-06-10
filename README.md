@@ -164,13 +164,69 @@ To compile the application for Android, follow these steps:
    - Create a new virtual device or select an existing one.
    - Ensure the virtual device is configured with the desired Android version.
 
-4. **Build the APK:**
+Here is the formatted text for a README file:
 
-   - Open the terminal in Android Studio or use your system terminal.
-   - Run the following command to build the APK:
+---
+
+4. **Build the APK**
+
+   4.1 Using Flutter
+
+   - **Open the terminal in Android Studio or use your system terminal.**
+   - **Run the following command to build the APK:**
+
+   ```bash
+   flutter build apk --release
+   ```
+
+   4.2 Using Codemagic
+
+   - **Build on Codemagic and get the `file.aab` (Android App Bundle).**
+
+   - Convert AAB to APK
+
+     - **Download bundletool:**
+     - [Bundletool Releases](https://github.com/google/bundletool/releases)
+
+     - Run the following command:
+
      ```bash
-     flutter build apk --release
+     java -jar bundletool-all-<version>.jar build-apks --bundle=/path/to/your/app.aab --output=/path/to/your/output.apks --mode=universal
      ```
+
+   - **Extract APK from the `.apks` file:**
+
+   ```bash
+   unzip /path/to/your/output.apks -d /path/to/your/output_directory
+   ```
+
+   - **After extracting, you will find your APK file in the specified output directory.**
+   - You can then transfer this APK file to your Android device and install it.
+
+---
+
+This format ensures clarity and proper organization for the steps involved in building and converting the APK. 4. **Build the APK:**
+
+- Open the terminal in Android Studio or use your system terminal.
+- Run the following command to build the APK:
+  ```bash
+  flutter build apk --release
+  ```
+
+#### Using Codemagic
+
+Build on codemagic and get the file.aab (Android app bundle)
+
+Download bundletool:
+https://github.com/google/bundletool/releases
+
+Using bundletool to Convert AAB to APK:
+java -jar bundletool-all-<version>.jar build-apks --bundle=/path/to/your/app.aab --output=/path/to/your/output.apks --mode=universal
+
+Extract APK from the .apks file:
+unzip /path/to/your/output.apks -d /path/to/your/output_directory
+
+After extracting, you will find your APK file in the specified output directory. You can then transfer this APK file to your Android device and install it.
 
 5. **Run the Application:**
 
